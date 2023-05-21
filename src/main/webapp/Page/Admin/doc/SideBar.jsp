@@ -35,7 +35,10 @@
                 class="app-menu__label">Quản lý đơn hàng</span></a></li>
         <li><a class="app-menu__item" href="admin?page=logstatistic"><i class='app-menu__icon bx bx-task'></i><span
                 class="app-menu__label">Thống kê Log</span></a></li>
-
+        <li><a class="app-menu__item" href="admin?page=orderStatistics"><i class='app-menu__icon bx bx-task'></i><span
+                class="app-menu__label">Thống kê đơn hàng</span></a></li>
+        <li><a class="app-menu__item" href="admin?page=role"><i class='app-menu__icon bx bx-task'></i><span
+                class="app-menu__label">Phân quyền</span></a></li>
     </ul>
 </aside>
 </body>

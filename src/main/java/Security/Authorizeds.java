@@ -24,7 +24,11 @@ public class Authorizeds{
     public final static int LOG_UPDATE = 27;
     public final static int LOG_DEL = 28;
     public final static int LOG_VIEW = 30;
-
+    public final static int ADMIN_PAGE = 31;
+    public final static int ROLE_VIEW = 32;
+    public final static int ROLE_UPDATE = 33;
+    public final static int ROLE_DELETE = 34;
+    public final static int ROLE_INSERT = 35;
 
     public static boolean authorizeds(HttpServletRequest req, int permission){
         User user = (User) req.getSession().getAttribute("user");

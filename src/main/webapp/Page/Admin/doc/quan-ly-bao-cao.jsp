@@ -111,7 +111,7 @@
                     <table class="table table-hover table-bordered" id="myTable">
                         <thead>
                         <tr>
-                            <th width="10"><input type="checkbox" id="all"></th>
+                            <th width="10"><input type="checkbox" id="all2"></th>
                             <th>Mã sản phẩm</th>
                             <th>Tên sản phẩm</th>
                             <th>Ảnh</th>
@@ -178,7 +178,7 @@
                     <table class="table table-hover table-bordered" id="myTable">
                         <thead>
                         <tr>
-                            <th width="10"><input type="checkbox" id="all"></th>
+                            <th width="10"><input type="checkbox" id="all1"></th>
                             <th>ID đơn hàng</th>
                             <th>Khách hàng</th>
                             <th>Đơn hàng</th>
@@ -290,12 +290,12 @@
 
 
                                         </div>
-                                        <BR>
-                                        <BR>
+                                        <br>
+                                        <br>
                                         <button class="btn btn-save" type="button" onclick="updateOder(this)">Lưu lại
                                         </button>
                                         <a class="btn btn-cancel" data-dismiss="modal" href="#">Hủy bỏ</a>
-                                        <BR>
+                                        <br>
                                     </div>
                                     <div class="modal-footer">
                                     </div>

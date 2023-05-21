@@ -50,7 +50,8 @@
           href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
+
+
     <style>
         .action_order{
             cursor: pointer;
@@ -85,14 +86,13 @@
                     <div class="row element-button">
 
 
-                        <div class="col-sm-2">
+                        <div class="col-sm-2" onclick='htmlTableToExcel("order")'>
                             <a class="btn btn-excel btn-sm" title="In"><i class="fas fa-file-excel"
-                                                                          onclick="exportExel('OderAdmin')"></i> Xuất
+                                                                          ></i> Xuất
                                 Excel</a>
                         </div>
-                        <div class="col-sm-2">
-                            <a class="btn btn-delete btn-sm pdf-file" type="button" title="In"
-                               onclick="myFunction(this)"><i
+                        <div class="col-sm-2" onclick="exportTableToPDF('order')">
+                            <a class="btn btn-delete btn-sm pdf-file" type="button" title="In"><i
                                     class="fas fa-file-pdf"></i> Xuất PDF</a>
                         </div>
 
@@ -115,24 +115,7 @@
 
 
 
-                        <%--                            <%--%>
-<%--                                String status = "";--%>
-<%--                                String badge = "";--%>
-<%--                                if (tmp.getStatus() == 0) {--%>
-<%--                                    status = "Đang xử lý";--%>
-<%--                                    badge = "badge bg-info";--%>
-<%--                                }--%>
-<%--                                if (tmp.getStatus() == 1) {--%>
-<%--                                    status = "Đã hoàn thành";--%>
-<%--                                    badge = "badge bg-success";--%>
-<%--                                }--%>
-<%--                                if (tmp.getStatus() == 2) {--%>
-<%--                                    status = "Đã hủy";--%>
-<%--                                    badge = "badge badge-danger";--%>
-<%--                                }--%>
-<%--                            %>--%>
-<%--                            <td><span class="badge bg-info">Đang xử lý</span></td>--%>
-<%--                            --%>
+
 
 
                         </tbody>
@@ -217,6 +200,8 @@
                 </div>
                 <div class="modal-footer">
                     <input hidden="" value="" id="id_order_update"/>
+                    <button style="background-color: #bb1818" type="button" class="btn btn-secondary cancelOrder"  data-dismiss="modal">Hủy đơn hàng</button>
+
                     <button type="button" class="btn btn-secondary saveEdit" onclick="saveUpdate()" data-dismiss="modal">Lưu</button>
                     <button type="button" class="btn btn-secondary exitModal" data-dismiss="modal">Thoát</button>
                 </div>
@@ -275,60 +260,7 @@
         </div>
     </div>
 </main>
-<%--  <div class="modal fade" id="ModalUP" tabindex="-1" role="dialog" aria-hidden="true"--%>
-<%--  >--%>
-<%--    <div class="modal-dialog modal-dialog-centered" role="document">--%>
-<%--      <div class="modal-content">--%>
 
-<%--        <div class="modal-body">--%>
-<%--          <div class="row">--%>
-<%--            <div class="form-group  col-md-12">--%>
-<%--          <span class="thong-tin-thanh-toan">--%>
-<%--            <h5>Chỉnh sửa thông tin đơn hàng</h5>--%>
-<%--          </span>--%>
-<%--            </div>--%>
-<%--          </div>--%>
-<%--          <div class="row">--%>
-<%--            <div class="form-group col-md-6">--%>
-<%--              <label class="control-label" name="idpost"  >Mã đơn hàng </label>--%>
-<%--              <input class="form-control" disabled type="number">--%>
-<%--            </div>--%>
-<%--            <div class="form-group col-md-6">--%>
-<%--              <label class="control-label">Tên khách hàng</label>--%>
-<%--              <input class="form-control"   name="fullname" type="text" />--%>
-<%--            </div>--%>
-<%--            <div class="form-group col-md-6">--%>
-<%--              <label class="control-label">Tên sản phẩm</label>--%>
-<%--              <input class="form-control" disabled  name="title" type="text" />--%>
-<%--            </div>--%>
-<%--            <div class="form-group  col-md-6">--%>
-<%--              <label class="control-label">Số lượng</label>--%>
-<%--              <input class="form-control" name="quantity" type="number" required >--%>
-<%--            </div>--%>
-
-<%--            <div class="form-group col-md-6">--%>
-<%--              <label class="control-label">Địa chỉ</label>--%>
-<%--              <input class="form-control" name="address" type="text" >--%>
-<%--            </div>--%>
-<%--            <div class="form-group col-md-6">--%>
-<%--              <label class="control-label">Phone</label>--%>
-<%--              <input class="form-control" name="phone" type="text" >--%>
-<%--            </div>--%>
-
-
-<%--          </div>--%>
-<%--          <BR>--%>
-<%--          <BR>--%>
-<%--          <button class="btn btn-save" type="button" onclick="updateBasic()">Lưu lại</button>--%>
-<%--          <a class="btn btn-cancel" data-dismiss="modal" href="#">Hủy bỏ</a>--%>
-<%--          <BR>--%>
-<%--        </div>--%>
-<%--        <div class="modal-footer">--%>
-<%--        </div>--%>
-<%--      </div>--%>
-<%--    </div>--%>
-<%--  </div>--%>
-<!-- Essential javascripts for application to work-->
 <script src="jsadmin/popper.min.js"></script>
 <script src="jsadmin/bootstrap.min.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
@@ -343,7 +275,11 @@
 <script type="text/javascript" src="jsadmin/plugins/dataTables.bootstrap.min.js"></script>
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css" />
 <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
+
 <script type="text/javascript">$('#sampleTable').DataTable();</script>
+<script type="text/javascript" src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.min.js"></script>
+
 <script>
     const exportExel = (name) => {
         console.log(name)
@@ -364,11 +300,20 @@
             buttons: ["Hủy bỏ", "Đồng ý"],
         }).then((willDelete) => {
             if (willDelete) {
-                $.ajax({
+                $.ajax(
+
+                    {
+                        statusCode: {
+                            401: function() {
+                                swal("Bạn không có quyền thực hiện chức năng này.!", {});
+
+                            }
+                        },
                     url: "/api/order?action=delete&id=" + id,
                     type: "POST",
                     contentType: 'application/x-www-form-urlencoded',
                     success: function (data) {
+                        console.log(data)
                         console.log(data)
                         if (JSON.parse(data) === 1)
                             r.parentNode.parentNode.parentNode.remove()
@@ -466,6 +411,38 @@
     //   }
     // });
 
+    function htmlTableToExcel(name){
+        var data = document.getElementById('myTable');
+        var excelFile = XLSX.utils.table_to_book(data, {sheet: "sheet1"});
+        XLSX.write(excelFile, { type: 'xlsx', bookSST: true, type: 'base64' });
+        XLSX.writeFile(excelFile, name + '.xlsx' );
+    }
+    function exportTableToPDF(name) {
+            var pdf = new jsPDF('p', 'pt', 'letter');
+
+            source = $('#myTable');
+
+            margins = {
+                top: 80,
+                bottom: 60,
+                left: 40,
+                width: 522
+            };
+
+            pdf.fromHTML(
+                source,
+                margins.left,
+                margins.top, {
+                    'width': margins.width,
+                    'elementHandlers': source
+                },
+                function(dispose) {
+
+                    pdf.save('Test.pdf');
+                }
+                , margins);
+
+    }
 
     //Modal
     $("#show-emp").on("click", function () {

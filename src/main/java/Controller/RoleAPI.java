@@ -1,14 +1,13 @@
 package Controller;
 
-import Beans.HashSHA216;
 import DAO.OderDAO;
 import DAO.ProductDAO;
-import DAO.UserDAO;
+import DAO.RoleDAO;
 import DTO.Orders;
+import DTO.RoleDTO;
 import Model.Oder;
 import Model.OrderDetail;
-import Model.RespJsonServlet;
-import Model.User;
+import Model.Role;
 import Security.Authorizeds;
 import com.google.gson.Gson;
 
@@ -17,22 +16,19 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-@WebServlet("/api/order")
-public class OrderAPI extends HttpServlet {
+@WebServlet("/api/role")
+public class RoleAPI extends HttpServlet {
     @Override
     protected  void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-
         res.setContentType("text/html;charset=UTF-8");
         req.setCharacterEncoding("utf-8");
         try {
-            ArrayList<Orders> orders = OderDAO.getOrderDTO();
-            res.getWriter().println(new Gson().toJson(orders));
+            ArrayList<RoleDTO> roles = (ArrayList<RoleDTO>) RoleDAO.getAllRole();
+            res.getWriter().println(new Gson().toJson(roles));
             return;
         } catch (SQLException e) {
             throw new RuntimeException(e);

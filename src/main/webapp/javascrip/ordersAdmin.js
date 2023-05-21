@@ -127,34 +127,44 @@ const init = ()=>{
         contentType: 'application/x-www-form-urlencoded',
         success: function (data) {
             console.log(JSON.parse(data))
+            // fake data chuyen thanh JSON.parse(data)
             dataOrder = JSON.parse(data)
+
             $('#myTable').DataTable({
-                data: JSON.parse(data),
+                data: dataOrder,
                 columns: [
                     { data: "id" },
                     { data: "user.fullName" },
                     { data: "total_price", "render": function (data, type, row, meta) {
                             return toUSD(data);
                         }},
-                    { data: "address" },
+                    { data: "address"},
+
                     { data:"leadTime",
                         "render": function (data, type, row, meta) {
+
                             const dateTransport = new Date(data);
                             const dateNow = new Date();
                             let status;
                             let badge;
-                            if (dateTransport < dateNow) {
-                                status = "Đã giao";
-                                badge = "badge bg-success";
-                            } else{
-                                status = "Đang xử lý";
-                                badge = "badge bg-info";
+                            if(row.status == 0){
+                                status = "Đã hủy";
+                                badge = "badge badge-danger";
+                            }else{
+                                if (dateTransport < dateNow) {
+                                    status = "Đã giao";
+                                    badge = "badge bg-success";
+                                } else{
+                                    status = "Đang xử lý";
+                                    badge = "badge bg-info";
+                                }
                             }
+
                             return `<td><span class="${badge}">${status}</span></td>`;
                         }},
                     {data:"","render": function (data, type, row, meta) {
-
-                            return `
+                            if(row.status == 1){
+                                return `
                             <div    style="
     display: flex;
     justify-content: center;
@@ -166,7 +176,8 @@ const init = ()=>{
                                     data-toggle="modal" data-target="#orderDetailsModal" title="Xem chi tiết"><i class="fa-solid fa-circle-info"></i>
                             </a>
                             <input hidden="" class="oder${row.id}"/>
-                            <a className="action_order " onclick="viewUpdateOrder(${row.id})" style="color:#28a745;" type="button" data-toggle="modal"
+                            
+                            <a className="action_order " onclick='viewUpdateOrder(${row.id})' style="color:#28a745;" type="button" data-toggle="modal"
                                     data-target="#" title="Sửa"><i class="fa-solid fa-pen-to-square"></i>
                             </a>
                             <a className="action_order" style="color:red;" type="button"
@@ -175,7 +186,31 @@ const init = ()=>{
 </div>
                              
                            `;
+                            }else{
+                                return `
+                            <div    style="
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+">
+                            <a className="action_order"
+                                    style="color:blue;" type="button"
+                                    onclick="viewDetail(${row.id})"
+                                    data-toggle="modal" data-target="#orderDetailsModal" title="Xem chi tiết"><i class="fa-solid fa-circle-info"></i>
+                            </a>
+                            <input hidden="" class="oder${row.id}"/>
+                            <a className="action_order" style="color:red;" type="button"
+                                    onClick="deleteRow(this, ${row.id})" title="Xóa"><i class="fa-solid fa-trash">
+                                    <input hidden value="${row.id}"/> </i></a>                      
+</div>
+                             
+                           `;
+                            }
+
                         }}
+                ],
+                buttons: [
+                     'excel', 'pdf'
                 ]
             });
         }
@@ -186,7 +221,6 @@ const initListProduct = ()=>{
     $.ajax({
         url: "/product?action=getlistproduct",
         method: "GET",
-
         success: res =>{
             listProduct = JSON.parse(res)
         },
@@ -212,15 +246,20 @@ const viewDetail= (id)=>{
     const dateNow = new Date();
     let status;
     let badge;
-    if (dateTransport < dateNow) {
-        status = "Đã giao";
-        badge = "badge bg-success";
-    } else{
-        status = "Đang xử lý";
-        badge = "badge bg-info";
+    if(order.status == 0){
+        status = "Đã hủy";
+        badge = "badge badge-danger";
+    }else{
+        if (dateTransport < dateNow) {
+            status = "Đã giao";
+            badge = "badge bg-success";
+        } else{
+            status = "Đang xử lý";
+            badge = "badge bg-info";
+        }
     }
 
-    document.querySelector("#orderDetailsModal span.show_detail_orders_status").innerHTML = `<span className="${badge}">${status}</span>`
+    document.querySelector("#orderDetailsModal span.show_detail_orders_status").innerHTML = `<span class="${badge}">${status}</span>`
     let table_detail = document.querySelector("#table_orders_detail")
     let tr = ``
     order.orderDetails.map(tmp=>{
@@ -465,6 +504,12 @@ const saveUpdate = ()=>{
     console.log(data, address )
     if(address !== ""|| data !== '' ){
         $.ajax({
+            statusCode: {
+                401: function() {
+                    swal("Bạn không có quyền thực hiện chức năng này.!", {});
+
+                }
+            },
             url: "/api/order?action=update",
             method: "POST",
             data:{
@@ -495,3 +540,86 @@ const saveUpdate = ()=>{
         })
     }
 }
+document.querySelector(".cancelOrder").addEventListener('click',(e)=>{
+    let idOrder = $('#id_order_update').val()
+    swal({
+        title: "Cảnh báo",
+        text: "Bạn có chắc chắn là muốn hủy đơn hàng này?",
+        buttons: ["Hủy bỏ", "Đồng ý"],
+    }).then((willDelete) => {
+        if (willDelete) {
+            $.ajax({
+                statusCode: {
+                    401: function() {
+                        swal("Bạn không có quyền thực hiện chức năng này.!", {});
+
+                    }
+                },
+                url: "/api/order?action=update",
+                method: "POST",
+                data:{
+                    idOrder,
+                    status: 0
+                },
+                success: res =>{
+                    let order = JSON.parse(res)
+                    let index = -1;
+                    for (let i = 0; i < dataOrder.length; i++) {
+                        if (dataOrder[i].id === order.id) {
+                            dataOrder[i] = order;
+                            document.querySelector(`.oder${idOrder}`).parentNode.parentNode.parentNode.querySelectorAll("td")[2].textContent = toUSD(order.total_price)
+                            document.querySelector(`.oder${idOrder}`).parentNode.parentNode.parentNode.querySelectorAll("td")[3].textContent = toUSD(order.address)
+                            const dateTransport = new Date(order.leadTime);
+                            const dateNow = new Date();
+                            let status;
+                            let badge;
+                            if(order.status == 0){
+                                status = "Đã hủy";
+                                badge = "badge badge-danger";
+                            }else{
+                                if (dateTransport < dateNow) {
+                                    status = "Đã giao";
+                                    badge = "badge bg-success";
+                                } else{
+                                    status = "Đang xử lý";
+                                    badge = "badge bg-info";
+                                }
+                            }
+                            document.querySelector(`.oder${idOrder}`).parentNode.parentNode.parentNode.querySelectorAll("td")[5].innerHTML = `  <div    style="
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+">
+                            <a className="action_order"
+                                    style="color:blue;" type="button"
+                                    onclick="viewDetail(${order.id})"
+                                    data-toggle="modal" data-target="#orderDetailsModal" title="Xem chi tiết"><i class="fa-solid fa-circle-info"></i>
+                            </a>
+                            <input hidden="" class="oder${order.id}"/>
+                            <a className="action_order" style="color:red;" type="button"
+                                    onClick="deleteRow(this, ${order.id})" title="Xóa"><i class="fa-solid fa-trash">
+                                    <input hidden value="${order.id}"/> </i></a>                      
+</div>
+                             
+                           `
+
+                            document.querySelector(`.oder${idOrder}`).parentNode.parentNode.parentNode.querySelectorAll("td")[4].innerHTML = `<span class="${badge}">${status}</span>`
+                            document.querySelector("#editOrderDetailsModal").style.display = "none";
+                            document.querySelector("#editOrderDetailsModal").classList.add("fade")
+
+                            break;
+                        }
+                    }
+
+
+                },
+                error: err=>{
+
+                }
+            })
+
+
+        }
+    });
+
+})

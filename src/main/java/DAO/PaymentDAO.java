@@ -2,7 +2,9 @@ package DAO;
 
         import Connect.ConnectDB;
         import Model.Comment;
+        import Model.Oder;
         import Model.Payment;
+        import Model.User;
 
         import java.io.UnsupportedEncodingException;
         import java.sql.*;
@@ -27,6 +29,19 @@ public class PaymentDAO {
         stmt.setLong(1,id);
         int rs= stmt.executeUpdate();
         return rs;
+    }
+    public static Payment getPaymentByIdOrder(long id) throws SQLException {
+        ArrayList<Oder> oders = new ArrayList<>();
+        Connection c= ConnectDB.getConnect();
+        PreparedStatement stmt = c.prepareStatement("select * from `payment` where id_order =? ");
+        stmt.setLong(1,id);
+        ResultSet rs= stmt.executeQuery();
+
+        while (rs.next()){
+            return new Payment(rs.getInt(1), rs.getLong(2),rs.getInt(3), rs.getFloat(4), rs.getDate(5), rs.getInt(6));
+        }
+
+        return null;
     }
 
 }

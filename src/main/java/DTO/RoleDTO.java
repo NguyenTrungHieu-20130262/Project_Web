@@ -1,48 +1,42 @@
-package Model;
-
-import Security.Authorizeds;
+package DTO;
 
 import java.util.ArrayList;
 
-public class Role {
+public class RoleDTO {
     private int id;
     private String name;
-    private ArrayList<Integer> arrPermission ;
+    private ArrayList<Permission> arrPermission ;
     private int status;
 
-    public Role(String name, int status) {
+    public RoleDTO(String name, int status) {
         this.name = name;
         this.status = status;
         arrPermission = new ArrayList<>();
     }
-    public Role(int id, String name, int status) {
+    public RoleDTO(int id, String name, int status) {
         this.id = id;
         this.name = name;
         this.status = status;
         arrPermission = new ArrayList<>();
     }
-    public Role(int id, String name, int status, ArrayList<Integer> arrPermission) {
+
+    public RoleDTO(int id, String name, ArrayList<Permission> arrPermission) {
         this.id = id;
         this.name = name;
         this.status = status;
         this.arrPermission = arrPermission;
     }
-    public Role(int id, String name, ArrayList<Integer> arrPermission) {
-        this.id = id;
-        this.name = name;
-        this.status = status;
-        this.arrPermission = arrPermission;
-    }
-    public Role() {
+    public RoleDTO() {
         arrPermission = new ArrayList<>();
 
     }
 
-    public Role(int i) {
+    public RoleDTO(int i) {
         this.id = i;
-    }
+        arrPermission = new ArrayList<>();
 
-    public void addPermission(int i){
+    }
+    public void addPermission(Permission i){
         this.arrPermission.add(i);
     }
     public int getId() {
@@ -65,11 +59,11 @@ public class Role {
         return status;
     }
 
-    public ArrayList<Integer> getArrPermission() {
+    public ArrayList<Permission> getArrPermission() {
         return arrPermission;
     }
 
-    public void setArrPermission(ArrayList<Integer> arrPermission) {
+    public void setArrPermission(ArrayList<Permission> arrPermission) {
         this.arrPermission = arrPermission;
     }
 
@@ -84,7 +78,7 @@ public class Role {
                 ", name='" + name + '\'' +
                 ", status=" + status +
                 ", arrPermission="  ;
-        for (int tmp: arrPermission) {
+        for (Permission tmp: arrPermission) {
             rs+= tmp + ",";
         }
         return rs;
