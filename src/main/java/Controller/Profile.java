@@ -1,7 +1,9 @@
 package Controller;
 
 import Beans.HashSHA216;
+import Connect.ConnectDB;
 import DAO.UserDAO;
+import Model.Log;
 import Model.User;
 import com.google.gson.Gson;
 import org.apache.commons.fileupload.FileItem;
@@ -49,6 +51,8 @@ public class Profile extends HttpServlet {
         } else {
             if (UserDAO.updateUser(userName, HashSHA216.hash(params.get("passnew")[0]), URLDecoder.decode(params.get("fullName")[0], "UTF-8"), params.get("email")[0], params.get("phone")[0], URLDecoder.decode(params.get("address")[0], "UTF-8")) == 1) {
                 User userMain = UserDAO.getUserByName(user);
+                Log log = new Log(Log.ALERT, userMain.getId(), this.getClass().getName(), "Chỉnh sửa hồ sơ user(Profile)", 1);
+                log.insert(ConnectDB.getConnect());
                 saveSession(userMain, req);
                 res.getWriter().write(new Gson().toJson(1));
                 return;
@@ -56,7 +60,8 @@ public class Profile extends HttpServlet {
             res.getWriter().write(new Gson().toJson("Error"));
         }
     }
-    protected void changeAvatar(HttpServletRequest req, HttpServletResponse res, String user) throws ServletException, IOException, SQLException {
+
+    protected void changeAvatar(HttpServletRequest req, HttpServletResponse res, String user,User userU) throws ServletException, IOException, SQLException {
         DiskFileItemFactory fileItemFactory = new DiskFileItemFactory();
         ServletFileUpload upload = new ServletFileUpload(fileItemFactory);
         try {
@@ -75,7 +80,11 @@ public class Profile extends HttpServlet {
                         File file = new File(fileImg);
                         try {
                             fileItem.write(file);
-                            UserDAO.uploadAvatar(user, "Img/User/" + user + ".jpg");
+                            int rs = UserDAO.uploadAvatar(user, "Img/User/" + user + ".jpg");
+                            if (rs > 0) {
+                                Log log = new Log(Log.ALERT, userU.getId(), this.getClass().getName(), "Chỉnh sửa avatar user(Profile)", 1);
+                                log.insert(ConnectDB.getConnect());
+                            }
                             saveSession(UserDAO.getUserByName(user), req);
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -96,10 +105,11 @@ public class Profile extends HttpServlet {
         String action = req.getParameter("action");
         User user = (User) req.getSession().getAttribute("user");
 
-        if(action != null && action.equals("info")){
-            System.out.println(user);
+        if (action != null && action.equals("info")) {
             try {
                 User userReq = UserDAO.getInfoByUserName(user.getUserName());
+                Log log = new Log(Log.ALERT, userReq.getId(), this.getClass().getName(), "Truy cập vào trang profile", 1);
+                log.insert(ConnectDB.getConnect());
                 res.getWriter().println(new Gson().toJson(userReq));
             } catch (SQLException e) {
                 throw new RuntimeException(e);
@@ -132,28 +142,27 @@ public class Profile extends HttpServlet {
             return;
         }
         if (action != null && action.equals("changeAvatar")) {
-            System.out.println(user);
             try {
-                changeAvatar(req, res, user.getUserName());
+                changeAvatar(req, res, user.getUserName(),user);
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
         }
-        if(action != null && action.equals("updatePhone")){
+        if (action != null && action.equals("updatePhone")) {
             try {
                 updatePhone(req, res, user);
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
         }
-        if(action != null && action.equals("updateAddress")){
+        if (action != null && action.equals("updateAddress")) {
             try {
                 updateAddress(req, res, user);
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
         }
-        if(action != null && action.equals("updateName")){
+        if (action != null && action.equals("updateName")) {
             try {
                 updateName(req, res, user);
             } catch (SQLException e) {
@@ -162,8 +171,11 @@ public class Profile extends HttpServlet {
         }
 
     }
+
     private void updatePhone(HttpServletRequest req, HttpServletResponse res, User user) throws IOException, SQLException {
-        if(UserDAO.updateColUser( user.getUserName(),"phone", req.getParameter("phone"), "int") == 1){
+        if (UserDAO.updateColUser(user.getUserName(), "phone", req.getParameter("phone"), "int") == 1) {
+            Log log = new Log(Log.ALERT, user.getId(), this.getClass().getName(), "chỉnh sửa sô điện thoại( Profile)", 1);
+            log.insert(ConnectDB.getConnect());
             res.getWriter().println(new Gson().toJson(UserDAO.getInfoByUserName(user.getUserName())));
             return;
         }
@@ -172,20 +184,25 @@ public class Profile extends HttpServlet {
     }
 
     private void updateName(HttpServletRequest req, HttpServletResponse res, User user) throws IOException, SQLException {
-        if(UserDAO.updateColUser( user.getUserName(),"fullname", req.getParameter("name"), "string") == 1){
+        if (UserDAO.updateColUser(user.getUserName(), "fullname", req.getParameter("name"), "string") == 1) {
+            Log log = new Log(Log.ALERT, user.getId(), this.getClass().getName(), "chỉnh sửa tên user( Profile)", 1);
+            log.insert(ConnectDB.getConnect());
             res.getWriter().println(new Gson().toJson(UserDAO.getInfoByUserName(user.getUserName())));
             return;
         }
         res.getWriter().println("Error!!");
     }
+
     private void updateAddress(HttpServletRequest req, HttpServletResponse res, User user) throws IOException, SQLException {
-        System.out.println(req.getParameter("address"));
-        if(UserDAO.updateColUser( user.getUserName(),"address", req.getParameter("address"), "string") == 1){
+        if (UserDAO.updateColUser(user.getUserName(), "address", req.getParameter("address"), "string") == 1) {
+            Log log = new Log(Log.ALERT, user.getId(), this.getClass().getName(), "chỉnh sửa địa chỉ user( Profile)", 1);
+            log.insert(ConnectDB.getConnect());
             res.getWriter().println(new Gson().toJson(UserDAO.getInfoByUserName(user.getUserName())));
             return;
         }
         res.getWriter().println("Error!!");
     }
+
     public void saveSession(User user, HttpServletRequest req) {
         req.getSession().setAttribute("user", user);
     }

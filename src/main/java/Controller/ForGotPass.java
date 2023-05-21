@@ -3,7 +3,9 @@ package Controller;
 import Beans.HashSHA216;
 import Beans.JWT;
 import Beans.SendEmail;
+import Connect.ConnectDB;
 import DAO.UserDAO;
+import Model.Log;
 import Model.User;
 
 import javax.servlet.ServletException;
@@ -42,6 +44,8 @@ public class ForGotPass extends HttpServlet {
                 SendEmail.getInstance().sendTokenVerifyForgot(email, "http://" + req.getHeader("host") + "/verifyForgotAccount?token=" + token);
                 resp.sendRedirect("Page/Login.jsp");
             } else {
+                Log log = new Log(Log.WARNING, user.getId(), this.getClass().getName(),"Xác nhận tài khoản không thành công(Change_password)", 1);
+                log.insert(ConnectDB.getConnect());
                 resp.setStatus(401);
                 resp.getWriter().write("tài khoản không tồn tại");
             }
@@ -51,13 +55,15 @@ public class ForGotPass extends HttpServlet {
             throw new RuntimeException(e);
         }
     }
-
     public void ChangePass(HttpServletRequest req, HttpServletResponse resp) {
         int id = Integer.parseInt(req.getParameter("idUser"));
         String password = req.getParameter("password");
         if (!req.getParameter("idUser").equals("")) {
             try {
                 if (UserDAO.changePassword(HashSHA216.hash(password), id) > 0) {
+                    User user=(User)req.getSession().getAttribute("user");
+                    Log log = new Log(Log.ALERT, user.getId(), this.getClass().getName(),"Thay đổi password", 1);
+                    log.insert(ConnectDB.getConnect());
                     resp.setStatus(200);
                 }
             } catch (SQLException e) {

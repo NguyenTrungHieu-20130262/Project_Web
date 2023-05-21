@@ -1,8 +1,10 @@
 package Controller;
 
+import Connect.ConnectDB;
 import DAO.CartDAO;
 import DAO.TransportAPI;
 import Model.Cart;
+import Model.Log;
 import Model.User;
 import com.google.gson.Gson;
 
@@ -12,6 +14,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -56,7 +59,8 @@ public class AddressAPI extends HttpServlet {
             int l = 0;
             int w2 = 0;
             carts = cs.getAllCartByUser(user.getId());
-            System.out.println(carts.size());
+            Log log=new Log(Log.INFO, user.getId(),this.getClass().getName(),"Select all cart by user",1);
+            log.insert(ConnectDB.getConnect());
             for (int i = 0; i < carts.size(); i++) {
                 System.out.println(carts.get(i).toString());
                 h += (carts.get(i).getQuantity()*carts.get(i).getProduct().getHeight());
@@ -72,17 +76,14 @@ public class AddressAPI extends HttpServlet {
         }
     }
     private void getProvince(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-
         res.getWriter().println(new Gson().toJson(TransportAPI.getInstance().getProvince()));
     }
     private void getDistrict(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
         int idProvince = Integer.valueOf(req.getParameter("idProvince"));
-        System.out.println(idProvince);
         res.getWriter().println(new Gson().toJson(TransportAPI.getInstance().getDistrict(idProvince)));
     }
     private void getWard(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
         int idDistrict = Integer.valueOf(req.getParameter("idDistrict"));
-        System.out.println(idDistrict);
         res.getWriter().println(new Gson().toJson(TransportAPI.getInstance().getWard(idDistrict)));
     }
     protected void doPost (HttpServletRequest req, HttpServletResponse res){

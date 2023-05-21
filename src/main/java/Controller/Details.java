@@ -1,8 +1,10 @@
 package Controller;
 
+import Connect.ConnectDB;
 import DAO.CommentDAO;
 import DAO.ProductDAO;
 import Model.Comment;
+import Model.Log;
 import Model.Product;
 import Model.User;
 
@@ -28,7 +30,8 @@ public class Details extends HttpServlet {
         try {
             User user = (User) req.getSession().getAttribute("user");
             List<Comment> list = CommentDAO.getListComment(Integer.valueOf(id));
-            System.out.println(list.size());
+            Log log = new Log(Log.INFO, user.getId(), this.getClass().getName(),"Truy cập vào trang Detail_Product", 1);
+            log.insert(ConnectDB.getConnect());
             req.setAttribute("listComment", list);
             Product product = ProductDAO.getProductById(Integer.valueOf(id));
             req.setAttribute("product", product);

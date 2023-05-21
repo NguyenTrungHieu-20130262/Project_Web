@@ -1,7 +1,10 @@
 package Controller;
 
+import Connect.ConnectDB;
 import DAO.CompanyDAO;
 import DAO.ProductDAO;
+import Model.Log;
+import Model.User;
 import Upload.UploadImage;
 import com.google.gson.Gson;
 
@@ -51,10 +54,14 @@ public class Product extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
         String action = req.getParameter("action");
         String pathRoot=(this.getServletContext().getRealPath("/"));
-
+        User user=(User)req.getSession().getAttribute("user");
         if(action != null && action.equals("delete")){
             try {
                 int rs =  ProductDAO.deleteProduct(Integer.valueOf(req.getParameter("id")));
+                if(rs>0){
+                    Log log=new Log(Log.WARNING, user.getId(),this.getClass().getName(),"Xóa sản phẩm(Admin)",1);
+                    log.insert(ConnectDB.getConnect());
+                }
                 res.getWriter().write(new Gson().toJson(rs));
                 return;
             } catch (SQLException e) {
@@ -98,13 +105,15 @@ public class Product extends HttpServlet {
             int rs = 0;
             try {
                 rs = ProductDAO.updateProduct(id, title, content, body, made, gear, idCompany, year, status, fuel, price, quantity);
+                if(rs>0){
+                    Log log=new Log(Log.WARNING, user.getId(),this.getClass().getName(),"Chỉnh sửa Product(Admin)",1);
+                    log.insert(ConnectDB.getConnect());
+                }
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
             res.getWriter().write(new Gson().toJson(rs));
                 return;
-
-
         }
 
     }

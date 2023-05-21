@@ -1,6 +1,8 @@
 package Controller;
 
+import Connect.ConnectDB;
 import DAO.UserDAO;
+import Model.Log;
 import Model.User;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -17,8 +19,9 @@ import java.sql.SQLException;
 public class UserControl extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        User user = (User) req.getSession().getAttribute("user");
         if (req.getParameter("choose").equals("delUser")) {
-            delUser(req, resp);
+            delUser(req, resp, user);
         } else {
             if (req.getParameter("choose").equals("getInfoUser")) {
                 try {
@@ -35,7 +38,8 @@ public class UserControl extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        updateUser(req, resp);
+        User user = (User) req.getSession().getAttribute("user");
+        updateUser(req, resp, user);
     }
 
     public void getInfoUser(HttpServletRequest req, HttpServletResponse resp) throws SQLException, JSONException, IOException {
@@ -56,6 +60,8 @@ public class UserControl extends HttpServlet {
         }
 
         if (user != null) {
+            Log log = new Log(Log.INFO, user.getId(), this.getClass().getName(), "Lấy thông tin user(Admin)", 1);
+            log.insert(ConnectDB.getConnect());
             resp.getWriter().write(data.toString());
             resp.setStatus(200);
         } else {
@@ -63,10 +69,12 @@ public class UserControl extends HttpServlet {
         }
     }
 
-    public void delUser(HttpServletRequest req, HttpServletResponse resp) {
+    public void delUser(HttpServletRequest req, HttpServletResponse resp, User user) {
         int id = Integer.parseInt(req.getParameter("id"));
         try {
             if (UserDAO.delUSer(id) > 0) {
+                Log log = new Log(Log.WARNING, user.getId(), this.getClass().getName(), "Chỉnh sửa user(Admin)", 1);
+                log.insert(ConnectDB.getConnect());
                 resp.setStatus(200);
             } else {
                 resp.setStatus(400);
@@ -76,7 +84,7 @@ public class UserControl extends HttpServlet {
         }
     }
 
-    public void updateUser(HttpServletRequest req, HttpServletResponse resp) {
+    public void updateUser(HttpServletRequest req, HttpServletResponse resp, User user) {
         resp.setContentType("application/json");
         int id = Integer.parseInt(req.getParameter("id"));
         String name = req.getParameter("name");
@@ -85,6 +93,8 @@ public class UserControl extends HttpServlet {
         try {
             JSONObject jsonObject = new JSONObject();
             if (UserDAO.updateUserAdmin(id, name, phone, role) > 0) {
+                Log log = new Log(Log.WARNING, user.getId(), this.getClass().getName(), "Chỉnh sửa user(Admin)", 1);
+                log.insert(ConnectDB.getConnect());
                 jsonObject.put("status", "ok");
                 resp.getWriter().println(jsonObject);
                 resp.setStatus(200);
