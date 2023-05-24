@@ -10,40 +10,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="bc76f0f4-b08a-497a-865d-c4883f45e10a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.settings/.jsdtscope" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.settings/org.eclipse.jdt.core.prefs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.settings/org.eclipse.jpt.core.prefs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.settings/org.eclipse.m2e.core.prefs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.settings/org.eclipse.wst.common.component" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.settings/org.eclipse.wst.common.project.facet.core.prefs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.settings/org.eclipse.wst.common.project.facet.core.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.settings/org.eclipse.wst.jsdt.ui.superType.container" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.settings/org.eclipse.wst.jsdt.ui.superType.name" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.settings/org.eclipse.wst.validation.prefs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Controller/RoleAPI.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/DTO/Orders.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/DTO/Permission.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/DTO/RoleDTO.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/META-INF/persistence.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/Page/Admin/doc/order_statistics.jsp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/Page/Admin/doc/role.jsp" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/javascrip/ordersStatis.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/webapp/javascrip/roleAdmin.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WEB_Advanced - Shortcut.lnk" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Controller/Admin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Controller/Admin.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Controller/FilterAdmin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Controller/FilterAdmin.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Controller/OrderAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Controller/OrderAPI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/DAO/OderDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DAO/OderDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/DAO/PaymentDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DAO/PaymentDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/DAO/RoleDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DAO/RoleDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Model/Role.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/Role.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Security/Authorizeds.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Security/Authorizeds.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/Page/Admin/doc/SideBar.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/Page/Admin/doc/SideBar.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/Page/Admin/doc/quan-ly-bao-cao.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/Page/Admin/doc/quan-ly-bao-cao.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/Page/Admin/doc/table-data-oder.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/Page/Admin/doc/table-data-oder.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/javascrip/ordersAdmin.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/javascrip/ordersAdmin.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Controller/UserControl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Controller/UserControl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/DAO/UserDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DAO/UserDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/Page/Admin/doc/table-data-table.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/Page/Admin/doc/table-data-table.jsp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -265,6 +236,8 @@
       <workItem from="1684202893689" duration="7000" />
       <workItem from="1684457146208" duration="7624000" />
       <workItem from="1684467112941" duration="6725000" />
+      <workItem from="1684857200760" duration="1924000" />
+      <workItem from="1684879983028" duration="9115000" />
     </task>
     <servers />
   </component>
@@ -276,7 +249,19 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="Nguyen_Ha_Phuoc_Hau" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
           </value>
         </entry>
       </map>

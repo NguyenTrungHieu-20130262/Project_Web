@@ -95,13 +95,33 @@
                                 <td><span class="roleUser isAction" id="userRole">${item.getNameRole()}</span>
 
                                 </td>
+
                                 <td>
-                                    <button id="${item.id}" class="btn btn-primary btn-sm trash" type="button"
+                                    <c:choose>
+                                    <c:when test="${item.status==1}">
+                                    <button id="trash-${item.id}" class="btn btn-primary btn-sm trash" type="button"
                                             title="Xóa"><i class="fas fa-trash-alt"></i>
                                     </button>
-                                    <button class="btn btn-primary btn-sm edit show-emp" type="submit" title="Sửa"
-                                            id="show-emp||${item.id}" data-toggle="modal" data-target="#ModalUP"><i
-                                            class="fas fa-edit"></i></button>
+                                    <button style="margin-right: 3px; display: none" id="unlock-${item.id}"
+                                            class="btn btn-primary btn-sm unlock" type="button"
+                                            title="Xóa"><i class="fas fa-lock-open"></i>
+                                        </c:when>
+                                        <c:otherwise>
+                                        <button style="display: none" id="trash-${item.id}"
+                                                class="btn btn-primary btn-sm trash" type="button"
+                                                title="Xóa"><i class="fas fa-trash-alt"></i>
+                                        </button>
+                                        <button style="margin-right: 3px" id="unlock-${item.id}"
+                                                class="btn btn-primary btn-sm unlock" type="button"
+                                                title="Xóa"><i class="fas fa-lock-open"></i>
+                                            </c:otherwise>
+                                            </c:choose>
+
+                                            <button class="btn btn-primary btn-sm edit show-emp" type="submit"
+                                                    title="Sửa"
+                                                    id="show-emp||${item.id}" data-toggle="modal"
+                                                    data-target="#ModalUP"><i
+                                                    class="fas fa-edit"></i></button>
                                 </td>
                             </tr>
                         </c:forEach>
@@ -161,12 +181,8 @@ MODAL
                         <input class="form-control" id="statusAccount" type="text" required disabled>
                     </div>
                     <div class="form-group  col-md-6">
-                        <label for="exampleSelect1" class="control-label">Chức vụ</label>
-                        <select id="allRole" class="form-control" id="exampleSelect1">
-                            <c:forEach items="${listRole}" var="item" varStatus="loop">
-                                <option id="role||${item.id}">${item.name}</option>
-                            </c:forEach>
-                        </select>
+                        <label for="author" class="control-label">Chức vụ</label>
+                        <input class="form-control" id="author" type="text" required disabled>
                     </div>
                 </div>
                 <BR>
@@ -272,9 +288,12 @@ MODAL
         })
             .then((willDelete) => {
                 if (willDelete) {
-                    let id = $(this).attr('id');
-                    fetch("/user?choose=delUser&id=" + id)
+                    let id = $(this).attr('id').split("-")[1];
+                    let status = 0;
+                    fetch("/user?choose=changeStatus&id=" + id + "&status=" + status)
                         .then((resp) => {
+                            $('.unlock#unlock-' + id).css("display", "inline");
+                            $('.trash#trash-' + id).css("display", "none");
                             $(this).closest('tr').find(".statusActivity").removeClass('isAction').addClass('isNotAction').text('Đã khóa');
                             swal("Đã xóa thành công.!", {});
                         })
@@ -284,6 +303,30 @@ MODAL
                 }
             })
     });
+    oTable.on('click', '.unlock', function () {
+        swal({
+            title: "Cảnh báo",
+            text: "Bạn muốn mở khóa lại tài khoản này",
+            buttons: ["hủy bỏ", "oke"],
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    let id = $(this).attr('id').split("-")[1];
+                    let status = 1;
+                    fetch("/user?choose=changeStatus&id=" + id + "&status=" + status)
+                        .then((resp) => {
+                            $('.unlock#unlock-' + id).css("display", "none");
+                            $('.trash#trash-' + id).css("display", "inline");
+                            $(this).closest('tr').find(".statusActivity").removeClass('isNotAction').addClass('isAction').text('Hoạt động');
+                            swal("Đã mở khóa thành công tài khoản.!", {});
+                        })
+                        .catch(() => {
+                            swal("Mở khóa không thành công!", {});
+                        })
+                }
+            })
+    });
+
     oTable.on('click', '.show-emp', function () {
         var element = $(this).attr("id");
         var id = (element.split("||")[1])
@@ -297,40 +340,39 @@ MODAL
                 $("#fullName").val(data.fullName);
                 $("#phoneNumber").val(data.phone);
                 $("#emailUser").val(data.email);
-                $("#allRole").val(data.role);
+                $("#author").val(data.role);
                 $("#statusAccount").val(data.status);
             }
         })
         $("#ModalUP").modal({backdrop: false, keyboard: false})
     })
     $('.btn-save').on('click', function () {
+        console.log(1238)
         const id = $(this).attr("id").split("||")[1]
-        const button = $(this)
-        $(this).closest().find()
-        var name = $("#fullName").val()
-        var phone = $("#phoneNumber").val()
-        var role = $("#allRole option:selected").attr("id").split("||")[1]
+        var name = $("#fullName").val() ? $("#fullName").val() : ""
+        var phone = $("#fullName").val() ? $("#phoneNumber").val() : ""
         var data = {
             name,
             phone,
-            role,
             id
         };
         $.ajax({
             url: "/user",
             type: "Post",
             data: data,
-            contentType: 'application/x-www-form-urlencoded',
+            contentType: 'application/x-www-form-urlencoded;charset=UTF-8',
             success: function (data) {
                 if (data.status == "ok") {
                     document.querySelector("tr[data-id=" + "'" + id + "'" + "] #userName").textContent = name
                     document.querySelector("tr[data-id=" + "'" + id + "'" + "] #userPhone").textContent = phone
-                    document.querySelector("tr[data-id=" + "'" + id + "'" + "] #userRole").textContent = $("#allRole option:selected").text()
                     swal("Sửa thành công.!", {});
                 } else {
                     swal("Sửa không thành công.!", {});
                 }
 
+            },
+            error: function (xhr, status, error) {
+                swal("Số điện thoại khong hợp lệ!", {});
             }
         })
     });

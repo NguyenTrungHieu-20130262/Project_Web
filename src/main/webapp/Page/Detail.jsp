@@ -227,7 +227,7 @@
                                         <img src="${item.avatar}" alt="src">
                                     </c:when>
                                     <c:otherwise>
-                                        <img src="https://scontent.fsgn2-6.fna.fbcdn.net/v/t1.30497-1/143086968_2856368904622192_1959732218791162458_n.png?stp=cp0_dst-png_p40x40&_nc_cat=1&ccb=1-7&_nc_sid=dbb9e7&_nc_ohc=4WG6vRsKhfwAX8Bce7J&_nc_ht=scontent.fsgn2-6.fna&oh=00_AfBRz5wLhcd8XP66sUoUweAK2PaU0ABxXKHrhZHXEuUqAg&oe=646409F8"
+                                        <img src="/Img/User/hideImage.png"
                                              alt="src">
                                     </c:otherwise>
                                 </c:choose>
