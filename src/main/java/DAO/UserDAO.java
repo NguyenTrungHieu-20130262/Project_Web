@@ -72,6 +72,40 @@ public class UserDAO {
         return null;
 
     }
+    public static ArrayList<User> getUserByRole(int id) throws SQLException {
+        ArrayList<User> users = new ArrayList<>();
+        Connection c = ConnectDB.getConnect();
+        PreparedStatement stmt = c.prepareStatement("select username from user where role=?");
+        stmt.setInt(1, id);
+        ResultSet rs = stmt.executeQuery();
+        if (rs.next()) {
+            User user = new User();
+            user.setUserName(rs.getString("username"));
+            users.add(user) ;
+        }
+        return users;
+
+    }
+    public static int changleRoleAllUser(int idRole, int idRoleNew) throws SQLException {
+        Connection c = ConnectDB.getConnect();
+        PreparedStatement stmt = c.prepareStatement("update user set role = ? where role = ?;");
+        stmt.setInt(1, idRoleNew);
+        stmt.setInt(2, idRole);
+
+        return  stmt.executeUpdate();
+
+
+    }
+    public static int changleRoleByUser(int idUser, int idRole) throws SQLException {
+        Connection c = ConnectDB.getConnect();
+        PreparedStatement stmt = c.prepareStatement("update user set role = ? where id = ?;");
+        stmt.setInt(1, idRole);
+        stmt.setInt(2, idUser);
+
+        return  stmt.executeUpdate();
+
+
+    }
     public static User getInfoByUserName(String username) throws SQLException {
         Connection c = ConnectDB.getConnect();
         PreparedStatement stmt = c.prepareStatement("select userName,fullname,email,phone,address  from user where userName=?");
@@ -225,11 +259,21 @@ public class UserDAO {
     public static List<User> getAllUser() throws SQLException {
         List<User> list = new ArrayList<>();
         Connection c = ConnectDB.getConnect();
-        PreparedStatement stmt = c.prepareStatement("select * from user where role>=3");
+        PreparedStatement stmt = c.prepareStatement("select * from user where role!=3");
         ResultSet rs = stmt.executeQuery();
         while (rs.next()) {
 
             list.add(new User(rs.getInt("id"),rs.getString("username"), rs.getString("fullname"), rs.getString("email"), rs.getString("phone"), rs.getString("avatar"), rs.getString("address"), RoleDAO.getRole(rs.getInt("role")), rs.getInt("status"), rs.getInt("statusLogin")));
+        }
+        return list;
+    }
+    public static List<User> getAllAccount() throws SQLException {
+        List<User> list = new ArrayList<>();
+        Connection c = ConnectDB.getConnect();
+        PreparedStatement stmt = c.prepareStatement("select * from user  ");
+        ResultSet rs = stmt.executeQuery();
+        while (rs.next()) {
+            list.add(new User(rs.getInt("id"),rs.getString("username"), rs.getString("fullname"), rs.getString("email"), rs.getString("phone"), rs.getString("avatar"), rs.getString("address"), RoleDAO.getRoleInfo(rs.getInt("role")), rs.getInt("status"), rs.getInt("statusLogin")));
         }
         return list;
     }
@@ -268,28 +312,7 @@ public class UserDAO {
         int rs = stmt.executeUpdate();
         return rs;
     }
-    public static int updateName(String name, String username) throws SQLException {
-        Connection c = ConnectDB.getConnect();
-        PreparedStatement stmt = c.prepareStatement("UPDATE user\n" +
-                "SET  fullname = ? " +
-                "WHERE username = ?");
-        stmt.setString(1, name);
-        stmt.setString(2, username);
 
-        int rs = stmt.executeUpdate();
-        return rs;
-    }
-    public static int updateAddress(String address, String username) throws SQLException {
-        Connection c = ConnectDB.getConnect();
-        PreparedStatement stmt = c.prepareStatement("UPDATE user\n" +
-                "SET  address = ? " +
-                "WHERE username = ?");
-        stmt.setString(1, address);
-        stmt.setString(2, username);
-
-        int rs = stmt.executeUpdate();
-        return rs;
-    }
     public static int changePassword(String pass,int id) throws SQLException {
         Connection c = ConnectDB.getConnect();
         PreparedStatement stmt = c.prepareStatement("UPDATE user\n" +

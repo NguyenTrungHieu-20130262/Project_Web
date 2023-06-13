@@ -8,6 +8,7 @@ import Model.Company;
 import Model.Log;
 import Model.Product;
 import Model.User;
+import Security.Authorizeds;
 import Upload.UploadImage;
 
 import javax.servlet.ServletException;
@@ -24,6 +25,9 @@ import java.util.ArrayList;
 public class PostProduct extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        if(Authorizeds.authorizeds(req,Authorizeds.PRODUCT_INSERT)){
+
+
         String pathRoot = (this.getServletContext().getRealPath("/"));
         resp.setContentType("application/json");
         try {
@@ -50,6 +54,9 @@ public class PostProduct extends HttpServlet {
             resp.sendError(200);
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        }
+        }else{
+            resp.setStatus(401);
         }
     }
 }

@@ -181,7 +181,7 @@ a {
 
 /*UPDATE khi sữa path*/
 .header .navi .logo {
-    background: url("/Img/logo.jpg") center top no-repeat;
+    background: url("/Img/logo.png") center top no-repeat;
     background-size: contain;
     margin: 0 !important;
     margin-left: -10px !important;

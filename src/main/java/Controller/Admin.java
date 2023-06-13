@@ -82,6 +82,8 @@ public class Admin extends HttpServlet {
         req.getRequestDispatcher("/Page/Admin/doc/table-data-product.jsp").forward(req, res);
     }
 
+    protected void productStatics(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+        req.getRequestDispatcher("/Page/Admin/doc/product_statistics.jsp").forward(req, res);}
     protected void logPage(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, SQLException {
         List<Log> list = LogDAO.getAllLog();
         Map<String, List<Log>> map = new HashMap<>();
@@ -253,6 +255,9 @@ public class Admin extends HttpServlet {
                         res.setStatus(401);
                     }
                     break;
+                case "productstaticstics":
+                    productStatics(req, res);
+                    break;
                 case "odermanagement":
                     if (Authorizeds.authorizeds(req, Authorizeds.ORDER_VIEW)) {
                         oderPage(req, res);
@@ -269,10 +274,16 @@ public class Admin extends HttpServlet {
                     }
                     else res.setStatus(401);
                     break;
+
                 case "logstatistic":
                     logPage(req, res);
                     log.setContent("Truy cập vào trang Statistic_Log(Admin)");
                     log.insert(ConnectDB.getConnect());
+                case "logmanagement":
+                    if(Authorizeds.authorizeds(req, Authorizeds.LOG_VIEW))
+                        logPage(req, res);
+
+                    else res.setStatus(401);
                     break;
 
                 default:

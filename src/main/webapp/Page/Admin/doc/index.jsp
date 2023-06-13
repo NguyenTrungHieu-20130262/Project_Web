@@ -117,14 +117,7 @@
                     </div>
                 </div>
 
-                <%--                <div class="control"><label class="lbl-form" for="inputVideo">Video</label><input id="inputVideo"--%>
-                <%--                                                                                                  class="inp ng-untouched ng-pristine ng-valid"--%>
-                <%--                                                                                                  formcontrolname="VideoEmbed"--%>
-                <%--                                                                                                  name="VideoEmbed"--%>
-                <%--                                                                                                  placeholder="Bạn hãy nhập link video Youtube hoặc link video Facebook vào đây"--%>
-                <%--                                                                                                  type="text"><!---->--%>
-                <%--                    <div class="txt-right"><!----></div>--%>
-                <%--                </div>--%>
+
             </div>
         </form>
 
@@ -230,7 +223,7 @@
     document.querySelector(".upload-item").addEventListener("click", (e) => {
         document.querySelector(".fileupload").click()
     })
-</script
+</script>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
