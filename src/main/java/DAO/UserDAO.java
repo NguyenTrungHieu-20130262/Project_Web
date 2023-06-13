@@ -204,13 +204,13 @@ public class UserDAO {
         int rs = stmt.executeUpdate();
         return rs;
     }
-    public static int updateUserAdmin(int id,String userName,int phoneNumber, int role ) throws SQLException {
+    public static int updateUserAdmin(int id,String userName,int phoneNumber ) throws SQLException {
+        System.out.println(userName);
         Connection c = ConnectDB.getConnect();
-        PreparedStatement stmt = c.prepareStatement("UPDATE user SET  fullname = ?, role = ?, phone = ? WHERE id = ?");
+        PreparedStatement stmt = c.prepareStatement("UPDATE user SET  fullname = ?, phone = ? WHERE id = ?");
         stmt.setString(1, userName);
-        stmt.setInt(2, role);
-        stmt.setInt(3, phoneNumber);
-        stmt.setInt(4, id);
+        stmt.setInt(2, phoneNumber);
+        stmt.setInt(3, id);
         int rs = stmt.executeUpdate();
         return rs;
     }
@@ -287,12 +287,12 @@ public class UserDAO {
         }
         return null;
     }
-    public static int delUSer(int id) throws SQLException {
+    public static int changeStatus(int id, int status) throws SQLException {
         Connection c = ConnectDB.getConnect();
-        PreparedStatement stmt = c.prepareStatement("UPDATE user SET status = 0 WHERE id = ?");
-        stmt.setInt(1,id);
+        PreparedStatement stmt = c.prepareStatement("UPDATE user SET status =? WHERE id = ?");
+        stmt.setInt(1,status);
+        stmt.setInt(2,id);
         int rs = stmt.executeUpdate();
-        System.out.println(rs);
         return rs;
     }
     public static int updateColUser( String username, String col, String value, String type) throws SQLException {

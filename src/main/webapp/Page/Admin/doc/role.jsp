@@ -111,7 +111,7 @@
 </header>
 <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
 <jsp:include page="SideBar.jsp">
-    <jsp:param name="page" value="8"/>
+    <jsp:param name="page" value="9"/>
 </jsp:include>
 <main class="app-content">
     <div class="app-title">

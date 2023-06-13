@@ -1,5 +1,6 @@
 package Controller;
 
+import Connect.ConnectDB;
 import DAO.*;
 import DTO.RoleDTO;
 import Model.Product;
@@ -29,7 +30,6 @@ public class Admin extends HttpServlet {
         int countOrder = OderDAO.getCountOrder();
         int countOrderOut = OderDAO.getCountOrderOut();
         float getPriceRevenue = ProductDAO.getPriceRevenue();
-
         req.setAttribute("countUser", countUser);
         req.setAttribute("countProduct", countProduct);
         req.setAttribute("countPOut", countPOut);
@@ -156,12 +156,15 @@ public class Admin extends HttpServlet {
         }
 
     }
+
     protected void oderStatis(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-            req.getRequestDispatcher("/Page/Admin/doc/order_statistics.jsp").forward(req, res);
+        req.getRequestDispatcher("/Page/Admin/doc/order_statistics.jsp").forward(req, res);
     }
+
     protected void rolePage(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
         req.getRequestDispatcher("/Page/Admin/doc/role.jsp").forward(req, res);
     }
+
     protected void setShowProfile(HttpServletRequest req) {
         String username = "";
         String img = "";
@@ -213,8 +216,8 @@ public class Admin extends HttpServlet {
         String hostname = req.getServerName();
         int port = req.getServerPort();
         String url = "http://" + hostname + ":" + port;
-        System.out.println(url);
         req.setAttribute("url", url);
+        Log log = new Log(Log.INFO, user.getId(), this.getClass().getName(), 1);
         String page = req.getParameter("page");
         try {
             User u = UserDAO.getUserByName(user.getUserName());
@@ -222,55 +225,70 @@ public class Admin extends HttpServlet {
             switch (page.toLowerCase().trim()) {
                 case "post":
                     postPage(req, res);
+                    log.setContent("Truy cập vào trang Post_Product(Admin)");
+                    log.insert(ConnectDB.getConnect());
                     break;
                 case "usermanagement":
-                    if(Authorizeds.authorizeds(req, Authorizeds.USER_VIEW))
+                    if (Authorizeds.authorizeds(req, Authorizeds.USER_VIEW)) {
                         userPage(req, res);
-                    else res.setStatus(401);
-
+                        log.setContent("Truy cập vào trang Manager_User(Admin)");
+                        log.insert(ConnectDB.getConnect());
+                    } else res.setStatus(401);
                     break;
                 case "userstatistic":
-                    if(Authorizeds.authorizeds(req, Authorizeds.USER_VIEW))
-                        getAllUser(req, res);
-                    else res.setStatus(401);
-
+                    getAllUser(req, res);
+                    log.setContent("Truy cập vào trang Statistic_User(Admin)");
+                    log.insert(ConnectDB.getConnect());
                     break;
                 case "role":
-                    if(Authorizeds.authorizeds(req, Authorizeds.ROLE_VIEW))
+                    if (Authorizeds.authorizeds(req, Authorizeds.ROLE_VIEW))
                         rolePage(req, res);
                     else res.setStatus(401);
 
                     break;
                 case "productmanagement":
-                    if(Authorizeds.authorizeds(req, Authorizeds.PRODUCT_VIEW))
+                    if (Authorizeds.authorizeds(req, Authorizeds.PRODUCT_VIEW)) {
+                        log.setContent("Truy cập vào trang Manager_Product(Admin)");
+                        log.insert(ConnectDB.getConnect());
                         productPage(req, res);
-                    else res.setStatus(401);
+                    } else {
+                        res.setStatus(401);
+                    }
                     break;
                 case "productstaticstics":
                     productStatics(req, res);
                     break;
                 case "odermanagement":
-                    if(Authorizeds.authorizeds(req, Authorizeds.ORDER_VIEW))
-                    oderPage(req, res);
-                    else res.setStatus(401);
+                    if (Authorizeds.authorizeds(req, Authorizeds.ORDER_VIEW)) {
+                        oderPage(req, res);
+                        log.setContent("Truy cập vào trang Manager_Order(Admin)");
+                        log.insert(ConnectDB.getConnect());
+                    } else res.setStatus(401);
 
                     break;
                 case "orderstatistics":
-                    if(Authorizeds.authorizeds(req, Authorizeds.ORDER_VIEW))
+                    if (Authorizeds.authorizeds(req, Authorizeds.ORDER_VIEW)){
+                        log.setContent("Truy cập vào trang Statistic_Order(Admin)");
+                        log.insert(ConnectDB.getConnect());
                         oderStatis(req, res);
+                    }
                     else res.setStatus(401);
-
                     break;
+
+                case "logstatistic":
+                    logPage(req, res);
+                    log.setContent("Truy cập vào trang Statistic_Log(Admin)");
+                    log.insert(ConnectDB.getConnect());
                 case "logmanagement":
                     if(Authorizeds.authorizeds(req, Authorizeds.LOG_VIEW))
                         logPage(req, res);
 
                     else res.setStatus(401);
-
                     break;
 
-
                 default:
+                    log.setContent("Truy cập vào trang Index(Admin)");
+                    log.insert(ConnectDB.getConnect());
                     indexPage(req, res);
             }
 

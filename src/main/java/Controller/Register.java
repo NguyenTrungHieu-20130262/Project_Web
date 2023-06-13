@@ -3,7 +3,9 @@ package Controller;
 import Beans.HashSHA216;
 import Beans.JWT;
 import Beans.SendEmail;
+import Connect.ConnectDB;
 import DAO.UserDAO;
+import Model.Log;
 import Model.Role;
 import Model.User;
 import Model.VerifyRecaptcha;
@@ -73,7 +75,11 @@ public class Register extends HttpServlet {
         User user = null;
         user = new User(data.get("username"), HashSHA216.hash(data.get("password")), data.get("fullname"), data.get("email"), data.get("phone"), "", data.get("address"),new Role(0),0,0);
         try {
-            UserDAO.insertUser(user);
+            int rs= UserDAO.insertUser(user);
+            if(rs>0){
+                Log log = new Log(Log.INFO, user.getId(), this.getClass().getName(),"Đăng kí tài khoản thành công", 1);
+                log.insert(ConnectDB.getConnect());
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } catch (ClassNotFoundException e) {

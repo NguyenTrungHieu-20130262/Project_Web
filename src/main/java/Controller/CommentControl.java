@@ -1,8 +1,10 @@
 package Controller;
 
 import Beans.JWT;
+import Connect.ConnectDB;
 import DAO.CommentDAO;
 import Model.Comment;
+import Model.Log;
 import Model.RespJsonServlet;
 import Model.User;
 import com.google.gson.Gson;
@@ -62,6 +64,8 @@ public class CommentControl extends HttpServlet {
             try {
                 if ((CommentDAO.insertComment(comment, content, map.get("listImg"), map.get("listVideo")) != 0)) {
                     resp.getWriter().println(new RespJsonServlet("ok").json());
+                    Log log = new Log(Log.ALERT, user.getId(), this.getClass().getName(),"Thêm comment(Detail_Product)", 1);
+                    log.insert(ConnectDB.getConnect());
                     resp.setStatus(200);
                 } else {
                     resp.getWriter().println(new RespJsonServlet("not ok").json());
@@ -71,7 +75,6 @@ public class CommentControl extends HttpServlet {
                 throw new RuntimeException(e);
             }
         } else {
-            System.out.println(123);
             resp.getWriter().println(new RespJsonServlet("no user").json());
             resp.setStatus(200);
         }

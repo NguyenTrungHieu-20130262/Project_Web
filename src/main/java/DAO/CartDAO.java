@@ -29,7 +29,6 @@ public class CartDAO {
             cart.setStatus(resultSet.getInt(5));
             carts.add(cart);
         }
-        System.out.println();
         return carts;
     }
     public static  Cart getCartById(int idCart) throws SQLException {
@@ -52,7 +51,6 @@ public class CartDAO {
             return cart;
 
         }
-        System.out.println();
         return null;
     }
     private boolean checkQuantity(int idCart) throws SQLException {

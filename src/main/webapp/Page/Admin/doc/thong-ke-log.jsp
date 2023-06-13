@@ -47,7 +47,7 @@
             <div class="widget-small primary coloured-icon"><i class="icon fa-sharp fa-solid fa-circle-info"></i>
                 <div class="info">
                     <h4>INFO</h4>
-                    <p><b>${map.get("Info")!=null?map.get("Info").size:0} log</b></p>
+                    <p><b>${map.get("Info")!=null?map.get("Info").size():0} log</b></p>
                 </div>
             </div>
         </div>

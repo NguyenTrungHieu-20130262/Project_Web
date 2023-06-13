@@ -1,9 +1,11 @@
 package Controller;
 
 import Beans.JWT;
+import Connect.ConnectDB;
 import DAO.CompanyDAO;
 import DAO.ProductDAO;
 import Model.Company;
+import Model.Log;
 import Model.Product;
 import Model.User;
 import Security.Authorizeds;
@@ -47,6 +49,8 @@ public class PostProduct extends HttpServlet {
             int weight = Integer.valueOf(req.getParameter("weight"));
             Product pro = new Product(0,idCompany, title, content, body,year, fuel, price,null,listimgs,height, length, width, weight   );
             int rs = ProductDAO.insertProduct(user.getId(),pro, quantity);
+            Log log=new Log(Log.INFO, user.getId(),this.getClass().getName(),"Thêm sản phẩm(Product)",1);
+            log.insert(ConnectDB.getConnect());
             resp.sendError(200);
         } catch (SQLException e) {
             throw new RuntimeException(e);

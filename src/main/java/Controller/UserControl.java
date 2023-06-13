@@ -1,7 +1,10 @@
 package Controller;
 
+import Connect.ConnectDB;
 import DAO.UserDAO;
+import Model.Log;
 import Model.User;
+import com.google.gson.Gson;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -10,6 +13,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.sql.SQLException;
 
@@ -17,8 +21,9 @@ import java.sql.SQLException;
 public class UserControl extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if (req.getParameter("choose").equals("delUser")) {
-            delUser(req, resp);
+        User user = (User) req.getSession().getAttribute("user");
+        if (req.getParameter("choose").equals("changeStatus")) {
+            changeStatus(req, resp, user);
         } else {
             if (req.getParameter("choose").equals("getInfoUser")) {
                 try {
@@ -35,7 +40,8 @@ public class UserControl extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        updateUser(req, resp);
+        User user = (User) req.getSession().getAttribute("user");
+        updateUser(req, resp, user);
     }
 
     public void getInfoUser(HttpServletRequest req, HttpServletResponse resp) throws SQLException, JSONException, IOException {
@@ -56,6 +62,8 @@ public class UserControl extends HttpServlet {
         }
 
         if (user != null) {
+            Log log = new Log(Log.INFO, user.getId(), this.getClass().getName(), "Lấy thông tin user(Admin)", 1);
+            log.insert(ConnectDB.getConnect());
             resp.getWriter().write(data.toString());
             resp.setStatus(200);
         } else {
@@ -63,10 +71,13 @@ public class UserControl extends HttpServlet {
         }
     }
 
-    public void delUser(HttpServletRequest req, HttpServletResponse resp) {
+    public void changeStatus(HttpServletRequest req, HttpServletResponse resp, User user) {
         int id = Integer.parseInt(req.getParameter("id"));
+        int status = Integer.parseInt(req.getParameter("status"));
         try {
-            if (UserDAO.delUSer(id) > 0) {
+            if (UserDAO.changeStatus(id,status) > 0) {
+                Log log = new Log(Log.WARNING, user.getId(), this.getClass().getName(), "Chỉnh sửa user(Admin)", 1);
+                log.insert(ConnectDB.getConnect());
                 resp.setStatus(200);
             } else {
                 resp.setStatus(400);
@@ -76,15 +87,19 @@ public class UserControl extends HttpServlet {
         }
     }
 
-    public void updateUser(HttpServletRequest req, HttpServletResponse resp) {
+    public void updateUser(HttpServletRequest req, HttpServletResponse resp, User user) {
         resp.setContentType("application/json");
         int id = Integer.parseInt(req.getParameter("id"));
         String name = req.getParameter("name");
+        System.out.println(1233123);
+        System.out.println(id);
+        System.out.println(name);
         int phone = Integer.parseInt(req.getParameter("phone"));
-        int role = Integer.parseInt(req.getParameter("role"));
         try {
             JSONObject jsonObject = new JSONObject();
-            if (UserDAO.updateUserAdmin(id, name, phone, role) > 0) {
+            if (UserDAO.updateUserAdmin(id, name, phone) > 0) {
+                Log log = new Log(Log.WARNING, user.getId(), this.getClass().getName(), "Chỉnh sửa user(Admin)", 1);
+                log.insert(ConnectDB.getConnect());
                 jsonObject.put("status", "ok");
                 resp.getWriter().println(jsonObject);
                 resp.setStatus(200);
