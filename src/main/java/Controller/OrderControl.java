@@ -216,6 +216,8 @@ public class OrderControl extends HttpServlet {
                 oder.setNote(note);
                 oder.setStatus(0);
                 oder.setId(idOrder);
+                OderDAO.addOrder(oder);
+
             }
             int totalPrice = 0;
             int h = 0;
@@ -239,7 +241,7 @@ public class OrderControl extends HttpServlet {
             oder.setTotal_price(Double.valueOf(money + totalPrice));
             System.out.println(oder.getTotal_price() + "--------------------------" );
 
-            OderDAO.addOrder(oder);
+            OderDAO.updateById(oder);
             String[] resPayment = PaymentVNPay.createPayment(req,money + totalPrice,userNew.getEmail(),"IdOrder:" + idOrder, domain);
             String linkPayment = resPayment[0];
             res.sendRedirect( linkPayment);
