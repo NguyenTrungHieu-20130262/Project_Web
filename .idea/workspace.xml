@@ -11,20 +11,23 @@
   <component name="ChangeListManager">
     <list default="true" id="99ff1171-51e3-4c34-acd2-75b9fb1f33b4" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Controller/Admin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Controller/Admin.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Controller/CompanyControl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Controller/CompanyControl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Controller/PostProduct.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Controller/PostProduct.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Controller/RoleAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Controller/RoleAPI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/DAO/RoleDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DAO/RoleDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/DAO/UserDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DAO/UserDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/DTO/RoleDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DTO/RoleDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/Page/Admin/doc/role.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/Page/Admin/doc/role.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/javascrip/roleAdmin.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/javascrip/roleAdmin.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Controller/OrderControl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Controller/OrderControl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/DAO/OderDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DAO/OderDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/Page/Admin/doc/table-data-oder.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/Page/Admin/doc/table-data-oder.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/Page/Profile.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/Page/Profile.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/javascrip/ordersAdmin.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/javascrip/ordersAdmin.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -38,12 +41,70 @@
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
+<<<<<<< Updated upstream
+=======
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="useMavenConfig" value="true" />
+      </MavenGeneralSettings>
+    </option>
+>>>>>>> Stashed changes
+  </component>
+  <component name="ProjectId" id="2QDauZch1AfmqGPoesckAFOVhUN" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;
+<<<<<<< Updated upstream
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+=======
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/HOC/TTW/Project&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;,
+>>>>>>> Stashed changes
+    &quot;spring.configuration.checksum&quot;: &quot;9e727fdd3aec8274f46685441900280d&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
+<<<<<<< Updated upstream
+=======
+  <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="Controller" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\HOC\TTW\Project\src\main\webapp\Page\Admin\doc" />
+      <recent name="D:\HOC\TTW\Project\src\main\webapp\javascrip" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\HOC\TTW\Project\src\main\webapp\javascrip" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="Controller" />
+      <recent name="Security" />
+    </key>
+  </component>
+>>>>>>> Stashed changes
   <component name="RunManager" selected="Tomcat Server.Tomcat 9.0.68">
     <configuration name="Unnamed" type="AntRunConfiguration" nameIsGenerated="true">
       <method v="2">
@@ -142,7 +203,54 @@
       <item itemvalue="Tomcat Server.Tomcat 9.0.68" />
     </list>
   </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="99ff1171-51e3-4c34-acd2-75b9fb1f33b4" name="Changes" comment="" />
+      <created>1684890834551</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+<<<<<<< Updated upstream
+      <updated>1684890834551</updated>
+      <workItem from="1684890835724" duration="387000" />
+      <workItem from="1685540563161" duration="18000" />
+      <workItem from="1685592883029" duration="20000" />
+      <workItem from="1686609090336" duration="1590000" />
+      <workItem from="1686624339001" duration="2096000" />
+=======
+      <updated>1681551079172</updated>
+      <workItem from="1681551079900" duration="2916000" />
+      <workItem from="1681647334399" duration="611000" />
+      <workItem from="1681821250595" duration="4372000" />
+      <workItem from="1681890055010" duration="617000" />
+      <workItem from="1681905451168" duration="12191000" />
+      <workItem from="1681970834614" duration="2183000" />
+      <workItem from="1682325346327" duration="7437000" />
+      <workItem from="1682501129698" duration="1047000" />
+      <workItem from="1682507877446" duration="2370000" />
+      <workItem from="1682514124303" duration="10449000" />
+      <workItem from="1682592940036" duration="36472000" />
+      <workItem from="1682754577732" duration="2525000" />
+      <workItem from="1682786218436" duration="893000" />
+      <workItem from="1682940967146" duration="17902000" />
+      <workItem from="1683048129137" duration="25564000" />
+      <workItem from="1683130669534" duration="176000" />
+      <workItem from="1683130885094" duration="177000" />
+      <workItem from="1683464942069" duration="8413000" />
+      <workItem from="1683554452467" duration="8964000" />
+      <workItem from="1683620449852" duration="35000" />
+      <workItem from="1683620979437" duration="2067000" />
+      <workItem from="1683771791194" duration="7820000" />
+      <workItem from="1683792253715" duration="6819000" />
+      <workItem from="1683961270371" duration="18281000" />
+      <workItem from="1684458659768" duration="1685000" />
+      <workItem from="1684470998973" duration="324000" />
+      <workItem from="1684605280964" duration="592000" />
+>>>>>>> Stashed changes
+    </task>
     <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
   </component>
 </project>
