@@ -564,16 +564,15 @@ document.querySelector(".cancelOrder").addEventListener('click',(e)=>{
                     id: idOrder
                 },
                 success: res =>{
-                    if(res != 1)
-                        if(res == -1){
-                            swal("Đơn hàng đã hoàn thành không hủy được.!", {});
-                            document.querySelector("#editOrderDetailsModal").style.display = "none";
-                            document.querySelector("#editOrderDetailsModal").classList.add("fade")
-                            return
+                    if(res == -1){
+                        swal("Đơn hàng đã hoàn thành không hủy được.!", {});
+                        document.querySelector("#editOrderDetailsModal").style.display = "none";
+                        document.querySelector("#editOrderDetailsModal").classList.add("fade")
+                        return
 
-                        }else{
-                            return
-                        }
+                    }
+                    if(res != 1)
+                      return
 
                     for (let i = 0; i < dataOrder.length; i++) {
                         if (dataOrder[i].id == idOrder) {
@@ -581,6 +580,7 @@ document.querySelector(".cancelOrder").addEventListener('click',(e)=>{
                             let badge;
                             status = "Đã hủy";
                             badge = "badge badge-danger";
+                            dataOrder[i].status = 0
                             console.log(document.querySelector(`.oder${idOrder}`).parentNode.parentNode.parentNode.querySelectorAll("td"))
                             document.querySelector(`.oder${idOrder}`).parentNode.parentNode.parentNode.querySelectorAll("td")[3].innerHTML = `<span class="${badge}">${status}</span>`
                             document.querySelector("#editOrderDetailsModal").style.display = "none";

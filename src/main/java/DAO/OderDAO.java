@@ -50,7 +50,7 @@ public class OderDAO {
     public static ArrayList getOrderDTO() throws SQLException {
         ArrayList<Oder> oders = new ArrayList<>();
         Connection c= ConnectDB.getConnect();
-        PreparedStatement stmt = c.prepareStatement("select * from `order`");
+        PreparedStatement stmt = c.prepareStatement("select * from `order` ");
         ResultSet rs= stmt.executeQuery();
         while (rs.next()){
             Orders oder = new Orders(rs.getLong(1),rs.getInt(2),rs.getString(3),rs.getString(4),  rs.getDate(5), rs.getString(6),rs.getInt(7),rs.getDouble(8), rs.getDate(9));
@@ -67,7 +67,7 @@ public class OderDAO {
     public static ArrayList getOrderDTO(int userId) throws SQLException {
         ArrayList<Oder> oders = new ArrayList<>();
         Connection c= ConnectDB.getConnect();
-        PreparedStatement stmt = c.prepareStatement("select * from `order` where idUser = ?");
+        PreparedStatement stmt = c.prepareStatement("select * from `order` where idUser = ? and idTransport IS NOT NULL");
         stmt.setInt(1,userId);
         ResultSet rs= stmt.executeQuery();
         while (rs.next()){
