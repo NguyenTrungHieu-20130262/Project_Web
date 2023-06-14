@@ -166,7 +166,7 @@
 
                         <div class="col">
                           <div class="form-group">
-                            <button class="btn btn-primary" type="button" onclick="openFormChanglePass(this)">Thay đổi mật khẩu</button>
+                            <button class="btn btn-primary changlePass" type="button" onclick="openFormChanglePass(this)">Thay đổi mật khẩu</button>
                           </div>
                         </div>
 
@@ -451,18 +451,41 @@
     const form = document.getElementById("editProfile")
     const formData = new FormData(form);
     const formDataObject = Object.fromEntries(formData.entries());
+    let notify = ''
+    let changlePass = false;
     for (const property in formDataObject) {
-      if(formDataObject[property] === ""){
+      if(property == 'phone' && document.querySelector(`input[name ='${property}']`).value.length > 11){
+        notify += 'Số điện thoại không hợp lệ.!'
         document.querySelector(`input[name ='${property}']`).style.border = 'solid 1px red'
+
+        checkNull = false
+
+      }
+      if(formDataObject[property] === ""){
+
+        document.querySelector(`input[name ='${property}']`).style.border = 'solid 1px red'
+        if(!notify.includes("Thông tin không được để trống"))
+        notify += `\nThông tin không được để trống.!`
+
         checkNull = false
       }
     }
     if(changePass){
-      if(formDataObject.passnew != formDataObject.repassnew){
+      changlePass = true
+      if(formDataObject.passnew != formDataObject.repassnew ){
         document.querySelector(`input[name ='passnew']`).style.border = 'solid 1px red'
         document.querySelector(`input[name ='repassnew']`).style.border = 'solid 1px red'
+        notify += '\nMật khẩu không trung nhau.!'
+
         checkNull = false
       }
+      if( formDataObject.passnew.length<8){
+        document.querySelector(`input[name ='passnew']`).style.border = 'solid 1px red'
+        document.querySelector(`input[name ='repassnew']`).style.border = 'solid 1px red'
+        notify += '\nMật khẩu phải có hơn 8 ký tự.!'
+        checkNull = false
+      }
+
     }
     if(checkNull){
       formDataObject.fullName = encodeURIComponent(formDataObject.fullName)
@@ -473,17 +496,28 @@
         data: formDataObject,
         contentType: 'application/x-www-form-urlencoded',
         success: function(res) {
-          let rs = JSON.parse(res)
-          if(rs === 1){
-            window.location.pathname = "/profile"
-          }else{
-            alert(rs)
+          if(res == -2){
+            swal("Mật khẩu cũ không chính xác.!", {});
+          return;
           }
+          if(res == -1){
+            swal("Có lỗi trong quá trình cập nhập.!", {});
+            return;
+          }
+          let rs = JSON.parse(res)
+          if(changlePass){
+            document.querySelector(".changlePass").click()
+          }
+          swal({
+            text: "Cập nhập thành công.!",
+            timer: 400
+          });
 
         }
       });
     }else{
-      console.log("Loi");
+      swal(notify , {});
+
     }
   }
 
