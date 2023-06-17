@@ -279,6 +279,7 @@ public class Admin extends HttpServlet {
                     logPage(req, res);
                     log.setContent("Truy cập vào trang Statistic_Log(Admin)");
                     log.insert(ConnectDB.getConnect());
+                    break;
                 case "logmanagement":
                     if(Authorizeds.authorizeds(req, Authorizeds.LOG_VIEW))
                         logPage(req, res);

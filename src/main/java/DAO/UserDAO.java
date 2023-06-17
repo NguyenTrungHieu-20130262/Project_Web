@@ -214,6 +214,33 @@ public class UserDAO {
         int rs = stmt.executeUpdate();
         return rs;
     }
+    public static int updateUser(User user) throws SQLException {
+        Connection c = ConnectDB.getConnect();
+        PreparedStatement stmt = c.prepareStatement("UPDATE user\n" +
+                "SET fullname = ?,email = ?, phone = ?, address = ?\n" +
+                "WHERE id = ?");
+        stmt.setString(1, user.getFullName());
+        stmt.setString(2, user.getEmail());
+        stmt.setString(3, user.getPhone());
+        stmt.setString(4, user.getAddress());
+        stmt.setInt(5, user.getId());
+        int rs = stmt.executeUpdate();
+        return rs;
+    }
+    public static int updateUserAndPass(User user) throws SQLException {
+        Connection c = ConnectDB.getConnect();
+        PreparedStatement stmt = c.prepareStatement("UPDATE user\n" +
+                "SET  fullname = ?,email = ?, phone = ?, address = ?, password =?\n" +
+                "WHERE id = ?");
+        stmt.setString(1, user.getFullName());
+        stmt.setString(2, user.getEmail());
+        stmt.setString(3, user.getPhone());
+        stmt.setString(4, user.getAddress());
+        stmt.setString(5, user.getPassWord());
+        stmt.setInt(6, user.getId());
+        int rs = stmt.executeUpdate();
+        return rs;
+    }
     public static int updateUser(String username, String pass, String fullname, String email, String phone, String address) throws SQLException, ClassNotFoundException {
         Connection c = ConnectDB.getConnect();
         PreparedStatement stmt = c.prepareStatement("UPDATE user\n" +
