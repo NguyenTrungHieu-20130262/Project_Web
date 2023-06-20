@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: 84348
-  Date: 1/4/2023
-  Time: 12:03 AM
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <link href='https://fonts.googleapis.com/css?family=Anton|Passion+One|PT+Sans+Caption' rel='stylesheet' type='text/css'>
