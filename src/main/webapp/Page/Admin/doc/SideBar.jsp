@@ -31,6 +31,9 @@
         <li><a class="app-menu__item" href="admin?page=productManagement"><i
                 class='app-menu__icon bx bx-purchase-tag-alt'></i><span class="app-menu__label">Quản lý sản phẩm</span></a>
         </li>
+        <li><a class="app-menu__item" href="admin?page=productstaticstics"><i
+                class='app-menu__icon bx bx-purchase-tag-alt'></i><span class="app-menu__label">Thống kê sản phẩm</span></a>
+        </li>
         <li><a class="app-menu__item" href="admin?page=oderManagement"><i class='app-menu__icon bx bx-task'></i><span
                 class="app-menu__label">Quản lý đơn hàng</span></a></li>
         <li><a class="app-menu__item" href="admin?page=logstatistic"><i class='app-menu__icon bx bx-task'></i><span

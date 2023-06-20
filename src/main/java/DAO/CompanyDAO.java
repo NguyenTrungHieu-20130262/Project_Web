@@ -32,8 +32,7 @@ public class CompanyDAO {
             companys.add(new Company(
                     rs.getInt(1),
                     rs.getString(2),
-                    rs.getString(3),
-                    rs.getInt(4)));
+                    rs.getString(3)));
         }
         return companys;
     }
@@ -48,6 +47,10 @@ public class CompanyDAO {
         }
         return null;
 
+    }
+
+    public static void main(String[] args) throws SQLException {
+        System.out.println(CompanyDAO.getAllCompany().size());
     }
 
 }

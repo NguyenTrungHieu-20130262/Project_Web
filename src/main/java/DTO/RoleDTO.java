@@ -7,6 +7,15 @@ public class RoleDTO {
     private String name;
     private ArrayList<Permission> arrPermission ;
     private int status;
+    private int type ;
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
 
     public RoleDTO(String name, int status) {
         this.name = name;

@@ -117,14 +117,7 @@
                     </div>
                 </div>
 
-                <%--                <div class="control"><label class="lbl-form" for="inputVideo">Video</label><input id="inputVideo"--%>
-                <%--                                                                                                  class="inp ng-untouched ng-pristine ng-valid"--%>
-                <%--                                                                                                  formcontrolname="VideoEmbed"--%>
-                <%--                                                                                                  name="VideoEmbed"--%>
-                <%--                                                                                                  placeholder="Bạn hãy nhập link video Youtube hoặc link video Facebook vào đây"--%>
-                <%--                                                                                                  type="text"><!---->--%>
-                <%--                    <div class="txt-right"><!----></div>--%>
-                <%--                </div>--%>
+
             </div>
         </form>
 
@@ -231,7 +224,9 @@
     document.querySelector(".upload-item").addEventListener("click", (e) => {
         document.querySelector(".fileupload").click()
     })
-</script
+
+</script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 
 <script>
@@ -314,7 +309,7 @@
         const weight = $("input[name='weight']").val()
 
 
-        if (nameCompany && title && content && images && yearofmanufacture && made && gear && fuel && status && price && body && quantity,height, length, width, weight) {
+        if (nameCompany && title && content && images && yearofmanufacture && made && gear && fuel && status && price && body && quantity, height, length, width, weight) {
             // if(typeof price==="number"){
             var dataBody = {
                 nameCompany,
@@ -328,7 +323,7 @@
                 status,
                 body,
                 made,
-                quantity,height, length, width, weight
+                quantity, height, length, width, weight
             }
             $.ajax({
                 url: "/postProduct",

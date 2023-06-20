@@ -323,7 +323,7 @@
         <div class="products-new">
             <div class="product-title">
                 <h3 class="section-title"><i class="fa-solid fa-bolt"></i>Sản Phẩm Mới</h3>
-                <a class="more-product" href="">Xem thêm</a>
+<%--                <a class="more-product" href="">Xem thêm</a>--%>
             </div>
             <span class="heading_divider"></span>
             <div class="products">
@@ -351,7 +351,7 @@
                         <span class="product-new-price"><%= p.getPrice()%><span class="currency">USD</span></span>
                     </div>
                     <div class="product-choose">
-                        <button class="add-to-cart">
+                        <button class="add-to-cart" onclick="addToCart(<%= p.getId()%>)">
                             <i class="fa-solid fa-cart-plus"></i>Thêm Vào Giỏ
                         </button>
                     </div>
@@ -365,7 +365,7 @@
         <div class="products-trend">
             <div class="product-title d-flex justify-content-between">
                 <h3 class="section-title mb-0"><i class="fa-solid fa-arrow-trend-up"></i>Sản Phẩm Thịnh Hành</h3>
-                <a class="more-product" href="">Xem thêm</a>
+<%--                <a class="more-product" href="">Xem thêm</a>--%>
             </div>
             <div class="products">
                 <%
@@ -392,7 +392,7 @@
                         <span class="product-new-price"><%= p.getPrice()%><span class="currency">USD</span></span>
                     </div>
                     <div class="product-choose">
-                        <button class="add-to-cart">
+                        <button class="add-to-cart" onclick="addToCart(<%= p.getId()%>)">
                             <i class="fa-solid fa-cart-plus"></i>Thêm Vào Giỏ
                         </button>
                     </div>
@@ -526,7 +526,9 @@
         </div>
     </div>
 </div>
-<jsp:include page="/Component/footer/footer.jsp"/>
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+    <jsp:include page="/Component/footer/footer.jsp"/>
 </body>
 <script>
     // slide show and auto slide show
@@ -579,13 +581,43 @@
         setTimeout(carousel, 3000); // Change image every 2 seconds
         slideIndex++;
     }
+    const addToCart = (id)=>{
+        $.ajax({
+            url: "/cart?action=addtocart&idpost="+id,
+            type: 'POST',
+            success: function(res) {
+                console.log(res)
+                console.log(typeof  res)
+                if(res =='1' || res =='0'){
+                    if(res !='1'){
+                        swal("Sản phẩm đã hết", {
+                            buttons: false,
+                            timer: 500,
+                        });
+                    }else{
+                        console.log(res)
+                        swal("Đã thêm sản phẩm vào giỏ hàng", {
+                            buttons: false,
+                            timer: 500,
+                        });
+                    }
+                }else{
+                    window.location = '/login'
+                }
+
+
+
+
+
+            }
+        });
+        console.log(id)
+
+
+    }
 </script>
 <script src="/jsadmin/bootstrap.min.js"></script>
 <script src="/EventJs/Swipper.js">
 </script>
-<script>
-    setTimeout(() => {
-        fetch("http://localhost:3000/product")
-    }, 1)
-</script>
+
 </html>

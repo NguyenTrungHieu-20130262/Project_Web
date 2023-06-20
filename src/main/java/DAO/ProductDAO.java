@@ -1,6 +1,7 @@
 package DAO;
 
 import Connect.ConnectDB;
+import DTO.ProductDTO;
 import Model.Company;
 import Model.ImgProduct;
 import Model.ImportProduct;
@@ -27,19 +28,49 @@ public class ProductDAO {
             while (resultSet.next()) {
 //                int quantity = getQuantityByID(resultSet.getInt(1));
                 Company vendo = CompanyDAO.getVendoById(resultSet.getInt(2));
-                Product prod = new Product(resultSet.getInt(1),
+                ProductDTO prod = new ProductDTO(resultSet.getInt(1),
                         vendo,
                         resultSet.getString(3),
                         resultSet.getString(4),
                         resultSet.getString(5),
-
                         resultSet.getInt(6),
                         resultSet.getString(7),
                         resultSet.getDouble(8),
                         resultSet.getDate(9),
-                        resultSet.getInt(10),
+                        resultSet.getInt(14),
                         getImagesByID(resultSet.getInt(1))
                 );
+                prod.setQuantity(resultSet.getInt("quantity"));
+                products.add(prod);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return products;
+    }
+    public static ArrayList<Product> getProductAll() {
+        ArrayList<Product> products = new ArrayList<>();
+        String query = "SELECT product.*, sum(quantity) as quantity FROM importproduct join product on importproduct.idProduct = product.id GROUP by product.id ";
+        try {
+            Statement statement = ConnectDB.getConnect().createStatement();
+            PreparedStatement preparedStatement = statement.getConnection().prepareStatement(query);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+//                int quantity = getQuantityByID(resultSet.getInt(1));
+                Company vendo = CompanyDAO.getVendoById(resultSet.getInt(2));
+                ProductDTO prod = new ProductDTO(resultSet.getInt(1),
+                        vendo,
+                        resultSet.getString(3),
+                        resultSet.getString(4),
+                        resultSet.getString(5),
+                        resultSet.getInt(6),
+                        resultSet.getString(7),
+                        resultSet.getDouble(8),
+                        resultSet.getDate(9),
+                        resultSet.getInt(14),
+                        getImagesByID(resultSet.getInt(1))
+                );
+                prod.setQuantity(resultSet.getInt("quantity"));
                 products.add(prod);
             }
         } catch (SQLException e) {
@@ -242,6 +273,7 @@ public class ProductDAO {
         }
         return product;
     }
+
     public void getProductByID(int id){
 
     }
@@ -391,7 +423,8 @@ public class ProductDAO {
 
     public static void main(String[] args) {
         ProductDAO productDAO = new ProductDAO();
-        productDAO.getNewProducts();
+//        System.out.println(productDAO.getNewProducts());
+//        System.out.println(productDAO.getProductByVendo("BMW"));
     }
 }
 

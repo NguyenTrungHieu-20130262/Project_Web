@@ -243,6 +243,7 @@ const viewDetail = (id) => {
     document.querySelector("#orderDetailsModal span.show_detail_orders_address").innerHTML = order.address
     document.querySelector("#orderDetailsModal span.show_detail_orders_phone").innerHTML = order.user.phone
     document.querySelector("#orderDetailsModal span.show_detail_orders_email").innerHTML = order.user.email
+    document.querySelector("#orderDetailsModal span.show_detail_orders_idTransport").innerHTML = order.idTransport
 
     document.querySelector("#orderDetailsModal span.show_detail_orders_total").innerHTML = toUSD(order.total_price)
     const dateTransport = new Date(order.leadTime);

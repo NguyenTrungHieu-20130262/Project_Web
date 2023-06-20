@@ -24,9 +24,6 @@
   <br>
   <% User user = (User) request.getAttribute("userInfo") ;%>
   <div class="row flex-lg-nowrap">
-    <div class="col-12 col-lg-auto mb-3" style="width: 200px;">
-
-    </div>
 
     <div class="col">
       <div class="row">
@@ -157,13 +154,15 @@
                     <div class="tile">
                       <h3 class="tile-title">Đơn hàng của bạn</h3>
                       <div>
-                        <table class="table table-bordered">
+                        <table class="table table-bordered" id="table_orders">
                           <thead>
                           <tr>
-                            <th>ID đơn hàng</th>
-                            <th>Tên sản phẩm</th>
+                            <th>Mã vận chuyển</th>
+                            <th>Số lượng sản phản phẩm</th>
                             <th>Tổng tiền</th>
                             <th>Trạng thái</th>
+                            <th>Thao tác</th>
+
                           </tr>
                           </thead>
                           <tbody id="table-oder">
@@ -203,6 +202,9 @@
 </div>
 
 </body>
+
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css" />
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
 <script src="../javascrip/profileEdit.js"></script>
 <script >
   var changePass = false
@@ -350,47 +352,108 @@
   const getOrder = ()=>{
     let rs = ``
     $.ajax({
-      url: "/oder?action=listorder",
+      url: "/user/order",
       type: 'GET',
 
       contentType: 'application/x-www-form-urlencoded',
       success: function(res) {
         let arrOrder  = JSON.parse(res).reverse()
-        arrOrder.map((tmp)=>{
-          let badge= ""
-          if (tmp.status === 0){
-            badge ="badge bg-info"
-            tmp.status = "Đang xử lý"
-          }
-
-          if (tmp.status === 1){
-            tmp.status ="Đã hoàn thành"
-            badge ="badge badge-success"
-          }
-
-          if (tmp.status === 2){
-            badge ="badge badge-danger"
-            tmp.status ="Đã hủy"
-          }
-
-          rs+= `
-    <tr>
-                            <td>${tmp.id}</td>
-                            <td style="overflow-wrap: break-word; max-width: 250px">${tmp.productName}</td>
-                            <td>
-                              ${tmp.total}
-                            </td>
-
-                           <td><span class="${badge}">${tmp.status }</span></td>
-
-                          </tr>
-    `
-        })
-    document.querySelector("#table-oder").innerHTML = rs
+        console.log(arrOrder)
+        initTable(arrOrder)
       }
     });
 
 
+  }
+  const toUSD = (money)=> {
+    return money.toLocaleString('en-US', {style: 'currency', currency: 'USD'});
+  }
+
+    const initTable = (dataOrders)=>{
+    $('#table_orders').DataTable({
+      data: dataOrders,
+      columns: [
+        { data: "idTransport" , defaultContent: "N/A"},
+        { data: "orderDetails", "render": function (data, type, row, meta) {
+            return data.length;
+          } },
+        { data: "total_price", "render": function (data, type, row, meta) {
+            return toUSD(data);
+          }},
+
+        { data:"leadTime",
+          "render": function (data, type, row, meta) {
+
+            const dateTransport = new Date(data);
+            const dateNow = new Date();
+            let status;
+            let badge;
+            if(row.status == 0){
+              status = "Đã hủy";
+              badge = "badge badge-danger";
+            }else{
+              if (dateTransport < dateNow) {
+                status = "Đã giao";
+                badge = "badge bg-success";
+              } else{
+                status = "Đang xử lý";
+                badge = "badge bg-info";
+              }
+            }
+
+            return `<td><span class="${badge}">${status}</span></td>`;
+          }},
+        {data:"","render": function (data, type, row, meta) {
+            if(row.status == 1){
+              return `
+                            <div    style="
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+">
+                            <a className="action_order"
+                                    style="color:blue;" type="button"
+                                    onclick="viewDetail(${row.id})"
+                                    data-toggle="modal" data-target="#orderDetailsModal" title="Xem chi tiết"><i class="fa-solid fa-circle-info"></i>
+                            </a>
+                            <input hidden="" class="oder${row.id}"/>
+
+                            <a className="action_order " onclick='viewUpdateOrder(${row.id})' style="color:#28a745;" type="button" data-toggle="modal"
+                                    data-target="#" title="Sửa"><i class="fa-solid fa-pen-to-square"></i>
+                            </a>
+                            <a className="action_order" style="color:red;" type="button"
+                                    onClick="deleteRow(this, ${row.id})" title="Xóa"><i class="fa-solid fa-trash">
+                                    <input hidden value="${row.id}"/> </i></a>
+</div>
+
+                           `;
+            }else{
+              return `
+                            <div    style="
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+">
+                            <a className="action_order"
+                                    style="color:blue;" type="button"
+                                    onclick="viewDetail(${row.id})"
+                                    data-toggle="modal" data-target="#orderDetailsModal" title="Xem chi tiết"><i class="fa-solid fa-circle-info"></i>
+                            </a>
+                            <input hidden="" class="oder${row.id}"/>
+                            <a className="action_order" style="color:red;" type="button"
+                                    onClick="deleteRow(this, ${row.id})" title="Xóa"><i class="fa-solid fa-trash">
+                                    <input hidden value="${row.id}"/> </i></a>
+</div>
+
+                           `;
+            }
+
+          }}
+      ],
+      buttons: [
+        'excel', 'pdf'
+      ]
+    });
   }
   getOrder()
 </script>
