@@ -55,6 +55,7 @@ public class UserControl extends HttpServlet {
         data.put("role", user.getNameRole());
         data.put("phone", user.getPhone());
         data.put("email", user.getEmail());
+        data.put("address", user.getAddress());
         if (user.getStatus() == 1) {
             data.put("status", "Hoạt động");
         } else {
@@ -91,13 +92,11 @@ public class UserControl extends HttpServlet {
         resp.setContentType("application/json");
         int id = Integer.parseInt(req.getParameter("id"));
         String name = req.getParameter("name");
-        System.out.println(1233123);
-        System.out.println(id);
-        System.out.println(name);
         int phone = Integer.parseInt(req.getParameter("phone"));
+        String address = req.getParameter("address");
         try {
             JSONObject jsonObject = new JSONObject();
-            if (UserDAO.updateUserAdmin(id, name, phone) > 0) {
+            if (UserDAO.updateUserAdmin(id, name, phone,address) > 0) {
                 Log log = new Log(Log.WARNING, user.getId(), this.getClass().getName(), "Chỉnh sửa user(Admin)", 1);
                 log.insert(ConnectDB.getConnect());
                 jsonObject.put("status", "ok");

@@ -133,6 +133,7 @@
     </div>
 
 </main>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script src="jsadmin/jquery-3.2.1.min.js"></script>
 <!--===============================================================================================-->
 <script src="jsadmin/popper.min.js"></script>
@@ -223,8 +224,10 @@
     document.querySelector(".upload-item").addEventListener("click", (e) => {
         document.querySelector(".fileupload").click()
     })
+
 </script>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 
 <script>
     document.querySelector(".btn-send").addEventListener("click", (e) => {
@@ -263,7 +266,6 @@
             $(this).each(function (index) {
                 if ($(this)[0].querySelector("input").checked) {
                     year = $(this)[0].querySelector("label").textContent
-
                 }
             })
 
@@ -307,7 +309,7 @@
         const weight = $("input[name='weight']").val()
 
 
-        if (nameCompany && title && content && images && yearofmanufacture && made && gear && fuel && status && price && body && quantity,height, length, width, weight) {
+        if (nameCompany && title && content && images && yearofmanufacture && made && gear && fuel && status && price && body && quantity, height, length, width, weight) {
             // if(typeof price==="number"){
             var dataBody = {
                 nameCompany,
@@ -321,7 +323,7 @@
                 status,
                 body,
                 made,
-                quantity,height, length, width, weight
+                quantity, height, length, width, weight
             }
             $.ajax({
                 url: "/postProduct",

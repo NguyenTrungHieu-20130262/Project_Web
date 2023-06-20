@@ -46,11 +46,11 @@
             <div class="tile">
                 <div class="tile-body">
                     <div class="row element-button">
-                        <div class="col-sm-2">
+                        <div class="col-sm-2" onclick='htmlTableToExcel("account")'>
                             <a class="btn btn-excel btn-sm" href="" title="In"><i class="fas fa-file-excel"></i> Xuất
                                 Excel</a>
                         </div>
-                        <div class="col-sm-2">
+                        <div class="col-sm-2" onclick="exportTableToPDF('order')">
                             <a class="btn btn-delete btn-sm pdf-file" type="button" title="In"><i
                                     class="fas fa-file-pdf"></i> Xuất PDF</a>
                         </div>
@@ -82,7 +82,7 @@
                                 <td>#${item.id}</td>
                                 <td id="userName">${item.fullName}</td>
                                 <td><img class="img-card-person" src="${item.avatar}" alt=""></td>
-                                <td>${item.address}</td>
+                                <td id="address1">${item.address}</td>
                                 <td id="userPhone">${item.phone}</td>
                                 <c:choose>
                                     <c:when test="${item.status==1}">
@@ -184,6 +184,10 @@ MODAL
                         <label for="author" class="control-label">Chức vụ</label>
                         <input class="form-control" id="author" type="text" required disabled>
                     </div>
+                    <div class="form-group  col-md-6">
+                        <label for="author" class="control-label">Địa chỉ</label>
+                        <input class="form-control" id="address" type="text" required >
+                    </div>
                 </div>
                 <BR>
                 <button class="btn btn-save" type="button">Lưu lại</button>
@@ -261,23 +265,42 @@ MODAL
             win.print();
         }
     }
-    //     //Sao chép dữ liệu
-    //     var copyTextareaBtn = document.querySelector('.js-textareacopybtn');
 
-    // copyTextareaBtn.addEventListener('click', function(event) {
-    //   var copyTextarea = document.querySelector('.js-copytextarea');
-    //   copyTextarea.focus();
-    //   copyTextarea.select();
+    function htmlTableToExcel(name) {
+        console.log(123)
+        var data = document.getElementById('sampleTable');
+        console.log(data)
+        var excelFile = XLSX.utils.table_to_book(data, {sheet: "sheet1"});
+        XLSX.write(excelFile, {type: 'xlsx', bookSST: true, type: 'base64'});
+        XLSX.writeFile(excelFile, name + '.xlsx');
+    }
 
-    //   try {
-    //     var successful = document.execCommand('copy');
-    //     var msg = successful ? 'successful' : 'unsuccessful';
-    //     console.log('Copying text command was ' + msg);
-    //   } catch (err) {
-    //     console.log('Oops, unable to copy');
-    //   }
-    // });
-    //Modal
+    function exportTableToPDF(name) {
+        var pdf = new jsPDF('p', 'pt', 'letter');
+
+        source = $('#sampleTable');
+
+        margins = {
+            top: 80,
+            bottom: 60,
+            left: 40,
+            width: 522
+        };
+
+        pdf.fromHTML(
+            source,
+            margins.left,
+            margins.top, {
+                'width': margins.width,
+                'elementHandlers': source
+            },
+            function (dispose) {
+
+                pdf.save('Test.pdf');
+            }
+            , margins);
+
+    }
 
     var oTable = $('#sampleTable').DataTable();
     oTable.on('click', '.trash', function () {
@@ -342,6 +365,7 @@ MODAL
                 $("#emailUser").val(data.email);
                 $("#author").val(data.role);
                 $("#statusAccount").val(data.status);
+                $("#address").val(data.address);
             }
         })
         $("#ModalUP").modal({backdrop: false, keyboard: false})
@@ -351,10 +375,12 @@ MODAL
         const id = $(this).attr("id").split("||")[1]
         var name = $("#fullName").val() ? $("#fullName").val() : ""
         var phone = $("#fullName").val() ? $("#phoneNumber").val() : ""
+        var address = $("#address").val() ? $("#address").val() : ""
         var data = {
             name,
             phone,
-            id
+            id,
+            address
         };
         $.ajax({
             url: "/user",
@@ -365,6 +391,7 @@ MODAL
                 if (data.status == "ok") {
                     document.querySelector("tr[data-id=" + "'" + id + "'" + "] #userName").textContent = name
                     document.querySelector("tr[data-id=" + "'" + id + "'" + "] #userPhone").textContent = phone
+                    document.querySelector("tr[data-id=" + "'" + id + "'" + "] #address1").textContent = address
                     swal("Sửa thành công.!", {});
                 } else {
                     swal("Sửa không thành công.!", {});

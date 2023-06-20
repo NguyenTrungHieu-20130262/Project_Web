@@ -38,12 +38,6 @@ public class CartControl extends HttpServlet {
                 return;
             }
         }
-        Log log = new Log(0, user.getId(), this.getClass().getName(), "Truy cập vào trang cart", 1);
-        try {
-            log.insert(ConnectDB.getConnect());
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
         request.getRequestDispatcher("Page/Cart.jsp").forward(request, response);
     }
 

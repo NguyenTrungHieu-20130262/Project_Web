@@ -108,12 +108,14 @@ public class Product extends HttpServlet {
                 if(rs>0){
                     Log log=new Log(Log.WARNING, user.getId(),this.getClass().getName(),"Chỉnh sửa Product(Admin)",1);
                     log.insert(ConnectDB.getConnect());
+                    System.out.println(19823);
+                    res.setStatus(200);
+                }else {
+                    res.setStatus(401);
                 }
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
-            res.getWriter().write(new Gson().toJson(rs));
-                return;
         }
 
     }

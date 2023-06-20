@@ -204,13 +204,14 @@ public class UserDAO {
         int rs = stmt.executeUpdate();
         return rs;
     }
-    public static int updateUserAdmin(int id,String userName,int phoneNumber ) throws SQLException {
+    public static int updateUserAdmin(int id,String userName,int phoneNumber,String address ) throws SQLException {
         System.out.println(userName);
         Connection c = ConnectDB.getConnect();
-        PreparedStatement stmt = c.prepareStatement("UPDATE user SET  fullname = ?, phone = ? WHERE id = ?");
+        PreparedStatement stmt = c.prepareStatement("UPDATE user SET  fullname = ?, phone = ?,address=? WHERE id = ?");
         stmt.setString(1, userName);
         stmt.setInt(2, phoneNumber);
-        stmt.setInt(3, id);
+        stmt.setString(3, address);
+        stmt.setInt(4, id);
         int rs = stmt.executeUpdate();
         return rs;
     }

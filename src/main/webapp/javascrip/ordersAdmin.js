@@ -1,7 +1,7 @@
 var dataOrder = []
-var provinceData =''
+var provinceData = ''
 var listProduct = []
-const initProvince =()=> {
+const initProvince = () => {
     provinceData = JSON.parse(provinceData)
     let elmProvince = document.querySelector(".province")
     provinceData = JSON.parse(provinceData)
@@ -12,16 +12,15 @@ const initProvince =()=> {
     })
 }
 
-const province = ()=>{
+const province = () => {
     $.ajax({
         url: "/api/address?type=province",
         method: "GET",
-        success: res =>{
+        success: res => {
             provinceData = res
             initProvince()
         },
-        error: err=>{
-
+        error: err => {
 
 
         }
@@ -29,8 +28,8 @@ const province = ()=>{
 }
 province()
 const elmProvince = document.querySelector(".province")
-elmProvince.addEventListener("input",(e)=>{
-    if(e.target.value != '0'){
+elmProvince.addEventListener("input", (e) => {
+    if (e.target.value != '0') {
         let idProvince = e.target.value
         console.log(idProvince)
         let district = document.querySelector(".district")
@@ -41,7 +40,7 @@ elmProvince.addEventListener("input",(e)=>{
         ward.classList.add('events_none')
 
         initDistrict(idProvince)
-    }else{
+    } else {
         console.log(e.target.value)
         let district = document.querySelector(".district")
         district.innerHTML = `<option value="0">Huyện</option>`
@@ -54,73 +53,71 @@ elmProvince.addEventListener("input",(e)=>{
 
     }
 })
-document.querySelector(".district").addEventListener("input",(e)=>{
+document.querySelector(".district").addEventListener("input", (e) => {
     console.log(e)
-    if(e.target.value != '0'){
+    if (e.target.value != '0') {
         let idDistrict = e.target.value
         console.log(idDistrict)
         let ward = document.querySelector(".ward")
         ward.classList.remove('events_none')
         ward.setAttribute('value', '0')
         initWard(idDistrict)
-    }else{
+    } else {
         let ward = document.querySelector(".ward")
         ward.innerHTML = `<option value="0">Xã</option>`
         ward.classList.add('events_none')
 
     }
 })
-const initDistrict = (idProvince) =>{
+const initDistrict = (idProvince) => {
     $.ajax({
-        url: "/api/address?type=district&idProvince="+idProvince,
+        url: "/api/address?type=district&idProvince=" + idProvince,
         method: "GET",
-        success: res =>{
-            districtData= JSON.parse(JSON.parse(res))
+        success: res => {
+            districtData = JSON.parse(JSON.parse(res))
             console.log(districtData)
             let district = document.querySelector(".district")
             let elms = `<option value="0">Huyện</option>`
 
-            districtData.original.data.map(tmp=>{
+            districtData.original.data.map(tmp => {
                 console.log(tmp)
                 elms += `<option value=${tmp.DistrictID}>${tmp.DistrictName}</option>`
             })
-            district.innerHTML =elms
+            district.innerHTML = elms
         },
-        error: err=>{
-
+        error: err => {
 
 
         }
     })
 }
-const initWard = (idDistrict)=>{
+const initWard = (idDistrict) => {
     $.ajax({
-        url: "/api/address?type=ward&idDistrict="+idDistrict,
+        url: "/api/address?type=ward&idDistrict=" + idDistrict,
         method: "GET",
-        success: res =>{
-            dataWard= JSON.parse(JSON.parse(res))
+        success: res => {
+            dataWard = JSON.parse(JSON.parse(res))
             console.log(dataWard)
             let ward = document.querySelector(".ward")
             let elms = `<option value="0">Xã</option>`
 
-            dataWard.original.data.map(tmp=>{
+            dataWard.original.data.map(tmp => {
                 console.log(tmp)
                 elms += `<option value=${tmp.WardCode}>${tmp.WardName}</option>`
             })
             ward.innerHTML = elms
         },
-        error: err=>{
-
+        error: err => {
 
 
         }
     })
 }
-const toUSD = (money)=>{
-return money.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+const toUSD = (money) => {
+    return money.toLocaleString('en-US', {style: 'currency', currency: 'USD'});
 
 }
-const init = ()=>{
+const init = () => {
     $.ajax({
         url: "/api/order",
         type: "GET",
@@ -133,37 +130,42 @@ const init = ()=>{
             $('#myTable').DataTable({
                 data: dataOrder,
                 columns: [
-                    { data: "id" },
-                    { data: "user.fullName" },
-                    { data: "total_price", "render": function (data, type, row, meta) {
+                    {data: "id"},
+                    {data: "user.fullName"},
+                    {
+                        data: "total_price", "render": function (data, type, row, meta) {
                             return toUSD(data);
-                        }},
-                    { data: "address"},
+                        }
+                    },
+                    {data: "address"},
 
-                    { data:"leadTime",
+                    {
+                        data: "leadTime",
                         "render": function (data, type, row, meta) {
 
                             const dateTransport = new Date(data);
                             const dateNow = new Date();
                             let status;
                             let badge;
-                            if(row.status == 0){
+                            if (row.status == 0) {
                                 status = "Đã hủy";
                                 badge = "badge badge-danger";
-                            }else{
+                            } else {
                                 if (dateTransport < dateNow) {
                                     status = "Đã giao";
                                     badge = "badge bg-success";
-                                } else{
+                                } else {
                                     status = "Đang xử lý";
                                     badge = "badge bg-info";
                                 }
                             }
 
                             return `<td><span class="${badge}">${status}</span></td>`;
-                        }},
-                    {data:"","render": function (data, type, row, meta) {
-                            if(row.status == 1){
+                        }
+                    },
+                    {
+                        data: "", "render": function (data, type, row, meta) {
+                            if (row.status == 1) {
                                 return `
                             <div    style="
     display: flex;
@@ -186,7 +188,7 @@ const init = ()=>{
 </div>
                              
                            `;
-                            }else{
+                            } else {
                                 return `
                             <div    style="
     display: flex;
@@ -207,32 +209,33 @@ const init = ()=>{
                            `;
                             }
 
-                        }}
+                        }
+                    }
                 ],
                 buttons: [
-                     'excel', 'pdf'
+                    'excel', 'pdf'
                 ]
             });
         }
     });
 
 }
-const initListProduct = ()=>{
+const initListProduct = () => {
     $.ajax({
         url: "/product?action=getlistproduct",
         method: "GET",
-        success: res =>{
+        success: res => {
             listProduct = JSON.parse(res)
         },
-        error: err=>{
+        error: err => {
 
         }
     })
 }
 init()
 initListProduct()
-const viewDetail= (id)=>{
-    let order = dataOrder.find(tmp=>{
+const viewDetail = (id) => {
+    let order = dataOrder.find(tmp => {
         return tmp.id === id;
     })
     console.log(order)
@@ -247,14 +250,14 @@ const viewDetail= (id)=>{
     const dateNow = new Date();
     let status;
     let badge;
-    if(order.status == 0){
+    if (order.status == 0) {
         status = "Đã hủy";
         badge = "badge badge-danger";
-    }else{
+    } else {
         if (dateTransport < dateNow) {
             status = "Đã giao";
             badge = "badge bg-success";
-        } else{
+        } else {
             status = "Đang xử lý";
             badge = "badge bg-info";
         }
@@ -263,8 +266,8 @@ const viewDetail= (id)=>{
     document.querySelector("#orderDetailsModal span.show_detail_orders_status").innerHTML = `<span class="${badge}">${status}</span>`
     let table_detail = document.querySelector("#table_orders_detail")
     let tr = ``
-    order.orderDetails.map(tmp=>{
-        tr+=`<tr>
+    order.orderDetails.map(tmp => {
+        tr += `<tr>
                             <td>${tmp.product.name}</td>
                             <td><img width="150px" height="100px" src="${tmp.product.images[0]}"/></td>
                             <td>${toUSD(tmp.price)}</td>
@@ -277,21 +280,21 @@ const viewDetail= (id)=>{
     document.querySelector("#orderDetailsModal").classList.remove("fade")
 }
 var closeBtn = document.querySelector('.close');
-closeBtn.addEventListener('click', function() {
+closeBtn.addEventListener('click', function () {
     modal.style.display = 'none';
 });
-document.querySelector("#outside_modal").addEventListener("click",(e)=>{
+document.querySelector("#outside_modal").addEventListener("click", (e) => {
     document.querySelector("#orderDetailsModal").style.display = "none";
     document.querySelector("#orderDetailsModal").classList.add("fade")
 })
 
-document.querySelector(".btn-secondary").addEventListener("click",(e)=>{
+document.querySelector(".btn-secondary").addEventListener("click", (e) => {
     document.querySelector("#orderDetailsModal").style.display = "none";
     document.querySelector("#orderDetailsModal").classList.add("fade")
 })
 
-const viewUpdateOrder = (id)=>{
-    let order = dataOrder.find(tmp=>{
+const viewUpdateOrder = (id) => {
+    let order = dataOrder.find(tmp => {
         return tmp.id === id;
     })
     console.log(order)
@@ -308,8 +311,8 @@ const viewUpdateOrder = (id)=>{
 
     let table_detail = document.querySelector(".table_orders_detail_edit")
     let tr = ``
-    order.orderDetails.map(tmp=>{
-        tr+=`<tr>
+    order.orderDetails.map(tmp => {
+        tr += `<tr>
                             <td style="width: 190px; text-overflow: ellipsis">${tmp.product.name}</td>
                             <td><img width="150px" height="100px" src="${tmp.product.images[0]}"/></td>
                             <td>${toUSD(tmp.price)}</td>
@@ -334,8 +337,8 @@ const viewUpdateOrder = (id)=>{
     console.log(listProduct)
     let list_product = document.querySelector(".add_prodcut")
     let options = `<option value="-1">Danh sách sản phẩm</option>`
-    listProduct.map((tmp=>{
-        options +=`<option value="${tmp.id}">${tmp.id +  " - " + tmp.name +  " - " + tmp.price }</option>`
+    listProduct.map((tmp => {
+        options += `<option value="${tmp.id}">${tmp.id + " - " + tmp.name + " - " + tmp.price}</option>`
     }))
     list_product.innerHTML = options
     document.querySelector("#editOrderDetailsModal").style.display = "flex";
@@ -343,20 +346,20 @@ const viewUpdateOrder = (id)=>{
 
 }
 
-const editAddress = (e)=>{
+const editAddress = (e) => {
     console.log(e)
     document.querySelector(".showAddress").classList.add('hide')
     document.querySelector(".form_edit_address").classList.remove('hide')
 
 }
 
-document.querySelector(".save_address").addEventListener("click",(e)=>{
-    if($( ".ward option:selected" ).text() !== "Xã" && $( ".district option:selected" ).text() !== "Huyện" && $( ".province option:selected" ).text() !== "Tỉnh" ){
-        let address =  $( ".ward option:selected" ).text() + " - " + $( ".district option:selected" ).text() + " - " + $( ".province option:selected" ).text();
+document.querySelector(".save_address").addEventListener("click", (e) => {
+    if ($(".ward option:selected").text() !== "Xã" && $(".district option:selected").text() !== "Huyện" && $(".province option:selected").text() !== "Tỉnh") {
+        let address = $(".ward option:selected").text() + " - " + $(".district option:selected").text() + " - " + $(".province option:selected").text();
         document.querySelector("span.show_detail_orders_address").innerHTML = address + `  <i onclick="editAddress()" style="margin-left: 10px;  color: red; cursor: pointer" class="fa-solid fa-pen-to-square"></i>`
         document.querySelector(".showAddress").classList.remove('hide')
         document.querySelector(".form_edit_address").classList.add('hide')
-    }else{
+    } else {
         document.querySelector(".ward").style.border = '1px solid red'
         document.querySelector(".district").style.border = '1px solid red'
         document.querySelector(".province").style.border = '1px solid red'
@@ -364,55 +367,54 @@ document.querySelector(".save_address").addEventListener("click",(e)=>{
 
 
 })
-document.querySelector(".close_address").addEventListener("click",(e)=>{
+document.querySelector(".close_address").addEventListener("click", (e) => {
     document.querySelector(".showAddress").classList.remove('hide')
     document.querySelector(".form_edit_address").classList.add('hide')
 })
-document.querySelector(".exitModal").addEventListener("click",(e)=>{
+document.querySelector(".exitModal").addEventListener("click", (e) => {
     document.querySelector("#editOrderDetailsModal").style.display = "none";
     document.querySelector("#editOrderDetailsModal").classList.add("fade")
 })
 
-const changeQuantity = (elm)=>{
-    if(Number.isInteger(Number(elm.value)) && Number(elm.value) > 0){
+const changeQuantity = (elm) => {
+    if (Number.isInteger(Number(elm.value)) && Number(elm.value) > 0) {
         let show_error = elm.parentNode.querySelector(".show_error")
         let id_product = elm.parentNode.querySelector(".id_product").value
         $.ajax({
-            url: "/api/order?action=check_add_orders_details&id_product="+id_product,
+            url: "/api/order?action=check_add_orders_details&id_product=" + id_product,
             method: "POST"
             ,
-            success: res =>{
-                if(res - Number(elm.value) < 0){
+            success: res => {
+                if (res - Number(elm.value) < 0) {
                     show_error.textContent = "Vượt quá số lượng trong kho"
-                }else{
+                } else {
                     show_error.textContent = ""
                     elm.setAttribute('value', Number(elm.value))
                     let price = elm.parentNode.querySelector(".price").value
-                    document.querySelector(`.total_${id_product}`).textContent = toUSD(Number(elm.value) * Number(price) )
+                    document.querySelector(`.total_${id_product}`).textContent = toUSD(Number(elm.value) * Number(price))
                     setActionChangeOrderDetails(elm, "update")
                 }
             },
-            error: err=>{
-
+            error: err => {
 
 
             }
         })
     }
 }
-const setActionChangeOrderDetails = (elm, action)=>{
-    if(elm.parentNode.querySelector(".action").value !== "add"){
+const setActionChangeOrderDetails = (elm, action) => {
+    if (elm.parentNode.querySelector(".action").value !== "add") {
         elm.parentNode.querySelector(".action").setAttribute("value", action)
 
     }
-    if(action === "delete"){
+    if (action === "delete") {
         elm.parentNode.querySelector(".action").setAttribute("value", action)
 
     }
 }
-const select_add_product = ()=>{
-    let id_product = $( ".add_prodcut option:selected" ).val()
-    if(id_product != -1){
+const select_add_product = () => {
+    let id_product = $(".add_prodcut option:selected").val()
+    if (id_product != -1) {
         document.querySelector(".bt_add_product").style.opacity = 1
         document.querySelector(".bt_add_product").style.pointerEvents = 'auto'
 
@@ -420,37 +422,37 @@ const select_add_product = ()=>{
 
 }
 
-const add_product_order = ()=>{
-    let id_product = $( ".add_prodcut option:selected" ).val()
-    let product = listProduct.filter(tmp=>{
+const add_product_order = () => {
+    let id_product = $(".add_prodcut option:selected").val()
+    let product = listProduct.filter(tmp => {
         return tmp.id == id_product
     })
     console.log(product)
     product = product[0]
     let elm;
-    document.querySelectorAll(".table_orders_detail_edit tr").forEach(tmp=>{
-        if(tmp.querySelector(".id_product").value == product.id){
+    document.querySelectorAll(".table_orders_detail_edit tr").forEach(tmp => {
+        if (tmp.querySelector(".id_product").value == product.id) {
             elm = tmp.querySelector(".id_product");
         }
     })
-    if(elm){
+    if (elm) {
         console.log()
-        if(elm.parentNode.querySelector(".action").value === 'delete'){
+        if (elm.parentNode.querySelector(".action").value === 'delete') {
             elm.parentNode.parentNode.style.display = ''
-            elm.parentNode.querySelectorAll("input")[0].value =  1
-            elm.parentNode.querySelectorAll("input")[0].setAttribute('value',1)
+            elm.parentNode.querySelectorAll("input")[0].value = 1
+            elm.parentNode.querySelectorAll("input")[0].setAttribute('value', 1)
             setActionChangeOrderDetails(elm, "update")
 
-        }else{
-            elm.parentNode.querySelectorAll("input")[0].value =  Number(elm.parentNode.querySelectorAll("input")[0].value )+ 1
-            elm.parentNode.querySelectorAll("input")[0].setAttribute('value',Number(elm.parentNode.querySelectorAll("input")[0].value )+ 1)
+        } else {
+            elm.parentNode.querySelectorAll("input")[0].value = Number(elm.parentNode.querySelectorAll("input")[0].value) + 1
+            elm.parentNode.querySelectorAll("input")[0].setAttribute('value', Number(elm.parentNode.querySelectorAll("input")[0].value) + 1)
             setActionChangeOrderDetails(elm, "update")
 
         }
 
         changeQuantity(elm.parentNode.querySelectorAll("input")[0])
-    }else{
-        document.querySelector(".table_orders_detail_edit").innerHTML+=`<tr>
+    } else {
+        document.querySelector(".table_orders_detail_edit").innerHTML += `<tr>
                             <td style="width: 190px; text-overflow: ellipsis">${product.name}</td>
                             <td><img width="150px" height="100px" src="${product.images[0]}"/></td>
                             <td>${toUSD(product.price)}</td>
@@ -465,7 +467,7 @@ const add_product_order = ()=>{
                             font-size: 12px;
                             margin-top: 5px;
                             color: red;"></p></td>
-                            <td class="total_${product.id}">${toUSD(product.price )}</td>
+                            <td class="total_${product.id}">${toUSD(product.price)}</td>
                            <td style="text-align: center"><i onclick="del_order_details(this)" style="color: red" class="fa-solid fa-trash"> </i></td>
 
                         </tr>`
@@ -473,7 +475,7 @@ const add_product_order = ()=>{
 
 }
 
-const del_order_details=(elm)=>{
+const del_order_details = (elm) => {
     swal({
         title: "Cảnh báo",
         text: "Bạn có chắc chắn là muốn xóa sản phẩm này?",
@@ -488,43 +490,43 @@ const del_order_details=(elm)=>{
     });
 }
 
-const saveUpdate = ()=>{
+const saveUpdate = () => {
     let idOrder = $('#id_order_update').val()
     let address = $('.show_detail_orders_address').text()
 
 
     // console.log(document.querySelector(".form_edit_address").classList, )
     let arrTr = document.querySelectorAll(".table_orders_detail_edit .action")
-    let data ='';
-    arrTr.forEach(tmp=>{
-        if(tmp.value !== "default")
-        data+=tmp.parentNode.querySelector(".id_product").value + "-" + tmp.parentNode.querySelectorAll("input")[0].value +"-" +  tmp.value + "|"
+    let data = '';
+    arrTr.forEach(tmp => {
+        if (tmp.value !== "default")
+            data += tmp.parentNode.querySelector(".id_product").value + "-" + tmp.parentNode.querySelectorAll("input")[0].value + "-" + tmp.value + "|"
     })
 
 
-    console.log(data, address )
-    if(address !== ""|| data !== '' ){
+    console.log(data, address)
+    if (address !== "" || data !== '') {
         $.ajax({
             statusCode: {
-                401: function() {
+                401: function () {
                     swal("Bạn không có quyền thực hiện chức năng này.!", {});
 
                 }
             },
             url: "/api/order?action=update",
             method: "POST",
-            data:{
-              data,
+            data: {
+                data,
                 idOrder,
                 address
             },
-            success: res =>{
+            success: res => {
                 let order = JSON.parse(res)
                 let index = -1;
                 for (let i = 0; i < dataOrder.length; i++) {
                     if (dataOrder[i].id === order.id) {
                         dataOrder[i] = order;
-                        console.log( dataOrder[i])
+                        console.log(dataOrder[i])
                         document.querySelector(`.oder${idOrder}`).parentNode.parentNode.parentNode.querySelectorAll("td")[2].textContent = toUSD(order.total_price)
                         document.querySelector(`.oder${idOrder}`).parentNode.parentNode.parentNode.querySelectorAll("td")[3].textContent = toUSD(order.address)
                         document.querySelector("#editOrderDetailsModal").style.display = "none";
@@ -535,13 +537,13 @@ const saveUpdate = ()=>{
 
 
             },
-            error: err=>{
+            error: err => {
 
             }
         })
     }
 }
-document.querySelector(".cancelOrder").addEventListener('click',(e)=>{
+document.querySelector(".cancelOrder").addEventListener('click', (e) => {
     let idOrder = $('#id_order_update').val()
     swal({
         title: "Cảnh báo",
@@ -551,18 +553,18 @@ document.querySelector(".cancelOrder").addEventListener('click',(e)=>{
         if (willDelete) {
             $.ajax({
                 statusCode: {
-                    401: function() {
+                    401: function () {
                         swal("Bạn không có quyền thực hiện chức năng này.!", {});
 
                     }
                 },
                 url: "/api/order?action=update",
                 method: "POST",
-                data:{
+                data: {
                     idOrder,
                     status: 0
                 },
-                success: res =>{
+                success: res => {
                     let order = JSON.parse(res)
                     let index = -1;
                     for (let i = 0; i < dataOrder.length; i++) {
@@ -574,14 +576,14 @@ document.querySelector(".cancelOrder").addEventListener('click',(e)=>{
                             const dateNow = new Date();
                             let status;
                             let badge;
-                            if(order.status == 0){
+                            if (order.status == 0) {
                                 status = "Đã hủy";
                                 badge = "badge badge-danger";
-                            }else{
+                            } else {
                                 if (dateTransport < dateNow) {
                                     status = "Đã giao";
                                     badge = "badge bg-success";
-                                } else{
+                                } else {
                                     status = "Đang xử lý";
                                     badge = "badge bg-info";
                                 }
@@ -614,7 +616,7 @@ document.querySelector(".cancelOrder").addEventListener('click',(e)=>{
 
 
                 },
-                error: err=>{
+                error: err => {
 
                 }
             })
