@@ -15,7 +15,37 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.1/dist/js/bootstrap.bundle.min.js"></script>
   <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+  <style>
+    .table-details {
+      position: relative;
+      max-height: 300px;
+      overflow: auto;
+    }
+    .address {
+      padding: 4px ;
+      border-radius:5px ;
+    }
+    .table-details table {
+      width: 100%;
+      border-collapse: separate;
+    }
 
+    .table-details th {
+      position: sticky;
+      top: -1px;
+      background-color: white;
+      z-index: 1;
+      border: 1px solid #ddd;
+    }
+    .hide{
+      display: none;
+    }
+    .table-details td,.table-details th {
+      padding: 8px;
+      border: 1px solid #ddd;
+    }
+
+  </style>
 </head>
 <body style="">
 <jsp:include page="../Component/header/Header.jsp"/>
@@ -136,7 +166,7 @@
 
                         <div class="col">
                           <div class="form-group">
-                            <button class="btn btn-primary" type="button" onclick="openFormChanglePass(this)">Thay đổi mật khẩu</button>
+                            <button class="btn btn-primary changlePass" type="button" onclick="openFormChanglePass(this)">Thay đổi mật khẩu</button>
                           </div>
                         </div>
 
@@ -200,12 +230,148 @@
     </div>
   </div>
 </div>
+<div class="modal fade" id="editOrderDetailsModal" tabindex="-1" role="dialog" aria-labelledby="editOrderDetailsModal" aria-hidden="true">
+  <div class="outside_modal" style="position: fixed; top: 0; left: 0;right: 0; bottom: 0; z-index: 998">
 
+  </div>
+  <div class="modal-dialog modal-dialog-centered modal-xl" style="z-index: 999; max-width: 750px" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="ssss">Order Details</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div>
+          <p><strong>Tên khách hàng: </strong><span type="text" class="show_detail_orders_name"></span></p>
+          <p class="showAddress"><strong>Địa chỉ: </strong><span type="text" class="show_detail_orders_address"></span></p>
+
+          <div class="form_edit_address hide">
+            <label class="form-label" for="ss"><strong>Địa chỉ: </strong></label>
+            <div id="order" style="display: flex; flex-direction: column;     gap: 10px">
+              <select class="address province">
+                <option value="0">Tỉnh</option>
+              </select>
+              <select class="address district events_none" >
+                <option value="0">Huyện</option>
+              </select>
+              <select class="address ward events_none" style="    margin-bottom: 0;">
+                <option value="0">Xã</option>
+              </select>
+              <a  class="save_address" style="color: #3399cc; font-weight: 600; cursor: pointer;">Xác nhân</a>
+              <a  class="close_address" style="color: #3399cc; font-weight: 600; cursor: pointer;">Hủy</a>
+
+            </div>
+          </div>
+          </p>
+          <p><strong>Số điện thoại: </strong><span type="text" class="show_detail_orders_phone"></span></p>
+          <p><strong>Email: </strong><span type="text" class="show_detail_orders_email"></span></p>
+
+
+        </div>
+        <div class="table-details">
+          <table>
+            <thead>
+            <tr>
+              <th>Tên sản phẩm</th>
+              <th>Hình ảnh</th>
+              <th>Giá</th>
+              <th>Số lượng</th>
+              <th>Giá tiền</th>
+              <th>Thao tác</th>
+
+            </tr>
+            </thead>
+            <tbody class="table_orders_detail_edit">
+
+            </tbody>
+          </table>
+        </div>
+
+        <table class="table">
+
+        </table>
+        <p><strong>Thêm sản phẩm cho đơn hàng</strong></p>
+        <div>
+          <select oninput='select_add_product()' class="address add_prodcut" style="width: 100%">
+            <option value="0">Chọn sản phẩm thêm vào đơn hàng</option>
+          </select>
+
+          <button style="margin-top: 10px; opacity: 0.6; pointer-events: none" type="button" onclick="add_product_order()" class="btn btn-success bt_add_product " data-dismiss="modal">Thêm sản phẩm</button>
+
+        </div>
+      </div>
+      <div class="modal-footer">
+
+        <button type="button" class="btn btn-secondary saveEdit" onclick="saveUpdate()" data-dismiss="modal">Lưu</button>
+        <button type="button" class="btn btn-secondary exitModal" data-dismiss="modal">Thoát</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="orderDetailsModal" tabindex="-1" role="dialog" aria-labelledby="orderDetailsModalLabel" aria-hidden="true">
+  <div id="outside_modal" style="position: fixed; top: 0; left: 0;right: 0; bottom: 0; z-index: 998">
+
+  </div>
+  <div class="modal-dialog modal-dialog-centered modal-xl" style="z-index: 999; max-width: 750px" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="orderDetailsModalLabel">Order Details</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div>
+          <p><strong>Tên khách hàng: </strong><span class="show_detail_orders_name"></span></p>
+          <p><strong>Địa chỉ: </strong><span class="show_detail_orders_address"></span></p>
+          <p><strong>Số điện thoại: </strong><span class="show_detail_orders_phone"></span></p>
+          <p><strong>Email: </strong><span class="show_detail_orders_email"></span></p>
+          <p><strong>Mã vận chuyển: </strong><span class="show_detail_orders_idTransport"></span></p>
+          <p><strong>Tổng tiền: </strong><span class="show_detail_orders_total"></span></p>
+          <p><strong>Trạng thái: </strong><span class="show_detail_orders_status"></span></p>
+
+        </div>
+        <div class="table-details">
+          <table>
+            <thead>
+            <tr>
+              <th>Tên sản phẩm</th>
+              <th>Hình ảnh</th>
+              <th>Giá</th>
+              <th>Số lượng</th>
+              <th>Thành tiền</th>
+            </tr>
+            </thead>
+            <tbody id="table_orders_detail">
+
+            </tbody>
+          </table>
+        </div>
+
+        <table class="table">
+
+        </table>
+      </div>
+      <div class="modal-footer">
+        <input hidden="" value="" id="id_order_update"/>
+        <button style="background-color: #bb1818" type="button" class="btn btn-secondary cancelOrder"  data-dismiss="modal">Hủy đơn hàng</button>
+
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 </body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
 
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css" />
 <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
 <script src="../javascrip/profileEdit.js"></script>
+<script src="./javascrip/ordersUser.js"></script>
+
 <script >
   var changePass = false
   var statusLogin;
@@ -285,18 +451,41 @@
     const form = document.getElementById("editProfile")
     const formData = new FormData(form);
     const formDataObject = Object.fromEntries(formData.entries());
+    let notify = ''
+    let changlePass = false;
     for (const property in formDataObject) {
-      if(formDataObject[property] === ""){
+      if(property == 'phone' && document.querySelector(`input[name ='${property}']`).value.length > 11){
+        notify += 'Số điện thoại không hợp lệ.!'
         document.querySelector(`input[name ='${property}']`).style.border = 'solid 1px red'
+
+        checkNull = false
+
+      }
+      if(formDataObject[property] === ""){
+
+        document.querySelector(`input[name ='${property}']`).style.border = 'solid 1px red'
+        if(!notify.includes("Thông tin không được để trống"))
+        notify += `\nThông tin không được để trống.!`
+
         checkNull = false
       }
     }
     if(changePass){
-      if(formDataObject.passnew != formDataObject.repassnew){
+      changlePass = true
+      if(formDataObject.passnew != formDataObject.repassnew ){
         document.querySelector(`input[name ='passnew']`).style.border = 'solid 1px red'
         document.querySelector(`input[name ='repassnew']`).style.border = 'solid 1px red'
+        notify += '\nMật khẩu không trung nhau.!'
+
         checkNull = false
       }
+      if( formDataObject.passnew.length<8){
+        document.querySelector(`input[name ='passnew']`).style.border = 'solid 1px red'
+        document.querySelector(`input[name ='repassnew']`).style.border = 'solid 1px red'
+        notify += '\nMật khẩu phải có hơn 8 ký tự.!'
+        checkNull = false
+      }
+
     }
     if(checkNull){
       formDataObject.fullName = encodeURIComponent(formDataObject.fullName)
@@ -307,17 +496,28 @@
         data: formDataObject,
         contentType: 'application/x-www-form-urlencoded',
         success: function(res) {
-          let rs = JSON.parse(res)
-          if(rs === 1){
-            window.location.pathname = "/profile"
-          }else{
-            alert(rs)
+          if(res == -2){
+            swal("Mật khẩu cũ không chính xác.!", {});
+          return;
           }
+          if(res == -1){
+            swal("Có lỗi trong quá trình cập nhập.!", {});
+            return;
+          }
+          let rs = JSON.parse(res)
+          if(changlePass){
+            document.querySelector(".changlePass").click()
+          }
+          swal({
+            text: "Cập nhập thành công.!",
+            timer: 400
+          });
 
         }
       });
     }else{
-      console.log("Loi");
+      swal(notify , {});
+
     }
   }
 
@@ -359,14 +559,12 @@
       success: function(res) {
         let arrOrder  = JSON.parse(res).reverse()
         console.log(arrOrder)
+        dataOrder = arrOrder
         initTable(arrOrder)
       }
     });
 
 
-  }
-  const toUSD = (money)=> {
-    return money.toLocaleString('en-US', {style: 'currency', currency: 'USD'});
   }
 
     const initTable = (dataOrders)=>{
@@ -404,7 +602,6 @@
             return `<td><span class="${badge}">${status}</span></td>`;
           }},
         {data:"","render": function (data, type, row, meta) {
-            if(row.status == 1){
               return `
                             <div    style="
     display: flex;
@@ -418,35 +615,9 @@
                             </a>
                             <input hidden="" class="oder${row.id}"/>
 
-                            <a className="action_order " onclick='viewUpdateOrder(${row.id})' style="color:#28a745;" type="button" data-toggle="modal"
-                                    data-target="#" title="Sửa"><i class="fa-solid fa-pen-to-square"></i>
-                            </a>
-                            <a className="action_order" style="color:red;" type="button"
-                                    onClick="deleteRow(this, ${row.id})" title="Xóa"><i class="fa-solid fa-trash">
-                                    <input hidden value="${row.id}"/> </i></a>
 </div>
 
                            `;
-            }else{
-              return `
-                            <div    style="
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-">
-                            <a className="action_order"
-                                    style="color:blue;" type="button"
-                                    onclick="viewDetail(${row.id})"
-                                    data-toggle="modal" data-target="#orderDetailsModal" title="Xem chi tiết"><i class="fa-solid fa-circle-info"></i>
-                            </a>
-                            <input hidden="" class="oder${row.id}"/>
-                            <a className="action_order" style="color:red;" type="button"
-                                    onClick="deleteRow(this, ${row.id})" title="Xóa"><i class="fa-solid fa-trash">
-                                    <input hidden value="${row.id}"/> </i></a>
-</div>
-
-                           `;
-            }
 
           }}
       ],

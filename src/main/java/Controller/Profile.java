@@ -25,10 +25,11 @@ import java.util.Map;
 
 @WebServlet("/profile")
 public class Profile extends HttpServlet {
-    private void changleUser(HttpServletRequest req, HttpServletResponse res, String user) throws IOException, SQLException, ClassNotFoundException {
+    private void changleUser(HttpServletRequest req, HttpServletResponse res) throws IOException, SQLException, ClassNotFoundException {
         res.setContentType("text/html;charset=UTF-8");
         req.setCharacterEncoding("utf-8");
-        String userName = user;
+        User user = (User) req.getSession().getAttribute("user");
+
         Map<String, String[]> params = req.getParameterMap();
         String pass = null;
         try {
@@ -37,27 +38,39 @@ public class Profile extends HttpServlet {
         }
         if (pass != null) {
             String oldPass = HashSHA216.hash(pass);
-            if (!UserDAO.checkLogin(userName, oldPass)) {
-                res.getWriter().write(new Gson().toJson("Wrong Password"));
+            if (!UserDAO.checkLogin(user.getUserName(), oldPass)) {
+                res.getWriter().println(-2);
                 return;
             }
-            if (UserDAO.updateUser(userName, HashSHA216.hash(params.get("passnew")[0]), URLDecoder.decode(params.get("fullName")[0], "UTF-8"), params.get("email")[0], params.get("phone")[0], URLDecoder.decode(params.get("address")[0], "UTF-8")) == 1) {
-                User userMain = UserDAO.getUserByName(user);
-                saveSession(userMain, req);
-                res.getWriter().write(new Gson().toJson(1));
+            user.setFullName(URLDecoder.decode(params.get("fullName")[0], "UTF-8"));
+            user.setAddress( URLDecoder.decode(params.get("address")[0], "UTF-8"));
+            user.setEmail(params.get("email")[0]);
+            user.setPhone(params.get("phone")[0]);
+            user.setPassWord(HashSHA216.hash(params.get("passnew")[0]));
+            int rsUpdate = UserDAO.updateUserAndPass(user);
+            if(rsUpdate == 1){
+                saveSession(user, req);
+                user.setPassWord(null);
+                res.getWriter().println(new Gson().toJson(user));
                 return;
             }
-            res.getWriter().write(new Gson().toJson("Error"));
+            res.getWriter().println(-1);
         } else {
-            if (UserDAO.updateUser(userName, HashSHA216.hash(params.get("passnew")[0]), URLDecoder.decode(params.get("fullName")[0], "UTF-8"), params.get("email")[0], params.get("phone")[0], URLDecoder.decode(params.get("address")[0], "UTF-8")) == 1) {
-                User userMain = UserDAO.getUserByName(user);
-                Log log = new Log(Log.ALERT, userMain.getId(), this.getClass().getName(), "Chỉnh sửa hồ sơ user(Profile)", 1);
+            user.setFullName(URLDecoder.decode(params.get("fullName")[0], "UTF-8"));
+            user.setAddress( URLDecoder.decode(params.get("address")[0], "UTF-8"));
+            user.setEmail(params.get("email")[0]);
+            user.setPhone(params.get("phone")[0]);
+            int rsUpdate = UserDAO.updateUser(user);
+
+            if (rsUpdate == 1) {
+                Log log = new Log(Log.ALERT, user.getId(), this.getClass().getName(), "Chỉnh sửa hồ sơ user(Profile)", 1);
                 log.insert(ConnectDB.getConnect());
-                saveSession(userMain, req);
-                res.getWriter().write(new Gson().toJson(1));
+                saveSession(user, req);
+                user.setPassWord(null);
+                res.getWriter().write(new Gson().toJson(user));
                 return;
             }
-            res.getWriter().write(new Gson().toJson("Error"));
+            res.getWriter().println(-1);
         }
     }
 
@@ -133,7 +146,7 @@ public class Profile extends HttpServlet {
         String action = req.getParameter("action");
         if (action != null && action.equals("changeProfile")) {
             try {
-                changleUser(req, res, user.getUserName());
+                changleUser(req, res);
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             } catch (ClassNotFoundException e) {
@@ -148,59 +161,8 @@ public class Profile extends HttpServlet {
                 throw new RuntimeException(e);
             }
         }
-        if (action != null && action.equals("updatePhone")) {
-            try {
-                updatePhone(req, res, user);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-        }
-        if (action != null && action.equals("updateAddress")) {
-            try {
-                updateAddress(req, res, user);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-        }
-        if (action != null && action.equals("updateName")) {
-            try {
-                updateName(req, res, user);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-        }
 
-    }
 
-    private void updatePhone(HttpServletRequest req, HttpServletResponse res, User user) throws IOException, SQLException {
-        if (UserDAO.updateColUser(user.getUserName(), "phone", req.getParameter("phone"), "int") == 1) {
-            Log log = new Log(Log.ALERT, user.getId(), this.getClass().getName(), "chỉnh sửa sô điện thoại( Profile)", 1);
-            log.insert(ConnectDB.getConnect());
-            res.getWriter().println(new Gson().toJson(UserDAO.getInfoByUserName(user.getUserName())));
-            return;
-        }
-        res.getWriter().println("Error!!");
-
-    }
-
-    private void updateName(HttpServletRequest req, HttpServletResponse res, User user) throws IOException, SQLException {
-        if (UserDAO.updateColUser(user.getUserName(), "fullname", req.getParameter("name"), "string") == 1) {
-            Log log = new Log(Log.ALERT, user.getId(), this.getClass().getName(), "chỉnh sửa tên user( Profile)", 1);
-            log.insert(ConnectDB.getConnect());
-            res.getWriter().println(new Gson().toJson(UserDAO.getInfoByUserName(user.getUserName())));
-            return;
-        }
-        res.getWriter().println("Error!!");
-    }
-
-    private void updateAddress(HttpServletRequest req, HttpServletResponse res, User user) throws IOException, SQLException {
-        if (UserDAO.updateColUser(user.getUserName(), "address", req.getParameter("address"), "string") == 1) {
-            Log log = new Log(Log.ALERT, user.getId(), this.getClass().getName(), "chỉnh sửa địa chỉ user( Profile)", 1);
-            log.insert(ConnectDB.getConnect());
-            res.getWriter().println(new Gson().toJson(UserDAO.getInfoByUserName(user.getUserName())));
-            return;
-        }
-        res.getWriter().println("Error!!");
     }
 
     public void saveSession(User user, HttpServletRequest req) {

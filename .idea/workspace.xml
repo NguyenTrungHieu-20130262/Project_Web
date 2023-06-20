@@ -10,7 +10,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="36aa5a77-44ab-4a6a-bf7a-0232dfbcdd34" name="Changes" comment="update">
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/Page/404.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/Page/404.jsp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/webapp/javascrip/ordersUser.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Controller/Admin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Controller/Admin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Controller/OrderUser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Controller/OrderUser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Controller/Profile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Controller/Profile.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/DAO/OderDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DAO/OderDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/DAO/UserDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DAO/UserDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/Page/Profile.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/Page/Profile.jsp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
