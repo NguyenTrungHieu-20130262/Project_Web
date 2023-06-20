@@ -48,6 +48,202 @@ public class ProductDAO {
         }
         return products;
     }
+    public static int countProduct() {
+        String query = "SELECT COUNT(*) AS count FROM product";
+        try {
+            Statement statement = ConnectDB.getConnect().createStatement();
+            PreparedStatement preparedStatement = statement.getConnection().prepareStatement(query);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                return  resultSet.getInt("count");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return 0;
+    }
+    public static  ArrayList<Product> getProductsWithOffset(int offset, int RECORDS_PER_PAGE) {
+        String query = "SELECT product.*, sum(quantity) as quantity FROM importproduct join product on importproduct.idProduct = product.id GROUP by product.id HAVING quantity > 0 LIMIT ?, ?";
+        ArrayList<Product> products = new ArrayList<Product>();
+        try {
+            Statement statement = ConnectDB.getConnect().createStatement();
+            PreparedStatement preparedStatement = statement.getConnection().prepareStatement(query);
+            preparedStatement.setInt(1, offset);
+            preparedStatement.setInt(2, RECORDS_PER_PAGE);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                Company vendo = CompanyDAO.getVendoById(resultSet.getInt(2));
+                ProductDTO prod = new ProductDTO(resultSet.getInt(1),
+                        vendo,
+                        resultSet.getString(3),
+                        resultSet.getString(4),
+                        resultSet.getString(5),
+                        resultSet.getInt(6),
+                        resultSet.getString(7),
+                        resultSet.getDouble(8),
+                        resultSet.getDate(9),
+                        resultSet.getInt(14),
+                        getImagesByID(resultSet.getInt(1))
+                );
+                prod.setQuantity(resultSet.getInt("quantity"));
+                products.add(prod);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return products;
+    }
+    public static  ArrayList<Product> filterProduct(HttpServletRequest req) {
+        String name = req.getParameter("name");
+        String year = req.getParameter("year");
+        String company = req.getParameter("company");
+        String priceMin = req.getParameter("priceMin");
+        String priceMax = req.getParameter("priceMax");
+        String fuel = req.getParameter("fuel");
+
+        String query = "SELECT product.*, sum(quantity) as quantity FROM importproduct join product on importproduct.idProduct = product.id GROUP by product.id " +
+                "HAVING quantity > 0 " +
+                "&& product.name like '%"+name.trim()+"%'" ;
+        if(!year.trim().equals("")){
+            query += "&& product.yearOfManuFacture = " + Integer.valueOf(year.trim());
+        }
+        if(!company.trim().equals("")){
+            query += "&& product.idVendo = " + Integer.valueOf(company.trim());
+        }
+        query += "&& product.price <= " + Integer.valueOf(priceMax.trim());
+        query += "&& product.price >= " + Integer.valueOf(priceMin.trim());
+        if(fuel.trim().equals("xang")){
+            query += "&& product.fuel = " + 1;
+        }
+        if(fuel.trim().equals("dien")){
+            query += "&& product.fuel = " + 2;
+        }
+        ArrayList<Product> products = new ArrayList<Product>();
+        try {
+            Statement statement = ConnectDB.getConnect().createStatement();
+            PreparedStatement preparedStatement = statement.getConnection().prepareStatement(query);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                Company vendo = CompanyDAO.getVendoById(resultSet.getInt(2));
+                ProductDTO prod = new ProductDTO(resultSet.getInt(1),
+                        vendo,
+                        resultSet.getString(3),
+                        resultSet.getString(4),
+                        resultSet.getString(5),
+                        resultSet.getInt(6),
+                        resultSet.getString(7),
+                        resultSet.getDouble(8),
+                        resultSet.getDate(9),
+                        resultSet.getInt(14),
+                        getImagesByID(resultSet.getInt(1))
+
+                );
+                prod.setQuantity(resultSet.getInt("quantity"));
+                products.add(prod);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return products;
+    }
+
+    public static  ArrayList<Product> filterProductAndPage(int offset, int RECORDS_PER_PAGE, HttpServletRequest req) {
+        String name = req.getParameter("name");
+        String year = req.getParameter("year");
+        String company = req.getParameter("company");
+        String priceMin = req.getParameter("priceMin");
+        String priceMax = req.getParameter("priceMax");
+        String fuel = req.getParameter("fuel");
+        String query = "SELECT product.*, sum(quantity) as quantity FROM importproduct join product on importproduct.idProduct = product.id GROUP by product.id " +
+                "HAVING quantity > 0 " +
+                "&& product.name like '%"+name.trim()+"%'" ;
+        if(!year.trim().equals("")){
+            query += "&& product.yearOfManuFacture = " + Integer.valueOf(year.trim());
+        }
+        if(!company.trim().equals("")){
+            query += "&& product.idVendo = " + Integer.valueOf(company.trim());
+        }
+        query += "&& product.price <= " + Integer.valueOf(priceMax.trim());
+        query += "&& product.price >= " + Integer.valueOf(priceMin.trim());
+        if(fuel.trim().equals("xang")){
+            query += "&& product.fuel = " + 1;
+        }
+        if(fuel.trim().equals("dien")){
+            query += "&& product.fuel = " + 2;
+        }
+        query += " LIMIT ?, ?";
+        ArrayList<Product> products = new ArrayList<Product>();
+        try {
+            Statement statement = ConnectDB.getConnect().createStatement();
+            PreparedStatement preparedStatement = statement.getConnection().prepareStatement(query);
+            preparedStatement.setInt(1, offset);
+            preparedStatement.setInt(2, RECORDS_PER_PAGE);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                Company vendo = CompanyDAO.getVendoById(resultSet.getInt(2));
+                ProductDTO prod = new ProductDTO(resultSet.getInt(1),
+                        vendo,
+                        resultSet.getString(3),
+                        resultSet.getString(4),
+                        resultSet.getString(5),
+                        resultSet.getInt(6),
+                        resultSet.getString(7),
+                        resultSet.getDouble(8),
+                        resultSet.getDate(9),
+                        resultSet.getInt(14),
+                        getImagesByID(resultSet.getInt(1))
+
+                );
+                prod.setQuantity(resultSet.getInt("quantity"));
+                products.add(prod);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return products;
+    }
+    public static  int countProductByFilter(HttpServletRequest req) {
+        String name = req.getParameter("name");
+        String year = req.getParameter("year");
+        String company = req.getParameter("company");
+        String priceMin = req.getParameter("priceMin");
+        String priceMax = req.getParameter("priceMax");
+        String fuel = req.getParameter("fuel");
+
+        String query = "SELECT COUNT(*) as count,product.* FROM  product where  " +
+                "product.name like '%"+name.trim()+"%'" ;
+        if(!year.trim().equals("")){
+            query += "&& product.yearOfManuFacture = " + Integer.valueOf(year.trim());
+        }
+        if(!company.trim().equals("")){
+            query += "&& product.idVendo = " + Integer.valueOf(company.trim());
+        }
+        query += "&& product.price <= " + Integer.valueOf(priceMax.trim());
+        query += "&& product.price >= " + Integer.valueOf(priceMin.trim());
+        if(fuel.trim().equals("xang")){
+            query += "&& product.fuel = " + 1;
+        }
+        if(fuel.trim().equals("dien")){
+            query += "&& product.fuel = " + 2;
+        }
+        ArrayList<Product> products = new ArrayList<Product>();
+        try {
+            Statement statement = ConnectDB.getConnect().createStatement();
+            PreparedStatement preparedStatement = statement.getConnection().prepareStatement(query);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                return resultSet.getInt("count");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return 0;
+    }
+
+
+
     public static ArrayList<Product> getProductAll() {
         ArrayList<Product> products = new ArrayList<>();
         String query = "SELECT product.*, sum(quantity) as quantity FROM importproduct join product on importproduct.idProduct = product.id GROUP by product.id ";
@@ -108,7 +304,6 @@ public class ProductDAO {
                         resultSet.getString(3),
                         resultSet.getString(4),
                         resultSet.getString(5),
-
                         resultSet.getInt(6),
                         resultSet.getString(7),
                         resultSet.getDouble(8),
@@ -422,7 +617,6 @@ public class ProductDAO {
     }
 
     public static void main(String[] args) {
-        ProductDAO productDAO = new ProductDAO();
 //        System.out.println(productDAO.getNewProducts());
 //        System.out.println(productDAO.getProductByVendo("BMW"));
     }

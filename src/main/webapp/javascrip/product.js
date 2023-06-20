@@ -3,26 +3,31 @@ var dataCompany = []
 var indexNumber = 1;
 var quantityProductOnPage = 10
 var dataAll = []
-const changeNumberPage = (n)=>{
-    indexNumber = n
-    window.scrollTo(0, 300);
-    showData(dataFilter)
-}
+let filter
+const changeNumberPage = (n, e)=>{
+    //indexNumber = n
+    $('html, body').animate({
+        scrollTop: 300
+    }, 800);
+    document.querySelectorAll(".pagination a").forEach(tmp=>{
+        tmp.classList.remove('active')
+    })
+    e.classList.add("active")
 
+    if(filter){
+        getProdutWithPageAndFilter(n)
+
+    }else{
+        getProdutWithPage(n)
+    }
+}
 const showData = (arr) =>{
     console.log(indexNumber)
+
+}
+
+const renderProduct= (arr)=>{
     let rs =``
-    let number = arr.length/quantityProductOnPage
-    let numberPage = ` <a >&laquo;</a>`
-
-    for (let i = 1; i <= number; i++) {
-        i === indexNumber ? numberPage += `<a class="active" onclick="changeNumberPage(${i})" >${i}</a>` : numberPage += `<a onclick="changeNumberPage(${i})" >${i}</a>`
-
-    }
-    numberPage += `<a >&raquo;</a>`
-    if(number === 0){
-        numberPage =``
-    }
     arr.forEach((tmp, index)=>{
         if(index <= indexNumber * quantityProductOnPage && index >= (indexNumber - 1) *  quantityProductOnPage){
             rs += `
@@ -56,21 +61,40 @@ const showData = (arr) =>{
         `
         }
     })
-    document.querySelector("#box-list-car").innerHTML = rs
+    if(rs === ``){
+        document.querySelector("#box-list-car").innerHTML = `<img src="https://img.freepik.com/free-vector/no-data-concept-illustration_114360-536.jpg?w=2000"/>`
+
+    }else{
+        document.querySelector("#box-list-car").innerHTML = rs
+
+    }
+
+}
+const initPagination = ()=>{
+    let numberPage = ` <a >&laquo;</a>`
+    let number = Number(document.querySelector(".number_pagination").value)
+    for (let i = 1; i <= number; i++) {
+        i === indexNumber ? numberPage += `<a class="active" onclick="changeNumberPage(${i}, this)" >${i}</a>` : numberPage += `<a onclick="changeNumberPage(${i}, this)" >${i}</a>`
+
+    }
     document.querySelector(".pagination").innerHTML =numberPage
 }
+initPagination()
+
 document.querySelector(".box-search-head2").addEventListener("input", (e)=>{
     handleFilter()
 })
 const handleFilter = ()=>{
-    console.log(dataAll)
+    let totalFilter = []
     indexNumber = 1
     let companySel =  document.querySelector("#company").value
     let year =  document.querySelector("#year").value
     let name =  document.querySelector(".box-search-head2").value
     console.log(name)
     dataFilter = dataAll
-
+    totalFilter.push(companySel)
+    totalFilter.push(year)
+    totalFilter.push(name)
     if(companySel === "all"){
         dataFilter = dataAll
     }else{
@@ -143,7 +167,7 @@ const getCompany = ()=>{
             dataCompany = JSON.parse(res)
             console.log(dataCompany)
             let compantElm = document.querySelector("#company")
-            let rs = `<option value="all">Tất cả</option>`
+            let rs = `<option value="">Tất cả</option>`
             dataCompany.map((tmp)=>{
                 rs += `<option value="${tmp.id}">${tmp.name}</option>`
             })
@@ -161,19 +185,8 @@ const init = ()=>{
             dataFilter = JSON.parse(res)
             dataAll =JSON.parse(res)
             showData(JSON.parse(res))
-            getCompany()
-            console.log("dsdsdsd")
 
-            let year = `<option value="all">Tất cả</option>`
-            for (let i = 1990; i < 2024; i++) {
-                console.log(i)
-                year += `<option value="${i}">${i}</option>`
-            }
-            document.querySelector("#year").innerHTML = year
-            document.querySelector("#year").addEventListener("input", handleFilter)
-            document.querySelectorAll('#collapse_aside4 input').forEach((tmp)=>{
-                tmp.addEventListener("input", handleFilter)
-            })
+
         }
     });
 }
@@ -211,5 +224,94 @@ const addToCart = (id)=>{
 
 
 }
-init()
+
+const getProdutWithPage = (page)=>{
+    $.ajax({
+        url: `/product?action=products&page=${page}`,
+        type: 'get',
+        success: function(res) {
+            renderProduct(JSON.parse(res))
+        }
+    });
+}
+const getProdutWithPageAndFilter = (page)=>{
+    let urlReq = `/product?action=filter&page=${page}`
+    for (const property in filter) {
+        urlReq += `&${property}= ${filter[property]}`
+    }
+    console.log(filter)
+    $.ajax({
+        url: urlReq,
+        type: 'get',
+        success: function(res) {
+            let data = JSON.parse(res)
+            renderProduct(data)
+
+        }
+    });
+}
+const initYear = ()=>{
+    let year = `<option value="">Tất cả</option>`
+    for (let i = 1990; i < 2024; i++) {
+        year += `<option value="${i}">${i}</option>`
+    }
+    document.querySelector("#year").innerHTML = year
+    document.querySelector("#year").addEventListener("input", handleFilter)
+    document.querySelectorAll('#collapse_aside4 input').forEach((tmp)=>{
+        tmp.addEventListener("input", handleFilter)
+    })
+}
+const filterHandle = ()=>{
+    console.log("Click")
+    let totalFilter = []
+    let company =  document.querySelector("#company").value
+    let year =  document.querySelector("#year").value
+    let name =  document.querySelector(".box-search-head2").value
+    let priceMin = document.querySelector(".text-min").textContent.replace(",","").replace(".","")
+    let priceMax = document.querySelector(".text-max").textContent.replace(",","").replace(".","")
+    let xang = document.querySelector('#xang').checked
+    let dien = document.querySelector('#dau').checked
+    let fuel = ''
+    if(xang){
+        fuel = 'xang'
+    }
+    if(dien){
+        fuel = 'dien'
+    }
+     filter ={
+        name,
+        year,
+        company,
+        priceMin,
+        priceMax,
+        fuel
+    }
+    let urlReq = `/product?action=filter`
+
+    for (const property in filter) {
+        urlReq += `&${property}= ${filter[property]}`
+    }
+    console.log(filter)
+    $.ajax({
+        url: urlReq,
+        type: 'get',
+        success: function(res) {
+            res = JSON.parse(res)
+            console.log(res)
+            document.querySelector(".number_pagination").value = res.totalPages
+            initPagination()
+            let data = JSON.parse(res.data)
+            renderProduct(data)
+        }
+    });
+}
+
+
+
+
+
+
+getCompany()
+initYear()
+getProdutWithPage(1)
 

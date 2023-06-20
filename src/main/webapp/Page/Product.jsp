@@ -33,18 +33,17 @@
         </div>
         <div class="Container-left">
             <h1 class="heading mb-10" style="margin-top: 20px; margin-left: 20px">Mua bán xe ô tô mới</h1>
-
             <div class="box-list-car" id="box-list-car">
             </div>
-            <div class="pagination">
+            <input hidden class="number_pagination"  value="<%= session.getAttribute("totalPages") %>"/>
 
+            <div class="pagination">
             </div>
         </div>
 
     </div>
 </div>
 <br>
-<%--<script type="text/javascript" src="${pageContext.request.contextPath}/js/index.js"></script>--%>
 
 <jsp:include page="../Component/footer/footer.jsp"/>
 </body>
