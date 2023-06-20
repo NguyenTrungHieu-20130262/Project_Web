@@ -69,7 +69,7 @@ public class CommentControl extends HttpServlet {
                     resp.setStatus(200);
                 } else {
                     resp.getWriter().println(new RespJsonServlet("not ok").json());
-                    resp.setStatus(200);
+                    resp.setStatus(400);
                 }
             } catch (SQLException e) {
                 throw new RuntimeException(e);

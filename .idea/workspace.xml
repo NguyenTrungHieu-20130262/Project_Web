@@ -11,10 +11,25 @@
   <component name="ChangeListManager">
     <list default="true" id="bc76f0f4-b08a-497a-865d-c4883f45e10a" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Connect/ConnectDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Connect/ConnectDB.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Controller/CartControl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Controller/CartControl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Controller/CommentControl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Controller/CommentControl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Controller/FilterAdmin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Controller/FilterAdmin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Controller/Product.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Controller/Product.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Controller/Register.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Controller/Register.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Controller/UserControl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Controller/UserControl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/DAO/UserDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DAO/UserDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Model/RespJsonServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/RespJsonServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Security/ReLoginFillter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Security/ReLoginFillter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/Component/OrderStatus/OrderStatus.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/Component/OrderStatus/OrderStatus.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/Page/Admin/doc/PostStatus/make/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/javascrip/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/Page/Admin/doc/PostStatus/make/index.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/Page/Admin/doc/PostStatus/make/index.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/Page/Admin/doc/index.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/Page/Admin/doc/index.jsp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/webapp/Page/Admin/doc/table-data-table.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/Page/Admin/doc/table-data-table.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/Page/Admin/doc/thong-ke-tai-khoan.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/Page/Admin/doc/thong-ke-tai-khoan.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/Page/Detail.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/Page/Detail.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/Page/Register.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/Page/Register.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/javascrip/ordersAdmin.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/javascrip/ordersAdmin.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -65,7 +80,7 @@
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/ProjectInteelij/TTLTW/Project_Web/src/main/webapp/Img/User&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/ProjectInteelij/TTLTW/Project_Web&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -89,6 +104,7 @@
       <recent name="C:\ProjectInteelij\TTLTW\Project_Web\src\main\webapp\Component" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\ProjectInteelij\TTLTW\Project_Web\src\main\webapp\javascrip" />
       <recent name="C:\ProjectInteelij\TTLTW\Project_Web\src\main\webapp\Page\Admin\doc" />
       <recent name="D:\HOC\TTW\Project\src\main\webapp\javascrip" />
     </key>
@@ -100,8 +116,7 @@
   <component name="RunManager">
     <configuration name="Tomcat 9.0.70" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local" APPLICATION_SERVER_NAME="Tomcat 9.0.70" ALTERNATIVE_JRE_ENABLED="true" ALTERNATIVE_JRE_PATH="17" nameIsGenerated="true">
       <option name="BROWSER_ID" value="98ca6316-2f89-46d9-a9e5-fa9e2b0625b3" />
-      <option name="UPDATE_ON_FRAME_DEACTIVATION" value="true" />
-      <option name="UPDATE_CLASSES_ON_FRAME_DEACTIVATION" value="true" />
+      <option name="UPDATING_POLICY" value="restart-server" />
       <deployment>
         <artifact name="Project:war exploded">
           <settings>
@@ -237,7 +252,20 @@
       <workItem from="1684457146208" duration="7624000" />
       <workItem from="1684467112941" duration="6725000" />
       <workItem from="1684857200760" duration="1924000" />
-      <workItem from="1684879983028" duration="9115000" />
+      <workItem from="1684879983028" duration="9462000" />
+      <workItem from="1684892636493" duration="1506000" />
+      <workItem from="1684901960026" duration="17000" />
+      <workItem from="1684980363464" duration="199000" />
+      <workItem from="1685933491041" duration="847000" />
+      <workItem from="1686019570382" duration="3000" />
+      <workItem from="1686100330223" duration="5826000" />
+      <workItem from="1686147672694" duration="19000" />
+      <workItem from="1686974629331" duration="2925000" />
+      <workItem from="1687052234444" duration="12160000" />
+      <workItem from="1687079585527" duration="1718000" />
+      <workItem from="1687082195025" duration="266000" />
+      <workItem from="1687144718165" duration="2122000" />
+      <workItem from="1687226995814" duration="2776000" />
     </task>
     <servers />
   </component>

@@ -140,6 +140,7 @@
     </div>
 
 </main>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script src="jsadmin/jquery-3.2.1.min.js"></script>
 <!--===============================================================================================-->
 <script src="jsadmin/popper.min.js"></script>
@@ -231,7 +232,7 @@
         document.querySelector(".fileupload").click()
     })
 </script
-<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 
 <script>
     document.querySelector(".btn-send").addEventListener("click", (e) => {
@@ -270,7 +271,6 @@
             $(this).each(function (index) {
                 if ($(this)[0].querySelector("input").checked) {
                     year = $(this)[0].querySelector("label").textContent
-
                 }
             })
 

@@ -11,6 +11,7 @@ var renderListYear = (tempYear) => {
     for (let i = 0; i < temp; i++) {
         console.log(date.getUTCFullYear())
         var jump = date.getUTCFullYear() - i;
+        console.log(jump)
         html += `<span
             class="year-item"><input class="hide" name="radio1" type="radio" id=y${jump}><label
             class="free-label" for="y${jump}">${jump}</label></span>`

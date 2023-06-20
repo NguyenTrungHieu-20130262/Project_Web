@@ -21,6 +21,7 @@ package Connect;
                 config.setPassword(pass);
                 config.addDataSourceProperty("minimumIdle", "5");
                 config.addDataSourceProperty("maximumPoolSize", "25");
+                config.addDataSourceProperty("idleTimeout", "0");
                 dataSource = new HikariDataSource(config);
                 connection = dataSource.getConnection();
             } catch (ClassNotFoundException | SQLException e) {

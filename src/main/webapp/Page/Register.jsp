@@ -78,8 +78,6 @@
                         <label class="form-label" for="phone">Phone Number</label>
                     </div>
                     <div class="form-outline mb-4">
-
-
                         <label class="form-label" for="address">Address</label>
                         <div id="address" style="display: flex;    flex-direction: column;">
                             <select class="address province">
