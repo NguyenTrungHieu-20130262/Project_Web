@@ -87,11 +87,9 @@ public class Admin extends HttpServlet {
     protected void logPage(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, SQLException {
         List<Log> list = LogDAO.getAllLog();
         Map<String, List<Log>> map = new HashMap<>();
-
         map.put("logs", list);
         for (Log tmp : list) {
             addLogIntoMap(map, tmp);
-
         }
         req.setAttribute("map", map);
         req.getRequestDispatcher("/Page/Admin/doc/thong-ke-log.jsp").forward(req, resp);

@@ -9,7 +9,7 @@
 <% User user = (User) request.getAttribute("userInfo") ;%>
 <% String url = (String)request.getAttribute("url");%>
 <aside class="app-sidebar">
-    <div class="app-sidebar__user"><img class="app-sidebar__user-avatar" src="<%=user.getAvatar()!=null?user.getAvatar():url+"/Img/User/hideImage.png"%>" width="50px"
+    <div class="app-sidebar__user"><img style="width: 100px; height: 100px" class="app-sidebar__user-avatar" src="<%=user.getAvatar()!=null?user.getAvatar():url+"/Img/User/hideImage.png"%>" width="50px"
                                         alt="User Image">
         <div>
             <p class="app-sidebar__user-name"><b><%=user.getFullName()%>

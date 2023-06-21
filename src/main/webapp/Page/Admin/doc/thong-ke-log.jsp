@@ -84,12 +84,12 @@
         <div class="col-md-12">
             <div class="tile">
                 <div>
-                    <h3 class="tile-title">Thống kê Log</h3>
+                    <h3 class="tile-title">WARNING LOG</h3>
                 </div>
                 <div class="tile-body">
                     <table class="table table-hover table-bordered js-copytextarea" cellpadding="0" cellspacing="0"
                            border="0"
-                           id="tableLog">
+                           id="tableWarning">
                         <thead>
                         <tr>
                             <th>STT</th>
@@ -100,12 +100,12 @@
                             <%--                            <th>Ngày sinh</th>--%>
                             <%--                            <th>Giới tính</th>--%>
                             <th width="300">Thời gian tạo</th>
-                            <th width="300">Trạng thái</th>
+                            <th width="300">Mức độ</th>
                             <%--                            <th>Chức vụ</th>--%>
                         </tr>
                         </thead>
                         <tbody>
-                        <c:forEach items="${map.get('logs')}" var="item" varStatus="loop">
+                        <c:forEach items="${map.get('Warning')}" var="item" varStatus="loop">
                             <tr data-id="${item.id}">
                                 <td>#${item.id}</td>
                                 <td id="levelLog">${item.level}</td>
@@ -115,11 +115,149 @@
                                 <td id="creatAt">${item.createAt}</td>
                                 <c:choose>
                                     <c:when test="${item.status==1}">
-                                        <td><span class="statusActivity isAction">Hoạt động</span></td>
+                                        <td><span style="background-color:#ff8b07 " class="statusActivity">Warning</span></td>
                                     </c:when>
-                                    <c:otherwise>
-                                        <td><span class="statusActivity isNotAction">Đã khóa</span></td>
-                                    </c:otherwise>
+                                </c:choose>
+                                </td>
+                            </tr>
+                        </c:forEach>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="tile">
+                <div>
+                    <h3 class="tile-title">INFO LOG</h3>
+                </div>
+                <div class="tile-body">
+                    <table class="table table-hover table-bordered js-copytextarea" cellpadding="0" cellspacing="0"
+                           border="0"
+                           id="tableInfo">
+                        <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th width="150">Mức độ</th>
+                            <th width="100">Id tài khoản</th>
+                            <th width="300">Nguồn gốc</th>
+                            <th width="300">Nội dung</th>
+                            <%--                            <th>Ngày sinh</th>--%>
+                            <%--                            <th>Giới tính</th>--%>
+                            <th width="300">Thời gian tạo</th>
+                            <th width="300">Mức độ</th>
+                            <%--                            <th>Chức vụ</th>--%>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <c:forEach items="${map.get('Info')}" var="item" varStatus="loop">
+                            <tr data-id="${item.id}">
+                                <td>#${item.id}</td>
+                                <td id="levelLog">${item.level}</td>
+                                <td id="idUser">${item.userID}</td>
+                                <td id="srcLog">${item.src}</td>
+                                <td id="contentLog">${item.content}</td>
+                                <td id="creatAt">${item.createAt}</td>
+                                <c:choose>
+                                    <c:when test="${item.status==1}">
+                                        <td><span style="background-color: #22ad56" class="statusActivity ">Info</span></td>
+                                    </c:when>
+                                </c:choose>
+                                </td>
+                            </tr>
+                        </c:forEach>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="tile">
+                <div>
+                    <h3 class="tile-title">ALERT LOG</h3>
+                </div>
+                <div class="tile-body">
+                    <table class="table table-hover table-bordered js-copytextarea" cellpadding="0" cellspacing="0"
+                           border="0"
+                           id="tableAlert">
+                        <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th width="150">Mức độ</th>
+                            <th width="100">Id tài khoản</th>
+                            <th width="300">Nguồn gốc</th>
+                            <th width="300">Nội dung</th>
+                            <%--                            <th>Ngày sinh</th>--%>
+                            <%--                            <th>Giới tính</th>--%>
+                            <th width="300">Thời gian tạo</th>
+                            <th width="300">Mức độ</th>
+                            <%--                            <th>Chức vụ</th>--%>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <c:forEach items="${map.get('Alert')}" var="item" varStatus="loop">
+                            <tr data-id="${item.id}">
+                                <td>#${item.id}</td>
+                                <td id="levelLog">${item.level}</td>
+                                <td id="idUser">${item.userID}</td>
+                                <td id="srcLog">${item.src}</td>
+                                <td id="contentLog">${item.content}</td>
+                                <td id="creatAt">${item.createAt}</td>
+                                <c:choose>
+                                    <c:when test="${item.status==1}">
+                                        <td><span class="statusActivity " style="background-color: #1d5aab">Alert</span></td>
+                                    </c:when>
+                                </c:choose>
+                                </td>
+                            </tr>
+                        </c:forEach>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="tile">
+                <div>
+                    <h3 class="tile-title">DANGER LOG</h3>
+                </div>
+                <div class="tile-body">
+                    <table class="table table-hover table-bordered js-copytextarea" cellpadding="0" cellspacing="0"
+                           border="0"
+                           id="tableDanger">
+                        <thead>
+                        <tr>
+                            <th>STT</th>
+                            <th width="150">Mức độ</th>
+                            <th width="100">Id tài khoản</th>
+                            <th width="300">Nguồn gốc</th>
+                            <th width="300">Nội dung</th>
+                            <%--                            <th>Ngày sinh</th>--%>
+                            <%--                            <th>Giới tính</th>--%>
+                            <th width="300">Thời gian tạo</th>
+                            <th width="300">Mức độ</th>
+                            <%--                            <th>Chức vụ</th>--%>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <c:forEach items="${map.get('Danger')}" var="item" varStatus="loop">
+                            <tr data-id="${item.id}">
+                                <td>#${item.id}</td>
+                                <td id="levelLog">${item.level}</td>
+                                <td id="idUser">${item.userID}</td>
+                                <td id="srcLog">${item.src}</td>
+                                <td id="contentLog">${item.content}</td>
+                                <td id="creatAt">${item.createAt}</td>
+                                <c:choose>
+                                    <c:when test="${item.status==1}">
+                                        <td><span class="statusActivity " style="background-color: #de2222">Danger</span></td>
+                                    </c:when>
                                 </c:choose>
                                 </td>
                             </tr>
@@ -146,10 +284,19 @@
 <script type="text/javascript" src="jsadmin/plugins/dataTables.bootstrap.min.js"></script>
 <script type="text/javascript">
 
-    var tableLog = $('#tableLog').DataTable(
+
+    var tableWarning = $('#tableWarning').DataTable(
 
     );
+    var tableDanger = $('#tableDanger').DataTable(
 
+    );
+    var tableInfo = $('#tableInfo').DataTable(
+
+    );
+    var tableAlert = $('#tableAlert').DataTable(
+
+    );
 
     var data = {
         labels: ["Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6", "Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12"],
