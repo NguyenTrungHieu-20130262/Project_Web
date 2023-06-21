@@ -20,14 +20,25 @@ public class ProductDAO {
 //    int quantity;
     public static ArrayList<Product> getProduct() {
         ArrayList<Product> products = new ArrayList<>();
-        String query = "SELECT product.*, sum(quantity) as quantity FROM importproduct join product on importproduct.idProduct = product.id GROUP by product.id HAVING quantity >0;\n";
+        String query = "SELECT product.*, sum(quantity) as quantity, vendo.name as nameVendo, vendo.srcImg, GROUP_CONCAT(imgproduct.srcImg) as imgUrls\n" +
+                "FROM importproduct\n" +
+                "JOIN product ON importproduct.idProduct = product.id\n" +
+                "JOIN vendo ON product.idVendo = vendo.id\n" +
+                "LEFT JOIN imgproduct ON product.id = imgproduct.idProduct\n" +
+                "GROUP BY product.id, vendo.name, vendo.srcImg\n" +
+                "HAVING quantity > 0;\n";
         try {
-            Statement statement = ConnectDB.getConnect().createStatement();
-            PreparedStatement preparedStatement = statement.getConnection().prepareStatement(query);
+            PreparedStatement preparedStatement = ConnectDB.getConnect().prepareStatement(query);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-//                int quantity = getQuantityByID(resultSet.getInt(1));
-                Company vendo = CompanyDAO.getVendoById(resultSet.getInt(2));
+                Company vendo = new Company(resultSet.getInt(2), resultSet.getString("nameVendo"), resultSet.getString("srcImg"));
+                String[] imgUrls = resultSet.getString("imgUrls").split(",");
+                ArrayList<String> list = new ArrayList<String>();
+
+                for (String s : imgUrls) {
+                    list.add(s);
+                }
+
                 ProductDTO prod = new ProductDTO(resultSet.getInt(1),
                         vendo,
                         resultSet.getString(3),
@@ -38,7 +49,7 @@ public class ProductDAO {
                         resultSet.getDouble(8),
                         resultSet.getDate(9),
                         resultSet.getInt(14),
-                        getImagesByID(resultSet.getInt(1))
+                        list
                 );
                 prod.setQuantity(resultSet.getInt("quantity"));
                 products.add(prod);
@@ -63,7 +74,13 @@ public class ProductDAO {
         return 0;
     }
     public static  ArrayList<Product> getProductsWithOffset(int offset, int RECORDS_PER_PAGE) {
-        String query = "SELECT product.*, sum(quantity) as quantity FROM importproduct join product on importproduct.idProduct = product.id GROUP by product.id HAVING quantity > 0 LIMIT ?, ?";
+        String query = "SELECT product.*, sum(quantity) as quantity, vendo.name as nameVendo, vendo.srcImg, GROUP_CONCAT(imgproduct.srcImg) as imgUrls\n" +
+                "FROM importproduct\n" +
+                "JOIN product ON importproduct.idProduct = product.id\n" +
+                "JOIN vendo ON product.idVendo = vendo.id\n" +
+                "LEFT JOIN imgproduct ON product.id = imgproduct.idProduct\n" +
+                "GROUP BY product.id, vendo.name, vendo.srcImg\n" +
+                "HAVING quantity > 0 LIMIT ?, ?";
         ArrayList<Product> products = new ArrayList<Product>();
         try {
             Statement statement = ConnectDB.getConnect().createStatement();
@@ -72,7 +89,14 @@ public class ProductDAO {
             preparedStatement.setInt(2, RECORDS_PER_PAGE);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                Company vendo = CompanyDAO.getVendoById(resultSet.getInt(2));
+                Company vendo = new Company(resultSet.getInt(2), resultSet.getString("nameVendo"), resultSet.getString("srcImg"));
+                String[] imgUrls = resultSet.getString("imgUrls").split(",");
+                ArrayList<String> list = new ArrayList<String>();
+
+                for (String s : imgUrls) {
+                    list.add(s);
+                }
+
                 ProductDTO prod = new ProductDTO(resultSet.getInt(1),
                         vendo,
                         resultSet.getString(3),
@@ -83,7 +107,7 @@ public class ProductDAO {
                         resultSet.getDouble(8),
                         resultSet.getDate(9),
                         resultSet.getInt(14),
-                        getImagesByID(resultSet.getInt(1))
+                        list
                 );
                 prod.setQuantity(resultSet.getInt("quantity"));
                 products.add(prod);
@@ -101,7 +125,12 @@ public class ProductDAO {
         String priceMax = req.getParameter("priceMax");
         String fuel = req.getParameter("fuel");
 
-        String query = "SELECT product.*, sum(quantity) as quantity FROM importproduct join product on importproduct.idProduct = product.id GROUP by product.id " +
+        String query = "SELECT product.*, sum(quantity) as quantity, vendo.name as nameVendo, vendo.srcImg, GROUP_CONCAT(imgproduct.srcImg) as imgUrls\n" +
+                "FROM importproduct\n" +
+                "JOIN product ON importproduct.idProduct = product.id\n" +
+                "JOIN vendo ON product.idVendo = vendo.id\n" +
+                "LEFT JOIN imgproduct ON product.id = imgproduct.idProduct\n" +
+                "GROUP BY product.id, vendo.name, vendo.srcImg\n" +
                 "HAVING quantity > 0 " +
                 "&& product.name like '%"+name.trim()+"%'" ;
         if(!year.trim().equals("")){
@@ -125,7 +154,14 @@ public class ProductDAO {
 
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                Company vendo = CompanyDAO.getVendoById(resultSet.getInt(2));
+                Company vendo = new Company(resultSet.getInt(2), resultSet.getString("nameVendo"), resultSet.getString("srcImg"));
+                String[] imgUrls = resultSet.getString("imgUrls").split(",");
+                ArrayList<String> list = new ArrayList<String>();
+
+                for (String s : imgUrls) {
+                    list.add(s);
+                }
+
                 ProductDTO prod = new ProductDTO(resultSet.getInt(1),
                         vendo,
                         resultSet.getString(3),
@@ -136,8 +172,7 @@ public class ProductDAO {
                         resultSet.getDouble(8),
                         resultSet.getDate(9),
                         resultSet.getInt(14),
-                        getImagesByID(resultSet.getInt(1))
-
+                        list
                 );
                 prod.setQuantity(resultSet.getInt("quantity"));
                 products.add(prod);
@@ -155,7 +190,12 @@ public class ProductDAO {
         String priceMin = req.getParameter("priceMin");
         String priceMax = req.getParameter("priceMax");
         String fuel = req.getParameter("fuel");
-        String query = "SELECT product.*, sum(quantity) as quantity FROM importproduct join product on importproduct.idProduct = product.id GROUP by product.id " +
+        String query = "SELECT product.*, sum(quantity) as quantity, vendo.name as nameVendo, vendo.srcImg, GROUP_CONCAT(imgproduct.srcImg) as imgUrls\n" +
+                "FROM importproduct\n" +
+                "JOIN product ON importproduct.idProduct = product.id\n" +
+                "JOIN vendo ON product.idVendo = vendo.id\n" +
+                "LEFT JOIN imgproduct ON product.id = imgproduct.idProduct\n" +
+                "GROUP BY product.id, vendo.name, vendo.srcImg\n" +
                 "HAVING quantity > 0 " +
                 "&& product.name like '%"+name.trim()+"%'" ;
         if(!year.trim().equals("")){
@@ -181,7 +221,14 @@ public class ProductDAO {
             preparedStatement.setInt(2, RECORDS_PER_PAGE);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                Company vendo = CompanyDAO.getVendoById(resultSet.getInt(2));
+                Company vendo = new Company(resultSet.getInt(2), resultSet.getString("nameVendo"), resultSet.getString("srcImg"));
+                String[] imgUrls = resultSet.getString("imgUrls").split(",");
+                ArrayList<String> list = new ArrayList<String>();
+
+                for (String s : imgUrls) {
+                    list.add(s);
+                }
+
                 ProductDTO prod = new ProductDTO(resultSet.getInt(1),
                         vendo,
                         resultSet.getString(3),
@@ -192,8 +239,7 @@ public class ProductDAO {
                         resultSet.getDouble(8),
                         resultSet.getDate(9),
                         resultSet.getInt(14),
-                        getImagesByID(resultSet.getInt(1))
-
+                        list
                 );
                 prod.setQuantity(resultSet.getInt("quantity"));
                 products.add(prod);
@@ -211,8 +257,8 @@ public class ProductDAO {
         String priceMax = req.getParameter("priceMax");
         String fuel = req.getParameter("fuel");
 
-        String query = "SELECT COUNT(*) as count,product.* FROM  product where  " +
-                "product.name like '%"+name.trim()+"%'" ;
+        String query = "SELECT COUNT(*) as count FROM  product where  " +
+                "product.name like '%"+name.trim()+"%' " ;
         if(!year.trim().equals("")){
             query += "&& product.yearOfManuFacture = " + Integer.valueOf(year.trim());
         }
@@ -227,6 +273,7 @@ public class ProductDAO {
         if(fuel.trim().equals("dien")){
             query += "&& product.fuel = " + 2;
         }
+        System.out.println(query);
         ArrayList<Product> products = new ArrayList<Product>();
         try {
             Statement statement = ConnectDB.getConnect().createStatement();
@@ -246,14 +293,26 @@ public class ProductDAO {
 
     public static ArrayList<Product> getProductAll() {
         ArrayList<Product> products = new ArrayList<>();
-        String query = "SELECT product.*, sum(quantity) as quantity FROM importproduct join product on importproduct.idProduct = product.id GROUP by product.id ";
+        String query = "SELECT product.*, sum(quantity) as quantity, vendo.name as nameVendo, vendo.srcImg, GROUP_CONCAT(imgproduct.srcImg) as imgUrls\n" +
+                "FROM importproduct\n" +
+                "JOIN product ON importproduct.idProduct = product.id\n" +
+                "JOIN vendo ON product.idVendo = vendo.id\n" +
+                "LEFT JOIN imgproduct ON product.id = imgproduct.idProduct\n" +
+                "GROUP BY product.id, vendo.name, vendo.srcImg";
         try {
             Statement statement = ConnectDB.getConnect().createStatement();
             PreparedStatement preparedStatement = statement.getConnection().prepareStatement(query);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
 //                int quantity = getQuantityByID(resultSet.getInt(1));
-                Company vendo = CompanyDAO.getVendoById(resultSet.getInt(2));
+                Company vendo = new Company(resultSet.getInt(2), resultSet.getString("nameVendo"), resultSet.getString("srcImg"));
+                String[] imgUrls = resultSet.getString("imgUrls").split(",");
+                ArrayList<String> list = new ArrayList<String>();
+
+                for (String s : imgUrls) {
+                    list.add(s);
+                }
+
                 ProductDTO prod = new ProductDTO(resultSet.getInt(1),
                         vendo,
                         resultSet.getString(3),
@@ -264,7 +323,7 @@ public class ProductDAO {
                         resultSet.getDouble(8),
                         resultSet.getDate(9),
                         resultSet.getInt(14),
-                        getImagesByID(resultSet.getInt(1))
+                        list
                 );
                 prod.setQuantity(resultSet.getInt("quantity"));
                 products.add(prod);
@@ -292,14 +351,27 @@ public class ProductDAO {
     }
     public static ArrayList<Product> getNewProducts() {
         ArrayList<Product> newProducts = new ArrayList<>();
-        String query = "SELECT * FROM product JOIN importproduct ON product.id = importproduct.idProduct ORDER BY product.yearOfManuFacture DESC LIMIT 12;";
+        String query = "SELECT product.*, sum(quantity) as quantity, vendo.name as nameVendo, vendo.srcImg, GROUP_CONCAT(imgproduct.srcImg) as imgUrls\n" +
+                "FROM importproduct\n" +
+                "JOIN product ON importproduct.idProduct = product.id\n" +
+                "JOIN vendo ON product.idVendo = vendo.id\n" +
+                "LEFT JOIN imgproduct ON product.id = imgproduct.idProduct\n" +
+                "GROUP BY product.id, vendo.name, vendo.srcImg\n" +
+                "ORDER BY product.yearOfManuFacture DESC LIMIT 12";
         try {
             Statement statement = ConnectDB.getConnect().createStatement();
             PreparedStatement preparedStatement = statement.getConnection().prepareStatement(query);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                Company vendo = CompanyDAO.getVendoById(resultSet.getInt(2));
-                Product prod = new Product(resultSet.getInt(1),
+                Company vendo = new Company(resultSet.getInt(2), resultSet.getString("nameVendo"), resultSet.getString("srcImg"));
+                String[] imgUrls = resultSet.getString("imgUrls").split(",");
+                ArrayList<String> list = new ArrayList<String>();
+
+                for (String s : imgUrls) {
+                    list.add(s);
+                }
+
+                ProductDTO prod = new ProductDTO(resultSet.getInt(1),
                         vendo,
                         resultSet.getString(3),
                         resultSet.getString(4),
@@ -308,8 +380,8 @@ public class ProductDAO {
                         resultSet.getString(7),
                         resultSet.getDouble(8),
                         resultSet.getDate(9),
-                        resultSet.getInt(10),
-                        getImagesByID(resultSet.getInt(1))
+                        resultSet.getInt(14),
+                        list
                 );
                 newProducts.add(prod);
             }
@@ -321,25 +393,37 @@ public class ProductDAO {
 
     public static ArrayList<Product> getTrendProducts() {
         ArrayList<Product> trendProducts = new ArrayList<>();
-        String query = "SELECT * FROM product JOIN importproduct ON product.id = importproduct.idProduct ORDER BY importproduct.quantity AND importproduct.createAt DESC LIMIT 12;";
+        String query = "SELECT product.*, sum(quantity) as quantity, vendo.name as nameVendo, vendo.srcImg, GROUP_CONCAT(imgproduct.srcImg) as imgUrls \n" +
+                "FROM importproduct\n" +
+                "JOIN product ON importproduct.idProduct = product.id\n" +
+                "JOIN vendo ON product.idVendo = vendo.id\n" +
+                "LEFT JOIN imgproduct ON product.id = imgproduct.idProduct\n" +
+                "GROUP BY product.id, vendo.name, vendo.srcImg\n" +
+                "ORDER BY createAt DESC LIMIT 12\n";
         try {
             Statement statement = ConnectDB.getConnect().createStatement();
             PreparedStatement preparedStatement = statement.getConnection().prepareStatement(query);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                Company vendo = CompanyDAO.getVendoById(resultSet.getInt(2));
-                Product prod = new Product(resultSet.getInt(1),
+                Company vendo = new Company(resultSet.getInt(2), resultSet.getString("nameVendo"), resultSet.getString("srcImg"));
+                String[] imgUrls = resultSet.getString("imgUrls").split(",");
+                ArrayList<String> list = new ArrayList<String>();
+
+                for (String s : imgUrls) {
+                    list.add(s);
+                }
+
+                ProductDTO prod = new ProductDTO(resultSet.getInt(1),
                         vendo,
                         resultSet.getString(3),
                         resultSet.getString(4),
                         resultSet.getString(5),
-
                         resultSet.getInt(6),
                         resultSet.getString(7),
                         resultSet.getDouble(8),
                         resultSet.getDate(9),
-                        resultSet.getInt(10),
-                        getImagesByID(resultSet.getInt(1))
+                        resultSet.getInt(14),
+                        list
                 );
                 trendProducts.add(prod);
             }
