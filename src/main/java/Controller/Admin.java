@@ -78,6 +78,7 @@ public class Admin extends HttpServlet {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        System.out.println(list);
         req.getSession().setAttribute("listCompany", list);
         req.getRequestDispatcher("/Page/Admin/doc/table-data-product.jsp").forward(req, res);
     }

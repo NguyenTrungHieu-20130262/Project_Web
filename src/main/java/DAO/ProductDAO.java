@@ -126,7 +126,7 @@ public class ProductDAO {
 
     public static ArrayList<Product> getTrendProducts() {
         ArrayList<Product> trendProducts = new ArrayList<>();
-        String query = "SELECT * FROM product JOIN importproduct ON product.id = importproduct.idProduct ORDER BY importproduct.quantity AND importproduct.createAt DESC LIMIT 12;";
+        String query = "SELECT * FROM product JOIN orderdetail ON product.id = orderdetail.idProduct ORDER BY orderdetail.idProduct DESC LIMIT 12;";
         try {
             Statement statement = ConnectDB.getConnect().createStatement();
             PreparedStatement preparedStatement = statement.getConnection().prepareStatement(query);
