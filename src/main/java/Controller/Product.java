@@ -7,6 +7,9 @@ import Model.Log;
 import Model.User;
 import Upload.UploadImage;
 import com.google.gson.Gson;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -22,6 +25,9 @@ import java.util.ArrayList;
 
 @WebServlet("/product")
 public class Product extends HttpServlet {
+    private static final int RECORDS_PER_PAGE = 10;
+
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
         res.setContentType("text/html;charset=UTF-8");
@@ -35,18 +41,65 @@ public class Product extends HttpServlet {
             }
             return;
         }
+        if(action != null && action.equals("products")){
+            getProducts(req,res);
+            return;
+        }
+        if(action != null && action.equals("filter")){
+            try {
+                filterProductAndPage(req,res);
+            } catch (JSONException e) {
+                throw new RuntimeException(e);
+            }
+            return;
+        }
+        int totalRecords = ProductDAO.countProduct();
+        int totalPages = (int) Math.ceil((double) totalRecords / RECORDS_PER_PAGE);
+        req.getSession().setAttribute("totalPages", totalPages);
 
         req.getRequestDispatcher("Page/Product.jsp").forward(req, res);
     }
+    private  void getProducts(HttpServletRequest req, HttpServletResponse res) throws IOException {
+        int currentPage = req.getParameter("page") != null ? Integer.valueOf(req.getParameter("page")) : 1;
+        int offset = (currentPage - 1) * RECORDS_PER_PAGE;
+        System.out.println(currentPage + "huy" + offset);
+        ArrayList<Model.Product> products = ProductDAO.getProductsWithOffset(offset, RECORDS_PER_PAGE);
+        res.getWriter().write(new Gson().toJson(products));
+
+    }
+    private void filterProduct(HttpServletRequest req, HttpServletResponse res) throws IOException, JSONException {
+
+            ArrayList<Model.Product> products = ProductDAO.filterProduct(req);
+            int totalRecords = ProductDAO.countProductByFilter(req);
+            int totalPages = (int) Math.ceil((double) totalRecords / RECORDS_PER_PAGE);
+
+        JSONObject objRes = new JSONObject();
+            objRes.put("data", new Gson().toJson(products));
+            objRes.put("totalPages", totalPages);
+
+
+        res.getWriter().println(objRes);
+
+    }
+    private void filterProductAndPage(HttpServletRequest req, HttpServletResponse res) throws IOException, JSONException {
+        int currentPage = req.getParameter("page") != null ? Integer.valueOf(req.getParameter("page")) : 1;
+        if(req.getParameter("page") == null){
+            int totalRecords = ProductDAO.countProductByFilter(req);
+            int totalPages = (int) Math.ceil((double) totalRecords / RECORDS_PER_PAGE);
+            ArrayList<Model.Product> products = ProductDAO.filterProductAndPage(0,RECORDS_PER_PAGE,req);
+            JSONObject objRes = new JSONObject();
+            objRes.put("data", new Gson().toJson(products));
+            objRes.put("totalPages", totalPages);
+            res.getWriter().println(objRes);
+            return;
+        }
+        int offset = (currentPage - 1) * RECORDS_PER_PAGE;
+        ArrayList<Model.Product> products = ProductDAO.filterProductAndPage(offset,RECORDS_PER_PAGE,req);
+        res.getWriter().println(new Gson().toJson(products));
+
+    }
     protected void getListProduct(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException, SQLException {
         ArrayList<Model.Product> products = ProductDAO.getProduct();
-        for(Model.Product tmp :products ){
-            System.out.println(tmp.toString());
-
-//            tmp.setContent(URLEncoder.encode(tmp.getContent(), StandardCharsets.UTF_8));
-//            tmp.setName(tmp.getName());
-//            tmp.setFuel(tmp.getFuel());
-        }
         res.getWriter().write(new Gson().toJson(products));
     }
 

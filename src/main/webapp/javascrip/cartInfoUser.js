@@ -1,4 +1,5 @@
 const initInfo =(user)=>{
+    console.log(user)
     document.querySelector(".form_name span").textContent = user.fullName
     document.querySelector(".form_phone span").textContent = user.phone
     document.querySelector(".form_address span").textContent = user.address
