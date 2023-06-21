@@ -28,10 +28,7 @@ public class Details extends HttpServlet {
             return;
         }
         try {
-            User user = (User) req.getSession().getAttribute("user");
             List<Comment> list = CommentDAO.getListComment(Integer.valueOf(id));
-            Log log = new Log(Log.INFO, user.getId(), this.getClass().getName(),"Truy cập vào trang Detail_Product", 1);
-            log.insert(ConnectDB.getConnect());
             req.setAttribute("listComment", list);
             Product product = ProductDAO.getProductById(Integer.valueOf(id));
             req.setAttribute("product", product);
