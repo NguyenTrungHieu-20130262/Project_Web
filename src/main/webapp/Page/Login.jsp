@@ -347,55 +347,62 @@
 </script>
 <%--Login with fb--%>
 <script>
-    function statusChangeCallback(response) {  // Called with the results from FB.getLoginStatus().
+    let isLoginInitiated = false; // Flag to track login initiation
+
+    function statusChangeCallback(response) {
         console.log('statusChangeCallback');
-        console.log(response);                   // The current login status of the person.
-        if (response.status === 'connected') {   // Logged into your webpage and Facebook.
+        console.log(response);
+        if (response.status === 'connected' && !isLoginInitiated) { // Check if login initiated flag is false
+            isLoginInitiated = true; // Set login initiated flag to true
             testAPI();
-        } else {                                 // Not logged into your webpage or we are unable to tell.
-            document.getElementById('status').innerHTML = 'Please log ' +
-                'into this webpage.';
+        } else {
+            document.getElementById('status').innerHTML = 'Please log into this webpage.';
         }
     }
 
-
-    function checkLoginState() {               // Called when a person is finished with the Login Button.
-        FB.getLoginStatus(function(response) {   // See the onlogin handler
+    function checkLoginState() {
+        FB.getLoginStatus(function(response) {
             statusChangeCallback(response);
         });
     }
 
-
     window.fbAsyncInit = function() {
         FB.init({
-            appId      : '2159772147554215',
-            cookie     : true,                     // Enable cookies to allow the server to access the session.
-            xfbml      : true,                     // Parse social plugins on this webpage.
-            version    : 'v16.0'           // Use this Graph API version for this call.
+            appId: '2159772147554215',
+            cookie: true,
+            xfbml: true,
+            version: 'v16.0'
         });
-
-
-        FB.getLoginStatus(function(response) {   // Called after the JS SDK has been initialized.
-            statusChangeCallback(response);        // Returns the login status.
+        document.getElementById('loginWithFb').addEventListener('click', function() {
+            checkLoginState();
+            this.disabled = true; // Disable the button after it is clicked
         });
     };
 
-    function testAPI() {                      // Testing Graph API after login.  See statusChangeCallback() for when this call is made.
-        console.log('Welcome!  Fetching your information.... ');
+    function testAPI() {
+        console.log('Welcome! Fetching your information....');
         FB.api('/me', function(response) {
-            console.log(response)
+            console.log(response);
             $.ajax({
                 url: "/login/LoginWithFb",
                 type: "POST",
                 data: {
-                userName:response.id
+                    userName: response.id
                 },
                 contentType: 'application/x-www-form-urlencoded',
-                success: function (data) {
-
+                success: function(data) {
+                    swal({
+                        title: "Thành công",
+                        text: "Đăng nhập thành công",
+                    }).then(() => {
+                        window.location.pathname = "/";
+                    });
+                },
+                complete: function() {
+                    document.getElementById('loginWithFb').disabled = false; // Enable the button after the request is complete
                 }
+            });
         });
-    })
     }
 </script>
 

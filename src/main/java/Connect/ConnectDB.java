@@ -10,9 +10,9 @@ import java.util.concurrent.TimeUnit;
 
 public class ConnectDB {
     private static HikariDataSource dataSource = null;
-    private String url = "jdbc:mysql://containers-us-west-1.railway.app:6174/railway";
-    private String user = "root";
-    private String pass = "d6W9WtWTejjNn4Rugvk2";
+    private static String url = "jdbc:mysql://localhost:3306/qlyoto";
+    private static String user = "root";
+    private static String pass = "";
     private static Connection connection;
 
     private ConnectDB() {
@@ -38,7 +38,6 @@ public class ConnectDB {
         }
         return connection;
     }
-
     public static void main(String[] args) throws SQLException {
         long timeStart = new Date().getTime();
         System.out.println(ProductDAO.getProduct().size() + "size");

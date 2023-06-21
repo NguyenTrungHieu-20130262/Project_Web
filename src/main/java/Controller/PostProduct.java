@@ -4,10 +4,8 @@ import Beans.JWT;
 import Connect.ConnectDB;
 import DAO.CompanyDAO;
 import DAO.ProductDAO;
-import Model.Company;
-import Model.Log;
+import Model.*;
 import Model.Product;
-import Model.User;
 import Security.Authorizeds;
 import Upload.UploadImage;
 
@@ -26,8 +24,6 @@ public class PostProduct extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         if(Authorizeds.authorizeds(req,Authorizeds.PRODUCT_INSERT)){
-
-
         String pathRoot = (this.getServletContext().getRealPath("/"));
         resp.setContentType("application/json");
         try {
@@ -51,7 +47,8 @@ public class PostProduct extends HttpServlet {
             int rs = ProductDAO.insertProduct(user.getId(),pro, quantity);
             Log log=new Log(Log.INFO, user.getId(),this.getClass().getName(),"Thêm sản phẩm(Product)",1);
             log.insert(ConnectDB.getConnect());
-            resp.sendError(200);
+            resp.getWriter().println(new RespJsonServlet("oke").json());
+            resp.setStatus(200);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

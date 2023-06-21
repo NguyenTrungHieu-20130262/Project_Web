@@ -11,7 +11,6 @@
     <!-- Font-icon css-->
     <link rel="stylesheet" type="text/css"
           href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
     <link rel="stylesheet" href="https://oto.com.vn/member/Styles/web/postnew-quick.css?v=638035266443576953">
@@ -133,8 +132,12 @@
     </div>
 
 </main>
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-<script src="jsadmin/jquery-3.2.1.min.js"></script>
+<%@include file="/Component/loading/Loading.jsp" %>
+
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 <!--===============================================================================================-->
 <script src="jsadmin/popper.min.js"></script>
 <script src="https://unpkg.com/boxicons@latest/dist/boxicons.js"></script>
@@ -146,6 +149,7 @@
 <script src="jsadmin/plugins/pace.min.js"></script>
 <!--===============================================================================================-->
 <script type="text/javascript" src="jsadmin/plugins/chart.js"></script>
+
 <!--===============================================================================================-->
 <script type="text/javascript">
     var data = {
@@ -215,7 +219,6 @@
         }
     }
 </script>
-</body>
 <%--uploadfile--%>
 <script>
     document.querySelector(".btn-send").addEventListener("click", (e) => {
@@ -226,7 +229,6 @@
     })
 
 </script>
-<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 
 <script>
@@ -273,6 +275,7 @@
         return year;
 
     }
+    const loading = document.getElementById("loading");
     const getStatus = () => {
         let arr = []
         $(".status-group li").each(function () {
@@ -284,6 +287,17 @@
 
         });
         return arr
+    }
+    const delForm = () => {
+        $("#Price").val("")
+        $("#body").val("")
+        $("#quantity").val("")
+        $("input[name='height']").val("")
+        $("input[name='length']").val("")
+        $("input[name='width']").val("")
+        $("input[name='weight']").val("")
+        $("#tilte123").val("")
+        $("#content").val("")
     }
 
     $("#btn-send").click(function (e) {
@@ -325,23 +339,21 @@
                 made,
                 quantity, height, length, width, weight
             }
+            loading.style.display = "block"
+
             $.ajax({
                 url: "/postProduct",
                 type: "POST",
                 data: dataBody,
                 contentType: 'application/x-www-form-urlencoded',
                 success: function (data) {
+                    delForm()
                     swal({
-                        title: 'Thành công',
-                        text: 'Thêm sản phẩm thành công',
-                        content: "form",
-                        buttons: {
-                            cancel: "Ok",
-                        }
-                    }).then((value) => {
-                        console.log(value);
+                        title: "Thành công",
+                        text: "Thêm sản phẩm thành công",
+                    }).then(() => {
+                        loading.style.display = "none"
                     });
-                    window.location.href = window.location.href
                 }
             });
         } else {
@@ -353,7 +365,7 @@
                     cancel: "Cancel", l
                 }
             }).then((value) => {
-                console.log(value);
+                loading.style.display = "none"
             });
         }
 

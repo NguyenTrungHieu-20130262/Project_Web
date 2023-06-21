@@ -3,6 +3,7 @@ package Controller;
 import Beans.HashSHA216;
 import Beans.JWT;
 import DAO.UserDAO;
+import Model.RespJsonServlet;
 import Model.Role;
 import Model.User;
 import io.jsonwebtoken.Jws;
@@ -21,22 +22,22 @@ public class LoginWithFb extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String username=req.getParameter("userName");
+        System.out.println(123);
         try {
             User user=null;
             if(UserDAO.getUserByName(username)!=null){
                 user=UserDAO.getUserByName(username);
                 req.getSession().setAttribute("user",user);
-
             }else {
                 user=new User(username, null,null,null,null,null,null,new Role(0),1,1);
                 UserDAO.insertUser(user);
                 req.getSession().setAttribute("user",user);
-
             }
+            System.out.println(user);
             String contextPath = req.getContextPath();
-
             saveSession(user,req);
-            resp.sendRedirect(contextPath+"/");
+            resp.getWriter().write(new RespJsonServlet("ok").json());
+            resp.setStatus(200);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } catch (ClassNotFoundException e) {
