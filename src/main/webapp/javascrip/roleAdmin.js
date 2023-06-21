@@ -369,9 +369,17 @@ const deleteRole = (id,index)=>{
                 },
                 success: res =>{
                     let table =  $('#myTable').DataTable()
+                    let dataRow = table.row(index).data()
                     table.row(index).remove().draw();
                     swal("Xóa thành công", {});
-
+                    let table2 = document.querySelector("#body_table_users")
+                    for (var i = 0; i < table2.rows.length; i++) {
+                        if (table2.rows[i].cells[5].textContent === dataRow.name) {
+                            table2.rows[i].cells[5].textContent = "NORMAL";
+                        }
+                    }
+                    let selectRole = document.querySelector(".addRole option[value='"+dataRow.id+"'] ")
+                    selectRole.remove()
                 },
                 error: err=>{
 
