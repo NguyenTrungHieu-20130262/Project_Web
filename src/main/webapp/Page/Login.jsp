@@ -72,21 +72,23 @@
         <!-- Pills content -->
         <div class="tab-content" style="margin: auto;">
             <div class="tab-pane fade show active" id="pills-login" role="tabpanel" aria-labelledby="tab-login">
+                <hr/>
                 <form class="form-login">
                     <div class="text-center mb-3">
                         <p>Sign in with</p>
+
                     </div>
 
                     <!-- Email input -->
                     <div class="form-outline mb-4">
-                        <input type="text" id="loginName" class="form-control"/>
                         <label class="form-label" for="loginName">Email or username</label>
+                        <input type="text" id="loginName" class="form-control"/>
                     </div>
 
                     <!-- Password input -->
                     <div class="form-outline mb-4">
-                        <input type="password" id="loginPassword" class="form-control"/>
                         <label class="form-label" for="loginPassword">Password</label>
+                        <input type="password" id="loginPassword" class="form-control"/>
                     </div>
 
                     <!-- 2 column grid layout -->

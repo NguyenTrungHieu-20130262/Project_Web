@@ -48,8 +48,7 @@
                 <a class="nav-link " id="tab-login"  href="login" role="tab" >Login</a>
             </li>
             <li class="nav-item" role="presentation">
-                <a class="nav-link active" id="tab-register"  href="register"
-                >Register</a>
+                <a class="nav-link active" id="tab-register"  href="register">Register</a>
             </li>
         </ul>
         <!-- Pills navs -->
@@ -57,27 +56,29 @@
         <!-- Pills content -->
         <div class="tab-content" style="margin: auto;;">
             <div class="tab-pane fade show active" id="pills-register" role="tabpanel" aria-labelledby="tab-register">
+                <hr/>
+
                 <form id="formRegister">
                     <p class="text-center">Register</p>
                     <!-- Name input -->
                     <div class="form-outline mb-4">
-                        <input type="text" id="username" class="form-control"/>
                         <label class="form-label" for="username">Username</label>
+                        <input type="text" id="username" class="form-control"/>
                     </div>
                     <!-- Full Name input -->
                     <div class="form-outline mb-4">
-                        <input type="text" id="fullname" class="form-control"/>
                         <label class="form-label" for="fullname">Fullname</label>
+                        <input type="text" id="fullname" class="form-control"/>
                     </div>
                     <!-- Email input -->
                     <div class="form-outline mb-4">
-                        <input type="email" id="email" class="form-control"/>
                         <label class="form-label" for="email">Email</label>
+                        <input type="email" id="email" class="form-control"/>
                     </div>
                     <%--                 Phone Number --%>
                     <div class="form-outline mb-4">
-                        <input type="number" id="phone" class="form-control"/>
                         <label class="form-label" for="phone">Phone Number</label>
+                        <input type="number" id="phone" class="form-control"/>
                     </div>
                     <div class="form-outline mb-4">
                         <label class="form-label" for="address">Address</label>
@@ -97,14 +98,16 @@
 
                     <!-- Password input -->
                     <div class="form-outline mb-4">
-                        <input type="password" id="password" class="form-control" style="border: 1px solid #bdbdbd;"/>
                         <label class="form-label" for="password">Password</label>
+
+                        <input type="password" id="password" class="form-control" style="border: 1px solid #bdbdbd;"/>
                     </div>
 
                     <!-- Repeat Password input -->
                     <div class="form-outline mb-4">
-                        <input type="password" id="repeatPassword" class="form-control" style="border: 1px solid #bdbdbd;"/>
                         <label class="form-label" for="repeatPassword">Repeat password</label>
+
+                        <input type="password" id="repeatPassword" class="form-control" style="border: 1px solid #bdbdbd;"/>
                     </div>
                     <%@include file="../Component/Captcha/Captcha.jsp" %>
 
