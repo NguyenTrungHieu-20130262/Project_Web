@@ -63,8 +63,6 @@ public class UserControl extends HttpServlet {
         }
 
         if (user != null) {
-            Log log = new Log(Log.INFO, user.getId(), this.getClass().getName(), "Lấy thông tin user(Admin)", 1);
-            log.insert(ConnectDB.getConnect());
             resp.getWriter().write(data.toString());
             resp.setStatus(200);
         } else {

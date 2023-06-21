@@ -121,8 +121,6 @@ public class Profile extends HttpServlet {
         if (action != null && action.equals("info")) {
             try {
                 User userReq = UserDAO.getInfoByUserName(user.getUserName());
-                Log log = new Log(Log.ALERT, userReq.getId(), this.getClass().getName(), "Truy cập vào trang profile", 1);
-                log.insert(ConnectDB.getConnect());
                 res.getWriter().println(new Gson().toJson(userReq));
             } catch (SQLException e) {
                 throw new RuntimeException(e);

@@ -215,7 +215,6 @@ public class Admin extends HttpServlet {
         int port = req.getServerPort();
         String url = "http://" + hostname + ":" + port;
         req.setAttribute("url", url);
-        Log log = new Log(Log.INFO, user.getId(), this.getClass().getName(), 1);
         String page = req.getParameter("page");
         try {
             User u = UserDAO.getUserByName(user.getUserName());
@@ -223,20 +222,14 @@ public class Admin extends HttpServlet {
             switch (page.toLowerCase().trim()) {
                 case "post":
                     postPage(req, res);
-                    log.setContent("Truy cập vào trang Post_Product(Admin)");
-                    log.insert(ConnectDB.getConnect());
                     break;
                 case "usermanagement":
                     if (Authorizeds.authorizeds(req, Authorizeds.USER_VIEW)) {
                         userPage(req, res);
-                        log.setContent("Truy cập vào trang Manager_User(Admin)");
-                        log.insert(ConnectDB.getConnect());
                     } else res.setStatus(401);
                     break;
                 case "userstatistic":
                     getAllUser(req, res);
-                    log.setContent("Truy cập vào trang Statistic_User(Admin)");
-                    log.insert(ConnectDB.getConnect());
                     break;
                 case "role":
                     if (Authorizeds.authorizeds(req, Authorizeds.ROLE_VIEW))
@@ -246,8 +239,6 @@ public class Admin extends HttpServlet {
                     break;
                 case "productmanagement":
                     if (Authorizeds.authorizeds(req, Authorizeds.PRODUCT_VIEW)) {
-                        log.setContent("Truy cập vào trang Manager_Product(Admin)");
-                        log.insert(ConnectDB.getConnect());
                         productPage(req, res);
                     } else {
                         res.setStatus(401);
@@ -259,15 +250,11 @@ public class Admin extends HttpServlet {
                 case "odermanagement":
                     if (Authorizeds.authorizeds(req, Authorizeds.ORDER_VIEW)) {
                         oderPage(req, res);
-                        log.setContent("Truy cập vào trang Manager_Order(Admin)");
-                        log.insert(ConnectDB.getConnect());
                     } else res.setStatus(401);
 
                     break;
                 case "orderstatistics":
                     if (Authorizeds.authorizeds(req, Authorizeds.ORDER_VIEW)){
-                        log.setContent("Truy cập vào trang Statistic_Order(Admin)");
-                        log.insert(ConnectDB.getConnect());
                         oderStatis(req, res);
                     }
                     else res.setStatus(401);
@@ -275,8 +262,6 @@ public class Admin extends HttpServlet {
 
                 case "logstatistic":
                     logPage(req, res);
-                    log.setContent("Truy cập vào trang Statistic_Log(Admin)");
-                    log.insert(ConnectDB.getConnect());
                     break;
                 case "logmanagement":
                     if(Authorizeds.authorizeds(req, Authorizeds.LOG_VIEW))
@@ -286,8 +271,6 @@ public class Admin extends HttpServlet {
                     break;
 
                 default:
-                    log.setContent("Truy cập vào trang Index(Admin)");
-                    log.insert(ConnectDB.getConnect());
                     indexPage(req, res);
             }
 
