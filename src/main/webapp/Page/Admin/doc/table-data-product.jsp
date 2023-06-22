@@ -1,11 +1,6 @@
-<%@ page import="java.util.ArrayList" %>
-<%@ page import="Model.Product" %>
-<%@ page import="java.text.NumberFormat" %>
-<%@ page import="java.util.Locale" %>
-<%@ page import="Model.Company" %>
-<%@ page import="DAO.ProductDAO" %>
-<%@ page import="com.google.gson.Gson" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page isELIgnored="false" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -53,15 +48,18 @@
                     <div class="row element-button">
                         <div class="col-sm-2">
 
-                            <a class="btn btn-add btn-sm" href="admin?page=post" title="Thêm"><i class="fas fa-plus"></i>
+                            <a class="btn btn-add btn-sm" href="admin?page=post" title="Thêm"><i
+                                    class="fas fa-plus"></i>
                                 Tạo mới sản phẩm</a>
                         </div>
 
                         <div class="col-sm-2">
-                            <a class="btn btn-excel btn-sm" href="" title="In"><i class="fas fa-file-excel"></i> Xuất Excel</a>
+                            <a class="btn btn-excel btn-sm" href="" title="In"><i class="fas fa-file-excel"></i> Xuất
+                                Excel</a>
                         </div>
                         <div class="col-sm-2">
-                            <a class="btn btn-delete btn-sm pdf-file" type="button" title="In" onclick="myFunction(this)"><i
+                            <a class="btn btn-delete btn-sm pdf-file" type="button" title="In"
+                               onclick="myFunction(this)"><i
                                     class="fas fa-file-pdf"></i> Xuất PDF</a>
                         </div>
 
@@ -125,7 +123,8 @@
         </div>
     </div>
 </main>
-<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+     aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content" style="width: 600px">
             <div class="modal-header">
@@ -142,120 +141,23 @@
           </span>
                     </div>
                 </div>
-                <form class="editForm ng-pristine ng-invalid ng-touched" novalidate="">
-                    <div class="container postnews make-form">
-                        <div class="gr-heading-post"><h2 class="heading "> Thông tin xe </h2><span class="status-per per2"></span>
-                        </div>
-                        <div class="control mt-20" style="margin-top: 20px">
-                            <label class="lbl-form">Hãng xe</label>
-                            <select class="form-select" aria-label="Default select example">
-                            </select>
-
-
-                            <mat-autocomplete class="mat-autocomplete"><!----></mat-autocomplete><!----><!----></div><!----><!---->
-                        <div class="control year"><label class="lbl-form">Năm sản xuất</label>
-                            <div class="list-year"><!---->
-
-                            </div>
-                            <div class="clear">
-                                Hiển thị thêm
-                            </div>
-                        </div>
-
-                        <div class="control"><label class="lbl-form sm-lh">Kích thước </label>
-                            <ul class="status-group listkt">
-                                <li><div class="main_kt">
-                                    <label>Height(cm)</label>
-                                    <input class="select_kt" name="height"  />
-
-                                </div> </li>
-                                <li><div class="main_kt">
-                                    <label>Length(cm)</label>
-                                    <input class="select_kt" name="length" />
-
-                                </div> </li>
-                                <li><div class="main_kt">
-                                    <label>Width(cm)</label>
-                                    <input class="select_kt"  name="width"/>
-
-                                </div> </li>
-                                <li><div class="main_kt">
-                                    <label>Weight(gram)</label>
-                                    <input class="select_kt"  name="weight" />
-
-                                </div> </li>
-                            </ul><!----></div><!---->
-                        <div class="control"><label class="lbl-form sm-lh">Hộp số</label>
-                            <ul class="status-group status-group-small">
-                                <li><input class="hide" id="transmission1" name="transmission" value="0" type="radio"><label
-                                        class="free-label" for="transmission1">Số tay</label></li>
-                                <li><input class="hide" id="transmission2" name="transmission" value="1" type="radio"><label
-                                        class="free-label" for="transmission2">Số tự động</label></li>
-
-                            </ul><!----></div>
-                        <div class="control"><label class="lbl-form sm-lh">Nhiên liệu</label>
-                            <ul class="status-group group-three">
-                                <li><input class="hide" id="fuelType1" name="fuelType" value="Xăng" type="radio"><label class="free-label"
-                                                                                                                        for="fuelType1">Xăng</label>
-                                </li>
-
-
-                                <li><input class="hide" id="fuelType4" name="fuelType" value="Dầu" type="radio"><label class="free-label"
-                                                                                                                       for="fuelType4">
-                                    Dầu </label></li>
-
-                            </ul><!----></div><!---->
-                        <div class="control"><label class="lbl-form sm-lh">Tình trạng</label>
-                            <ul class="status-group">
-                                <li><input class="hide" id="old" name="radio2" value="1" type="radio"><label class="free-label" for="old">Đã
-                                    qua sử dụng</label></li>
-                                <li><input class="hide" id="new" name="radio2" value="0" type="radio"><label class="free-label"
-                                                                                                             for="new">Mới</label></li>
-                            </ul><!----></div><!---->
-                        <div class="control"><label class="lbl-form" for="">Giá bán</label>
-                            <div class="my-input-container"><input class="inp ng-pristine ng-invalid error ng-touched"
-                                                                   formcontrolname="Price" id="Price" maxlength="12"
-                                                                   placeholder="Nhập giá bán của xe (Đơn vị: triệu VNĐ)"
-                                                                   style="width: 100%;" type="text"><!----><span class="tmpPrice"
-                                                                                                                 style="visibility: hidden;"></span>
-                            </div><!---->
-                            <div class="control"><label class="lbl-form" for="">Số lượng</label>
-                                <div class="my-input-container"><input class="inp ng-pristine ng-invalid error ng-touched"
-                                                                       formcontrolname="Price" id="quantity" maxlength="12"
-                                                                       placeholder="Số lượng"
-                                                                       style="width: 100%;" type="text"><!----><span
-                                        class="tmpPrice"
-                                        style="visibility: hidden;"></span>
-                                </div>
-                                <div class="control"><label class="lbl-form" for="">Kiểu dáng</label>
-                                    <div class="my-input-container"><input class="inp ng-pristine ng-invalid error ng-touched"
-                                                                           formcontrolname="Price" id="body" maxlength="12"
-                                                                           placeholder="Nhập kiểu dáng xe"
-                                                                           style="width: 100%;" type="text"><!----><span
-                                            class="tmpPrice"
-                                            style="visibility: hidden;"></span>
-                                    </div><!---->
-                                    <div class="txt-right"><!---->
-                                        <div class="msg-error"><span style="display: none"
-                                                                     class="txt">Vui lòng nhập giá xe đúng định dạng</span></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                </form>
+                <%@include file="/Page/Admin/doc/PostStatus/changeProduct/index.jsp" %>
                 <style>
                     .inp:focus {
                         border: 1px solid #56A1EE;
                     }
+
                     .group-bt.two-bt .btn-send {
                         float: right;
                         background: #4DB848;
                     }
-                    .clear{
+
+                    .clear {
                         color: #56A1EE;
-                        margin-left:200px;
+                        margin-left: 200px;
                         cursor: pointer;
                     }
+
                     .form-select {
                         display: block;
                         width: 100%;
@@ -271,33 +173,39 @@
                         background-size: 16px 12px;
                         border: 1px solid #ced4da;
                         border-radius: 0.25rem;
-                        transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+                        transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
                         -webkit-appearance: none;
                         -moz-appearance: none;
                         appearance: none;
                     }
-                    .form-select{
+
+                    .form-select {
                         z-index: 0;
                     }
-                    .year-item{
+
+                    .year-item {
                         border-radius: 15px;
                     }
-                    .select_kt{
+
+                    .select_kt {
                         width: 150px;
                         padding: 5px;
                     }
-                    .main_kt{
+
+                    .main_kt {
                         position: relative;
                         margin-bottom: 20px;
 
                     }
-                    .main_kt label{
+
+                    .main_kt label {
                         background-color: white;
                         padding: 0 10px;
                         position: absolute;
                         top: -10px;
                         left: 10px;
                     }
+
                     .fileupload {
                         display: none;
                     }
@@ -305,14 +213,17 @@
                     .inp:focus {
                         border: 1px solid #56A1EE;
                     }
+
                     .group-bt.two-bt .btn-send {
                         float: right;
                         background: #4DB848;
                     }
-                    .control-last{
+
+                    .control-last {
                         display: flex;
                         align-items: center;
                     }
+
                     .fileupload {
                         display: none;
                     }
@@ -320,11 +231,13 @@
                     .inp:focus {
                         border: 1px solid #56A1EE;
                     }
+
                     .group-bt.two-bt .btn-send {
                         float: right;
                         background: #4DB848;
                     }
-                    .control-last{
+
+                    .control-last {
                         display: flex;
                         align-items: center;
                     }
@@ -332,12 +245,15 @@
                 </style>
                 <form class="editForm ng-untouched ng-pristine ng-invalid" novalidate="">
                     <div class="container postnews">
-                        <div class="gr-heading-post"><h2 class="heading "> Tiêu đề - nội dung </h2><span class="status-per per3"></span>
+                        <div class="gr-heading-post"><h2 class="heading "> Tiêu đề - nội dung </h2><span
+                                class="status-per per3"></span>
                         </div>
                         <div class="control mt-20"><label class="lbl-form" for="">Tiêu đề</label>
-                            <div class="prefix-title" style="margin: -10px 0 10px 195px"> Toyota Vios 1.5E MT 2017 -</div>
+                            <div class="prefix-title" style="margin: -10px 0 10px 195px"> Toyota Vios 1.5E MT 2017 -
+                            </div>
                             <input id="tilte123" class="inp ng-untouched ng-pristine ng-invalid" formcontrolname="Title"
-                                   placeholder="Ngắn gọn, đầy đủ, từ khóa quan trọng gây chú ý " style="margin-left: 190px;"
+                                   placeholder="Ngắn gọn, đầy đủ, từ khóa quan trọng gây chú ý "
+                                   style="margin-left: 190px;"
                                    type="text"><!----><!----><!----><!----></div>
                         <div class="control box-des"><label class="lbl-form" for="">Nội dung</label><textarea
                                 id="content"
@@ -385,19 +301,17 @@
                     </div>
                     <div class="form-group col-md-6">
                         <label class="control-label">Tên sản phẩm</label>
-                        <input class="form-control"  name="title" type="text" />
+                        <input class="form-control" name="title" type="text"/>
                     </div>
                     <div class="form-group  col-md-6">
                         <label class="control-label">Số lượng</label>
-                        <input class="form-control" name="quantity" type="number" required >
+                        <input class="form-control" name="quantity" type="number" required>
                     </div>
 
                     <div class="form-group col-md-6">
                         <label class="control-label">Giá bán</label>
-                        <input class="form-control" name="price" type="number" required >
+                        <input class="form-control" name="price" type="number" required>
                     </div>
-
-
                 </div>
                 <BR>
                 <a href="#" style="    float: right;
@@ -405,7 +319,7 @@
     color: #ea0000;">Chỉnh sửa sản phẩm nâng cao</a>
                 <BR>
                 <BR>
-                <button class="btn btn-save" type="button" onclick="updateBasic()" >Lưu lại</button>
+                <button class="btn btn-save" type="button" onclick="updateBasic()">Lưu lại</button>
                 <a class="btn btn-cancel" data-dismiss="modal" href="#">Hủy bỏ</a>
                 <BR>
             </div>
@@ -433,16 +347,10 @@ MODAL
 <script type="text/javascript" src="jsadmin/plugins/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="jsadmin/plugins/dataTables.bootstrap.min.js"></script>
 <script type="text/javascript">
-    var listCompany = JSON.parse('<%=new Gson().toJson(request.getAttribute("listCompany"))%>');
-    let html=""
-    for (let tmp of listCompany) {
-        console.log(tmp)
-        html+=`<option class="${tmp.id}">${tmp.name}</option>`
 
-    }
-    document.querySelector(".form-select").innerHTML=html
 
     $('#sampleTable').DataTable();
+
     //Thời Gian
     function time() {
         var today = new Date();
@@ -486,8 +394,11 @@ MODAL
 </script>
 <script>
     var dataMain
-    function deleteRow(r,idPost) {
+
+    function deleteRow(r, idPost) {
         var i = r.parentNode.parentNode.rowIndex;
+        console.log(123)
+        console.log(i)
         swal({
             title: "Cảnh báo",
             text: "Bạn có chắc chắn là muốn xóa sản phẩm này?",
@@ -496,24 +407,22 @@ MODAL
             .then((willDelete) => {
                 if (willDelete) {
                     $.ajax({
-                        url: "/product?action=delete&&id="+idPost,
+                        url: "/product?action=delete&&id=" + idPost,
                         type: "POST",
                         contentType: 'application/x-www-form-urlencoded',
                         success: function (data) {
                             console.log(data)
-                            if( JSON.parse(data) === 1)
+                            if (JSON.parse(data) === 1)
                                 document.getElementById("myTable").deleteRow(i);
 
                         }
                     });
-                    swal("Đã xóa thành công.!", {
-
-                    });
+                    swal("Đã xóa thành công.!", {});
                 }
             });
     }
 
-    function editRow(r,idPost) {
+    function editRow(r, idPost) {
         var i = r.parentNode.parentNode.rowIndex;
         // swal({
         //     // title: "Cảnh báo",
@@ -523,23 +432,20 @@ MODAL
         //     .then((willDelete) => {
         if (willDelete) {
             $.ajax({
-                url: "/admin?action=editproduct&id="+idPost,
+                url: "/admin?action=editproduct&id=" + idPost,
                 type: "POST",
                 contentType: 'application/x-www-form-urlencoded',
                 success: function (data) {
                     console.log(data)
-                    if( JSON.parse(data) === 1)
+                    if (JSON.parse(data) === 1)
                         document.getElementById("myTable").deleteRow(i);
 
                 }
             });
-            swal("Đã sửa thành công.!", {
-
-            });
+            swal("Đã sửa thành công.!", {});
         }
         // });
     }
-
 
 
     pTable = $('#sampleTable').dataTable();
@@ -548,76 +454,82 @@ MODAL
         e.stopImmediatePropagation();
     });
 
-    const init = ()=>{
+    const init = () => {
         $.ajax({
             url: "/product?action=getlistproduct",
             type: "GET",
             contentType: 'application/x-www-form-urlencoded',
             success: function (data) {
                 // fake data chuyen thanh JSON.parse(data)
-                dataMain =  JSON.parse(data)
+                dataMain = JSON.parse(data)
                 console.log(dataMain)
                 initTable(dataMain)
             }
-        })};
+        })
+    };
     init()
-    const toUSD = (money)=>{
-        return money.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+    const toUSD = (money) => {
+        return money.toLocaleString('en-US', {style: 'currency', currency: 'USD'});
     }
 
-    const checkStatusCar =(carStatus) => {
+    const checkStatusCar = (carStatus) => {
         let status
-        if (carStatus === 1){
+        if (carStatus === 1) {
             status = "Còn hàng"
-        }else {
+        } else {
             status = "Hết hàng"
         }
     }
-    const initTable = (data)=>{
+    const initTable = (data) => {
         $('#myTable').DataTable({
             data: data,
             columns: [
-                { data: "id"},
-                { data: "name" },
-                { data: "images", "render": function (data, type, row, meta) {
-                        return `<img src="${data[0]}" alt="" width="100px;">`
-                    }},
-                { data: "quantity"},
-                { data: "", "render": function (data, type, row, meta) {
+                {data: "id"},
+                {data: "name"},
+                {
+                    data: "images", "render": function (data, type, row, meta) {
+                        return '<img src="' + data[0] + '" alt="" width="100px;">';
+                    }
+                },
+                {data: "quantity"},
+                {
+                    data: "", "render": function (data, type, row, meta) {
                         let status;
                         let badge;
-                        if (row.status === 1){
+                        if (row.status === 1) {
                             status = "Còn hàng"
                             badge = "available"
-                        }else{
+                        } else {
                             status = "Hết hàng"
                             badge = "unavailable"
                         }
-                        return `<td><span class="${badge}">${status}</span></td>`;
-                    }},
+                        return '<td><span class="' + badge + '">' + status + '</span></td>';
+                    }
+                },
                 // { data: "total_price", "render": function (data, type, row, meta) {
                 //         return toUSD(data);
                 //     }},
-                { data: "price", "render": function (data, type, row, meta) {
+                {
+                    data: "price", "render": function (data, type, row, meta) {
                         return toUSD(data);
-                    }},
-                {data:"","render": function (data, type, row, meta) {
-                        return `<button class="btn btn-primary btn-sm trash" type="button" title="Xóa"
-                                            onclick="deleteRow(this, ${row.id})" style="width: 32px; height: 30px"><i class="fas fa-trash-alt"></i>
-                                </button>
-                                <button method="POST" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter" style="width: 32px; height: 30px">
-                                  <i class="fas fa-edit" style="margin-left: -2.5px;"></i>
-                                </button>
-                                <%--<form action="admin?action=editproduct&id= ${row.id}" method="POST" >--%>
-                                <%--    <input name="id" value="${row.id}" hidden>--%>
-                                <%--    <button class="btn btn-primary btn-sm edit"  type="submit" title="Sửa"   id="show-emp${row.id}" data-toggle="modal"--%>
-                                <%--            data-target="#ModalUP2"><i class="fas fa-edit"></i></button>--%>
-                                <%--</form>--%>
+                    }
+                },
+                {
 
-`
-                    }}
+                    data: "", "render": function (data, type, row, meta) {
+
+                        return '<button class="btn btn-primary btn-sm trash" type="button" title="Xóa" ' +
+                            'onclick="deleteRow(this, ' + row.id + ')" style="width: 32px; height: 30px">' +
+                            '<i class="fas fa-trash-alt"></i>' +
+                            '</button>' +
+                            '<button method="POST" type="button" class="btn btn-primary" ' +
+                            'data-toggle="modal" data-target="#exampleModalCenter" style="width: 32px; height: 30px">' +
+                            '<i class="fas fa-edit" style="margin-left: -2.5px;"></i>' +
+                            '</button>';
+                    }
+                }
             ],
-        });
+        })
     }
 </script>
 
@@ -712,7 +624,7 @@ MODAL
         const weight = $("input[name='weight']").val()
 
 
-        if (nameCompany && title && content && images && yearofmanufacture && made && gear && fuel && status && price && body && quantity,height, length, width, weight) {
+        if (nameCompany && title && content && images && yearofmanufacture && made && gear && fuel && status && price && body && quantity, height, length, width, weight) {
             // if(typeof price==="number"){
             var dataBody = {
                 nameCompany,
@@ -726,7 +638,7 @@ MODAL
                 status,
                 body,
                 made,
-                quantity,height, length, width, weight
+                quantity, height, length, width, weight
             }
             $.ajax({
                 url: "/postProduct",
@@ -765,6 +677,7 @@ MODAL
 
 
 </script>
+<script src="/javascrip/index.js"></script>
 </body>
 
 </html>
