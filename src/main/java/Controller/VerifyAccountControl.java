@@ -1,6 +1,6 @@
 package Controller;
 
-import Beans.JWT;
+import Utils.JWT;
 import DAO.UserDAO;
 import Model.User;
 

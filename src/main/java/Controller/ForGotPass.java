@@ -1,8 +1,8 @@
 package Controller;
 
-import Beans.HashSHA216;
-import Beans.JWT;
-import Beans.SendEmail;
+import Utils.HashSHA216;
+import Utils.JWT;
+import Utils.SendEmail;
 import Connect.ConnectDB;
 import DAO.UserDAO;
 import Model.Log;

@@ -1,11 +1,9 @@
 package Controller;
 
-import Beans.HashSHA216;
-import Beans.JWT;
+import Utils.HashSHA216;
 import DAO.UserDAO;
 import Model.RespJsonServlet;
 import Model.User;
-import com.google.gson.Gson;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -13,8 +11,6 @@ import javax.servlet.http.*;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
-import com.google.gson.JsonObject;
-import org.apache.http.HttpRequest;
 
 @WebServlet("/login")
 public class Login extends HttpServlet {
