@@ -102,7 +102,7 @@ public class CartDAO {
             return null;
         }
     }
-    public static Cart updateQuantityCartById(int id, int quantity) throws SQLException{
+    public static int updateQuantityCartById(int id, int quantity) throws SQLException{
         String sqlUpdate = "UPDATE cart "
                 + "SET quantity = ? "
                 + "WHERE id = ?";
@@ -111,7 +111,7 @@ public class CartDAO {
         pstmt.setInt(1, quantity);
         pstmt.setInt(2, id);
         int rowAffected = pstmt.executeUpdate();
-        return getCartById(id);
+        return rowAffected;
     }
     public static int removeCartById(int idCart) throws SQLException {
         String sqlUpdate = "DELETE FROM cart "

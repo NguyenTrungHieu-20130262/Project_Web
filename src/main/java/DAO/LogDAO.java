@@ -1,9 +1,8 @@
 package DAO;
 
-import Beans.AbBean;
+import Utils.AbBean;
 import Connect.ConnectDB;
 import Model.Log;
-import Model.User;
 //import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.sql.Connection;
@@ -11,7 +10,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class LogDAO {

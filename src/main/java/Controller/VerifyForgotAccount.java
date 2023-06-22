@@ -1,6 +1,6 @@
 package Controller;
 
-import Beans.JWT;
+import Utils.JWT;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;

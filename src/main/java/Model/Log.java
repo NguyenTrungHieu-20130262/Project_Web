@@ -1,6 +1,6 @@
 package Model;
 
-import Beans.AbBean;
+import Utils.AbBean;
 import Connect.ConnectDB;
 
 import java.sql.Connection;

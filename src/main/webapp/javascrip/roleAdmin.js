@@ -1,11 +1,14 @@
 var dataMain = []
 var dataUser = []
 var permission = []
+
 const getData = ()=>{
     $.ajax({
         statusCode: {
             401: function() {
                 swal("Bạn không có quyền thực hiện chức năng này.!", {});
+                loading.style.display = 'none'
+
             }
         },
         url: "/api/role",
@@ -20,6 +23,8 @@ const getData = ()=>{
                 elm += `<option value='${tmp.id}' >${tmp.name}</option>`
             })
             modal.innerHTML = elm
+            loading.style.display = 'none'
+
         },
         error: err=>{
 
@@ -31,6 +36,8 @@ const getDataUser = ()=>{
         statusCode: {
             401: function() {
                 swal("Bạn không có quyền thực hiện chức năng này.!", {});
+                loading.style.display = 'none'
+
             }
         },
         url: "/api/role?action=get_account",
@@ -52,6 +59,8 @@ const getPermission = ()=>{
         statusCode: {
             401: function() {
                 swal("Bạn không có quyền thực hiện chức năng này.!", {});
+                loading.style.display = 'none'
+
             }
         },
         url: "/api/permission",
@@ -110,6 +119,8 @@ const editRole = (id,e)=>{
 
 }
 const saveRole = ()=>{
+    loading.style.display = 'block'
+
     let idUser =  document.querySelector('#id_user').value
 
     let modal = document.querySelector('#exampleModalCenterAddRole')
@@ -118,6 +129,8 @@ const saveRole = ()=>{
         statusCode: {
             401: function() {
                 swal("Bạn không có quyền thực hiện chức năng này.!", {});
+                loading.style.display = 'none'
+
             }
         },
         data:{idUser, idRole},
@@ -133,6 +146,8 @@ const saveRole = ()=>{
                         let table =  $('#tableUser').DataTable()
                         table.row(index).data(dataUser[i]).draw();
                         swal("Cấp quyền thành công.!", {});
+                        loading.style.display = 'none'
+
                         break;
                     }
                 }
@@ -257,6 +272,7 @@ document.querySelector('.save_edit').addEventListener('click',(e)=>{
     let name = document.querySelector('#role-name-edit').value
     let id = document.querySelector('#role-id-edit').value
 
+    loading.style.display = 'block'
 
     let permissions = document.querySelectorAll('#permissions_edit button.btn-outline-primary')
     console.log(permissions)
@@ -271,6 +287,7 @@ document.querySelector('.save_edit').addEventListener('click',(e)=>{
         statusCode: {
             401: function() {
                 swal("Bạn không có quyền thực hiện chức năng này.!", {});
+                loading.style.display = 'none'
 
             }
         },
@@ -289,6 +306,8 @@ document.querySelector('.save_edit').addEventListener('click',(e)=>{
             let table =  $('#myTable').DataTable()
             table.row(index_edit).data(rs).draw();
             closeModalEdit()
+            loading.style.display = 'none'
+
         },
         error: err=>{
 
@@ -308,16 +327,20 @@ const changeSelectPermission = (e)=>{
 }
 
 const delPermission = (id_role, id_permission, e)=>{
+
     swal({
         title: "Cảnh báo",
         text: "Bạn có chắc chắn là muốn xóa quyền này?",
         buttons: ["Hủy bỏ", "Đồng ý"],
     }).then((willDelete) => {
         if (willDelete) {
+            loading.style.display = 'block'
+
             $.ajax({
                 statusCode: {
                     401: function() {
                         swal("Bạn không có quyền thực hiện chức năng này.!", {});
+                        loading.style.display = 'none'
 
                     }
                 },
@@ -328,6 +351,8 @@ const delPermission = (id_role, id_permission, e)=>{
                 },
                 success: res =>{
                   e.parentNode.style.display = 'none'
+                    loading.style.display = 'none'
+
                 },
                 error: err=>{
 
@@ -355,10 +380,13 @@ const deleteRole = (id,index)=>{
         buttons: ["Hủy bỏ", "Đồng ý"],
     }).then((willDelete) => {
         if (willDelete) {
+            loading.style.display = 'block'
+
             $.ajax({
                 statusCode: {
                     401: function() {
                         swal("Bạn không có quyền thực hiện chức năng này.!", {});
+                        loading.style.display = 'none'
 
                     }
                 },
@@ -380,6 +408,8 @@ const deleteRole = (id,index)=>{
                     }
                     let selectRole = document.querySelector(".addRole option[value='"+dataRow.id+"'] ")
                     selectRole.remove()
+                    loading.style.display = 'none'
+
                 },
                 error: err=>{
 
@@ -541,6 +571,8 @@ document.querySelectorAll('.closeModal').forEach(tmp=>{
 
 document.querySelector('.insert_role').addEventListener('click',(e)=>{
     e.preventDefault()
+    loading.style.display = 'block'
+
     let name = document.querySelector("#name_role").value
     let permissions = document.querySelector("#field2").selectedOptions
     let idPermissions = []
@@ -552,6 +584,8 @@ document.querySelector('.insert_role').addEventListener('click',(e)=>{
         statusCode: {
             401: function() {
                 swal("Bạn không có quyền thực hiện chức năng này.!", {});
+                loading.style.display = 'none'
+
             }
         },
         url: "/api/role?action=insert",
@@ -563,8 +597,12 @@ document.querySelector('.insert_role').addEventListener('click',(e)=>{
                 swal("Thêm nhóm quyền thành công.!", {});
                 $('#myTable').DataTable().clear().destroy()
                 getData()
+                loading.style.display = 'none'
+
             }else{
                 swal("Thêm nhóm quyền không thành công.!", {});
+                loading.style.display = 'none'
+
             }
         },
         error: err=>{

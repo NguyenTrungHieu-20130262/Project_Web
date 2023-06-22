@@ -1,6 +1,6 @@
 package Controller;
 
-import Beans.HashSHA216;
+import Utils.HashSHA216;
 import Connect.ConnectDB;
 import DAO.UserDAO;
 import Model.Log;
@@ -110,7 +110,33 @@ public class Profile extends HttpServlet {
         }
         res.sendRedirect("/profile");
     }
+    private void changeProfileCart(HttpServletRequest req,HttpServletResponse res) throws IOException, SQLException {
+        User user = (User) req.getSession().getAttribute("user");
+        Map<String, String[]> params = req.getParameterMap();
+        System.out.println("----------------------------zxc");
+        if(params.get("name") != null){
+            user.setFullName(URLDecoder.decode(params.get("name")[0], "UTF-8"));
+        }
+        if(params.get("address") != null){
+            user.setAddress(URLDecoder.decode(params.get("address")[0], "UTF-8"));
+        }
+        if(params.get("phone") != null){
+            user.setPhone(params.get("phone")[0]);
+        }
+        int rsUpdate = UserDAO.updateUser(user);
 
+        if (rsUpdate == 1) {
+            Log log = new Log(Log.ALERT, user.getId(), this.getClass().getName(), "Chỉnh sửa hồ sơ user(Profile)", 1);
+            log.insert(ConnectDB.getConnect());
+            saveSession(user, req);
+            user.setPassWord(null);
+            res.getWriter().write(new Gson().toJson(user));
+            return;
+        }
+        res.getWriter().write(-1);
+
+
+    }
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
         res.setContentType("text/html;charset=UTF-8");
@@ -150,6 +176,15 @@ public class Profile extends HttpServlet {
             } catch (ClassNotFoundException e) {
                 throw new RuntimeException(e);
             }
+            return;
+        }
+        if (action != null && action.equals("changeProfileCart")) {
+            try {
+                changeProfileCart(req, res);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+
             return;
         }
         if (action != null && action.equals("changeAvatar")) {

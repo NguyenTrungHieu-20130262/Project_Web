@@ -33,6 +33,8 @@
         </div>
         <div class="Container-left">
             <h1 class="heading mb-10" style="margin-top: 20px; margin-left: 20px">Mua bán xe ô tô mới</h1>
+            <%@include file="/Component/loading/Loading.jsp" %>
+
             <div class="box-list-car" id="box-list-car">
             </div>
             <input hidden class="number_pagination"  value="<%= session.getAttribute("totalPages") %>"/>
