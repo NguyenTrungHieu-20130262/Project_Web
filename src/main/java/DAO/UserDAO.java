@@ -38,7 +38,7 @@ public class UserDAO {
 
     public static int getCountUser() throws SQLException {
         Connection c = ConnectDB.getConnect();
-        PreparedStatement stmt = c.prepareStatement("select count(*) from user where role=0 ");
+        PreparedStatement stmt = c.prepareStatement("select count(*) from user");
         ResultSet rs = stmt.executeQuery();
         rs.next();
         int countRow = rs.getInt(1);
