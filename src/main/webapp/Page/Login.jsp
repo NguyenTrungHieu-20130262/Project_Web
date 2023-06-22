@@ -56,15 +56,18 @@
     </style>
 </head>
 <body>
+<jsp:include page="../Component/header/Header.jsp" />
+
 <div class="container" style="margin-top: 50px">
     <div class="wrapper">
+        <h2 class="title_head" style="text-align: center; font-size: 40px; font-weight: bold; text-transform: uppercase; margin-bottom: 30px;">Đăng nhập</h2>
         <ul class="nav nav-pills nav-justified mb-3" id="ex1" role="tablist">
             <li class="nav-item" role="presentation">
-                <a class="nav-link active" id="tab-login"  href="login" role="tab" >Login</a>
+                <a class="nav-link active" id="tab-login"  href="login" role="tab" >Đăng nhập</a>
             </li>
             <li class="nav-item" role="presentation">
                 <a class="nav-link" id="tab-register"  href="register"
-                   >Register</a>
+                   >Đăng kí</a>
             </li>
         </ul>
         <!-- Pills navs -->
@@ -73,21 +76,21 @@
         <div class="tab-content" style="margin: auto;">
             <div class="tab-pane fade show active" id="pills-login" role="tabpanel" aria-labelledby="tab-login">
                 <hr/>
-                <form class="form-login">
+                <form class="form-login" style="width: 100%; margin: 30px 0">
                     <div class="text-center mb-3">
-                        <p>Sign in with</p>
+<%--                        <p>Sign in with</p>--%>
 
                     </div>
 
                     <!-- Email input -->
                     <div class="form-outline mb-4">
-                        <label class="form-label" for="loginName">Email or username</label>
+                        <label class="form-label" for="loginName">Email/Tên đăng nhập</label>
                         <input type="text" id="loginName" class="form-control"/>
                     </div>
 
                     <!-- Password input -->
                     <div class="form-outline mb-4">
-                        <label class="form-label" for="loginPassword">Password</label>
+                        <label class="form-label" for="loginPassword">Mật khẩu</label>
                         <input type="password" id="loginPassword" class="form-control"/>
                     </div>
 
@@ -97,33 +100,77 @@
                             <!-- Checkbox -->
                             <div class="form-check mb-3 mb-md-0">
                                 <input class="form-check-input" type="checkbox" value="" id="loginCheck" checked/>
-                                <label class="form-check-label" for="loginCheck"> Remember me </label>
+                                <label class="form-check-label" for="loginCheck"> Nhớ mật khẩu </label>
                             </div>
                         </div>
 
                         <div class="col-md-6 d-flex justify-content-center">
                             <!-- Simple link -->
-                            <a  class="link-forgot" href="forgotPass">Forgot password?</a>
+                            <a  class="link-forgot" href="forgotPass">Quên mật khâu?</a>
                         </div>
                     </div>
 
                     <!-- Submit button -->
-                    <button type="submit" class="btn btn-primary btn-block mb-4 login">Login</button>
+                    <button type="submit" class="btn btn-primary btn-block mb-4 login">Đăng nhập</button>
                     <div class="text-center">
                         <div id="login">
                             <a href="https://accounts.google.com/o/oauth2/auth?scope=profile&redirect_uri=http://localhost:3000/login/loginWithGg&response_type=code
-		   &client_id=108677386257-pqkllmloi7d9f60ipgvb053sfg9eosrr.apps.googleusercontent.com&approval_prompt=force" id="loginWithGG"><i class="fa-brands fa-google"></i>Login with google</a>
-                            <fb:login-button id="loginWithFb" scope="public_profile,email" onlogin="checkLoginState();">
+		   &client_id=108677386257-pqkllmloi7d9f60ipgvb053sfg9eosrr.apps.googleusercontent.com&approval_prompt=force" id="loginWithGG"><i class="fa-brands fa-google"></i>Đăng nhập với google</a>
+                            <fb:login-button style="display: none;"  id="loginWithFb" scope="public_profile,email" onlogin="checkLoginState();">
                             </fb:login-button>
+                            <a href="" id="loginFb"><i class="fa-brands fa-facebook"></i>Đăng nhập với facebook</a>
+                            <style>
+                                .btn-primary{
+                                    width: 40%;
+                                    margin-left: 50%;
+                                    transform: translateX(-50%);
+                                    padding: 5px;
+                                    /*background: linear-gradient(to right, #00c10c 0%, #fff200 50%, #00c10c 100%);*/
+                                    background: linear-gradient(to right, #135EAC 0%, #82e1d3 50%, #135EAC 100%);
+                                    background-size: 300%, 1px;
+                                    border: none;
+                                    border-radius: 5px;
+                                    color: white;
+                                    transition: all .3s linear;
+                                }
+
+                                .btn-primary:hover{
+                                    /*background: linear-gradient(to left, #00c10c 0%, #fff200 50%, #00c10c 100%) right;*/
+                                    background: linear-gradient(to left, #135EAC 0%, #82e1d3 50%, #135EAC 100%) right;
+                                    background-size: 300%, 1px;
+                                }
+
+                                #loginFb{
+                                    text-decoration: none;
+                                    min-width: 200px;
+                                    min-height: 50px;
+                                    padding: 10px;
+                                    border: 2px solid #4b7bca;
+                                    border-radius: 10px;
+                                    margin-bottom: 20px;
+                                    margin-right: 20px;
+                                    cursor: pointer;
+                                    color: #007bff;
+                                }
+
+                                #loginFb:hover{
+                                    color: white;
+                                    background-color: #3b71ca;
+                                }
+
+                                #loginFb i{
+                                    margin-right: 10px;
+                                }
+                            </style>
                         </div>
                     </div>
                     <!-- Register buttons -->
-                    <div class="text-center">
-                        <a  href="/">
-                            <i class="fa-solid fa-backward"></i>
-                            Back to home
-                        </a>
-                    </div>
+<%--                    <div class="text-center">--%>
+<%--                        <a  href="/">--%>
+<%--                            <i class="fa-solid fa-backward"></i>--%>
+<%--                            Trở về trang chủ--%>
+<%--                        </a>--%>
+<%--                    </div>--%>
                 </form>
 <%--                 forgot--%>
 
@@ -134,6 +181,8 @@
     </div>
 
 </div>
+<jsp:include page="../Component/footer/footer.jsp" />
+
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
@@ -145,6 +194,8 @@
     // })
 </script>
 <script>
+
+
     $('.login').bind('click', function (e) {
         e.preventDefault()
         $.ajax({
@@ -380,7 +431,12 @@
             this.disabled = true; // Disable the button after it is clicked
         });
     };
-
+    document.querySelector("#loginFb").addEventListener('click',()=>{
+        FB.login((res)=>{
+            statusChangeCallback(res)
+        })
+        // checkLoginState()
+    })
     function testAPI() {
         console.log('Welcome! Fetching your information....');
         FB.api('/me', function(response) {
