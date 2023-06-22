@@ -63,11 +63,10 @@
         <h2 class="title_head" style="text-align: center; font-size: 40px; font-weight: bold; text-transform: uppercase; margin-bottom: 30px;">Đăng nhập</h2>
         <ul class="nav nav-pills nav-justified mb-3" id="ex1" role="tablist">
             <li class="nav-item" role="presentation">
-                <a class="nav-link active" id="tab-login"  href="login" role="tab" >Đăng nhập</a>
+                <a class="nav-link active" id="tab-login"  href="login" role="tab" style="text-transform: uppercase">Đăng nhập</a>
             </li>
             <li class="nav-item" role="presentation">
-                <a class="nav-link" id="tab-register"  href="register"
-                   >Đăng kí</a>
+                <a class="nav-link" id="tab-register"  href="register" style="text-transform: uppercase">Đăng kí</a>
             </li>
         </ul>
         <!-- Pills navs -->
@@ -106,7 +105,7 @@
 
                         <div class="col-md-6 d-flex justify-content-center">
                             <!-- Simple link -->
-                            <a  class="link-forgot" href="forgotPass">Quên mật khâu?</a>
+                            <a  class="link-forgot" href="forgotPass">Quên mật khẩu?</a>
                         </div>
                     </div>
 
@@ -126,7 +125,7 @@
                                     transform: translateX(-50%);
                                     padding: 5px;
                                     /*background: linear-gradient(to right, #00c10c 0%, #fff200 50%, #00c10c 100%);*/
-                                    background: linear-gradient(to right, #135EAC 0%, #82e1d3 50%, #135EAC 100%);
+                                    background: linear-gradient(to right, #007bff 0%, #9cf6e7 50%, #007bff 100%);
                                     background-size: 300%, 1px;
                                     border: none;
                                     border-radius: 5px;
@@ -136,7 +135,7 @@
 
                                 .btn-primary:hover{
                                     /*background: linear-gradient(to left, #00c10c 0%, #fff200 50%, #00c10c 100%) right;*/
-                                    background: linear-gradient(to left, #135EAC 0%, #82e1d3 50%, #135EAC 100%) right;
+                                    background: linear-gradient(to left, #007bff 0%, #9cf6e7 50%, #007bff 100%) right;
                                     background-size: 300%, 1px;
                                 }
 
