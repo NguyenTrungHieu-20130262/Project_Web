@@ -158,6 +158,9 @@ public class TransportAPI {
         httpPost.setEntity(new UrlEncodedFormEntity(params));
         HttpResponse httpResponse = client.execute(httpPost);
         String content = IOUtils.toString(httpResponse.getEntity().getContent(), "UTF-8");
+        if(content.contains("400")){
+            return 0;
+        }
         content = content.split("service_fee\":")[1].split("}]}")[0];
         System.out.println(content+" "+height+" "+ length+" "+width +" "+ weight);
         return Integer.valueOf((int) Integer.valueOf(content)/2350);

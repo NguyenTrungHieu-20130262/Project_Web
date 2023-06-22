@@ -15,6 +15,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Random;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -120,7 +121,8 @@ public class OrderControl extends HttpServlet {
         if(pttt == 0){
             directPayment(req,res);
         }else{
-            paymentVNPay(req,res);
+            res.setStatus(500);
+          //  paymentVNPay(req,res);
         }
     }
     private void directPayment(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
@@ -160,7 +162,40 @@ public class OrderControl extends HttpServlet {
 
             int[] address = TransportAPI.getInstance().getIdAddress(userNew.getAddress());
             String data =TransportAPI.getInstance().registerTransport(address[1], address[2],h,w,l,w2);
-            JSONObject object = new JSONObject(data);
+            if(data.contains("400 Bad Request")){
+                String idTransport = "apiLoi";
+                order.setIdTransport(idTransport);
+                double money = 0;
+                order.setTotal_price(TransportAPI.convertToUSD(money) + totalPrice);
+                Payment payment = new Payment();
+                payment.setIdOrder(order.getId());
+                payment.setAmount(Double.valueOf(TransportAPI.convertToUSD(money) + totalPrice));
+                payment.setPaymentDate(new java.sql.Date(new Date().getTime()));
+                payment.setType(0);
+                payment.setStatus(0);
+                Date date = new Date(new Date().getTime() + new Random().nextInt(300) * 2000);
+                order.setLeadTime(new java.sql.Date(date.getTime()));
+                OderDAO.updateById(order);
+                int rsPayment = PaymentDAO.insertPayment(payment);
+                if(rsPayment>0){
+                    Log log=new Log(Log.INFO, user.getId(),this.getClass().getName(),"Thanh toán trực tiếp(Payment)",1);
+                    log.insert(ConnectDB.getConnect());
+                }
+                CartDAO.removeCartByUser(user.getId());
+                String domain = req.getRequestURL().toString();
+                long dateTime = new Date().getTime();
+                req.getSession().setAttribute("leadTime", date.getTime());
+                req.getSession().setAttribute("order", order);
+
+                String token = JWT.createJWT(dateTime+"",3);
+                DateFormat formatter = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
+                System.out.println(formatter.format(new Date(new Date().getTime() + 1682467199)));
+                req.getSession().setAttribute("token_direct", dateTime + "");
+                res.sendRedirect(domain +"?token_direct="+token);
+
+                return;
+            }
+            JSONObject object = new JSONObject();
             String idTransport = object.getJSONObject("Transport").getString("id");
             order.setIdTransport(idTransport);
             double money =Double.parseDouble(object.getJSONObject("Transport").getString("fee"));
