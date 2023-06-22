@@ -113,7 +113,9 @@
 <jsp:include page="SideBar.jsp">
     <jsp:param name="page" value="9"/>
 </jsp:include>
-<main class="app-content">
+<main class="app-content" style="position: relative">
+    <%@include file="/Component/loading/Loading.jsp" %>
+
     <div class="app-title">
         <ul class="app-breadcrumb breadcrumb side">
             <li class="breadcrumb-item active"><a href="#"><b>Phân quyền người dùng</b></a></li>
@@ -280,7 +282,11 @@
     </div>
 </div>
 </body>
-
+<script>
+    const loading = document.getElementById("loading");
+    loading.style.display = 'block'
+    loading.style.backgroundColor = " rgb(28 25 25 / 87%)"
+</script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8" crossorigin="anonymous"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

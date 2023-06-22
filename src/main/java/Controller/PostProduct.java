@@ -1,6 +1,6 @@
 package Controller;
 
-import Beans.JWT;
+import Utils.JWT;
 import Connect.ConnectDB;
 import DAO.CompanyDAO;
 import DAO.ProductDAO;

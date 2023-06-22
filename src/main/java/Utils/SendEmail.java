@@ -1,12 +1,9 @@
-package Beans;
-import org.springframework.mail.SimpleMailMessage;
+package Utils;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 
-import javax.mail.Message;
 import javax.mail.internet.MimeMessage;
 import java.util.Properties;
-import java.util.Random;
 
 public class SendEmail {
     private static SendEmail sendEmail;

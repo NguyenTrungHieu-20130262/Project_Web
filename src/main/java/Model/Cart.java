@@ -53,7 +53,9 @@ public class Cart {
         this.messStatus = statusCart.get(status);
 
     }
-
+    public String getMess(){
+        return messStatus;
+    }
     public int getId() {
         return id;
     }
@@ -119,6 +121,7 @@ public class Cart {
     }
 
     public void setQuantity(int quantity) throws SQLException {
+
 this.quantity = quantity;
     }
     @Override
