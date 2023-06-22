@@ -300,59 +300,60 @@
         $("#content").val("")
     }
 
-    $("#btn-send").click(function (e) {
-        e.preventDefault()
-        const arr = getStatus()
-        const nameCompany = $('.form-select option:selected').text();
-        const title = encodeURI($("#tilte123").val())
-        const content = encodeURI($("#content").val())
-        const images = listImg
-        const xmas = new Date("December 25, 2000 23:15:00");
-        const year = xmas.getYear();
-        const yearofmanufacture = getYear() || year
-        const made = encodeURI(arr[0])
-        const gear = arr[1]
-        const fuel = encodeURI(arr[2])
-        const status = arr[3]
-        const price = $("#Price").val()
-        const body = $("#body").val()
-        const quantity = $("#quantity").val()
-        const height = $("input[name='height']").val()
-        const length = $("input[name='length']").val()
-        const width = $("input[name='width']").val()
-        const weight = $("input[name='weight']").val()
+    $("#btn-send").click(function(e) {
+        e.preventDefault();
+        const arr=getStatus()
+        const formData = new FormData();
+        formData.append("nameCompany", $('.form-select option:selected').text());
+        formData.append("title", $("#tilte123").val());
+        formData.append("content", $("#content").val());
+        formData.append("images", listImg);
+        formData.append("yearofmanufacture", getYear() || new Date().getFullYear());
+        formData.append("made", arr[0]);
+        formData.append("gear", arr[1]);
+        formData.append("fuel", arr[2]);
+        formData.append("status", arr[3]);
+        formData.append("price", $("#Price").val());
+        formData.append("body", $("#body").val());
+        formData.append("quantity", $("#quantity").val());
+        formData.append("height", $("input[name='height']").val());
+        formData.append("length", $("input[name='length']").val());
+        formData.append("width", $("input[name='width']").val());
+        formData.append("weight", $("input[name='weight']").val());
 
-
-        if (nameCompany && title && content && images && yearofmanufacture && made && gear && fuel && status && price && body && quantity, height, length, width, weight) {
-            // if(typeof price==="number"){
-            var dataBody = {
-                nameCompany,
-                images,
-                title,
-                content,
-                yearofmanufacture,
-                gear,
-                fuel,
-                price,
-                status,
-                body,
-                made,
-                quantity, height, length, width, weight
-            }
-            loading.style.display = "block"
+        if (
+            formData.get("nameCompany") &&
+            formData.get("title") &&
+            formData.get("content") &&
+            formData.get("images") &&
+            formData.get("yearofmanufacture") &&
+            formData.get("made") &&
+            formData.get("gear") &&
+            formData.get("fuel") &&
+            formData.get("status") &&
+            formData.get("price") &&
+            formData.get("body") &&
+            formData.get("quantity") &&
+            formData.get("height") &&
+            formData.get("length") &&
+            formData.get("width") &&
+            formData.get("weight")
+        ) {
+            loading.style.display = "block";
 
             $.ajax({
                 url: "/postProduct",
                 type: "POST",
-                data: dataBody,
-                contentType: 'application/x-www-form-urlencoded',
-                success: function (data) {
-                    delForm()
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(data) {
+                    delForm();
                     swal({
                         title: "Thành công",
                         text: "Thêm sản phẩm thành công",
                     }).then(() => {
-                        loading.style.display = "none"
+                        loading.style.display = "none";
                     });
                 }
             });
@@ -362,16 +363,83 @@
                 text: 'Thông tin không chính xác',
                 content: "form",
                 buttons: {
-                    cancel: "Cancel", l
+                    cancel: "Cancel",
                 }
             }).then((value) => {
-                loading.style.display = "none"
+                loading.style.display = "none";
             });
         }
-
-
-    })
-
+    });
+// $("#btn-send").click(function(e) {
+//     e.preventDefault();
+//     const arr=getStatus()
+//     const formData = new FormData();
+//     formData.append("nameCompany", $('.form-select option:selected').text());
+//     formData.append("title", $("#tilte123").val());
+//     formData.append("content", $("#content").val());
+//     formData.append("images", listImg);
+//     formData.append("yearofmanufacture", getYear() || new Date().getFullYear());
+//     formData.append("made", arr[0]);
+//     formData.append("gear", arr[1]);
+//     formData.append("fuel", arr[2]);
+//     formData.append("status", arr[3]);
+//     formData.append("price", $("#Price").val());
+//     formData.append("body", $("#body").val());
+//     formData.append("quantity", $("#quantity").val());
+//     formData.append("height", $("input[name='height']").val());
+//     formData.append("length", $("input[name='length']").val());
+//     formData.append("width", $("input[name='width']").val());
+//     formData.append("weight", $("input[name='weight']").val());
+//
+//     if (
+//         formData.get("nameCompany") &&
+//         formData.get("title") &&
+//         formData.get("content") &&
+//         formData.get("images") &&
+//         formData.get("yearofmanufacture") &&
+//         formData.get("made") &&
+//         formData.get("gear") &&
+//         formData.get("fuel") &&
+//         formData.get("status") &&
+//         formData.get("price") &&
+//         formData.get("body") &&
+//         formData.get("quantity") &&
+//         formData.get("height") &&
+//         formData.get("length") &&
+//         formData.get("width") &&
+//         formData.get("weight")
+//     ) {
+//         loading.style.display = "block";
+//
+//         $.ajax({
+//             url: "/postProduct",
+//             type: "POST",
+//             data: formData,
+//             processData: false,
+//             contentType: false,
+//             success: function(data) {
+//                 delForm();
+//                 swal({
+//                     title: "Thành công",
+//                     text: "Thêm sản phẩm thành công",
+//                 }).then(() => {
+//                     loading.style.display = "none";
+//                 });
+//             }
+//         });
+//     } else {
+//         swal({
+//             title: 'Lỗi ',
+//             text: 'Thông tin không chính xác',
+//             content: "form",
+//             buttons: {
+//                 cancel: "Cancel",
+//             }
+//         }).then((value) => {
+//             loading.style.display = "none";
+//         });
+//     }
+//     });
 
 </script>
 <%--post product--%>
