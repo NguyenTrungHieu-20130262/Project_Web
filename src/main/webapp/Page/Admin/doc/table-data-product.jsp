@@ -123,6 +123,7 @@
         </div>
     </div>
 </main>
+<%@include file="/Component/loading/Loading.jsp" %>
 <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
      aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -422,29 +423,116 @@ MODAL
             });
     }
 
-    function editRow(r, idPost) {
-        var i = r.parentNode.parentNode.rowIndex;
-        // swal({
-        //     // title: "Cảnh báo",
-        //     // text: "Bạn có chắc chắn là muốn xóa sản phẩm này?",
-        //     // buttons: ["Hủy bỏ", "Đồng ý"],
-        // })
-        //     .then((willDelete) => {
-        if (willDelete) {
-            $.ajax({
-                url: "/admin?action=editproduct&id=" + idPost,
-                type: "POST",
-                contentType: 'application/x-www-form-urlencoded',
-                success: function (data) {
-                    console.log(data)
-                    if (JSON.parse(data) === 1)
-                        document.getElementById("myTable").deleteRow(i);
+    const getStatus = () => {
+        let arr = []
+        $(".status-group li").each(function () {
+            $(this).each(function (index) {
+                if ($(this)[0].querySelector("input").checked) {
+                    arr.push($(this)[0].querySelector("input").getAttribute("value"))
+                }
+            })
+
+        });
+        return arr
+    }
+
+    const fillInfoP = (product) => {
+        $("#yearOfManufacture").val(product[0].yearOfManuFacture)
+        $("#height").val(product[0].height);
+        $("#width").val(product[0].width);
+        $("#weight").val(product[0].weight);
+        $("#length").val(product[0].length);
+        $("#Price").val(product[0].price)
+        $("#quantity").val(product[0].quantity)
+        $("#body").val(product[0].body)
+        $("#tilte123").val(product[0].name)
+        $("#content").val(product[0].content)
+        $(".btn-save").attr("id", product[0].id)
+    }
+    const getYear = () => {
+        let year;
+        $(".list-year span").each(function () {
+            $(this).each(function (index) {
+                if ($(this)[0].querySelector("input").checked) {
+                    year = $(this)[0].querySelector("label").textContent
 
                 }
+            })
+
+        });
+        return year;
+
+    }
+    const loading = document.getElementById("loading");
+    document.querySelector(".btn-save").addEventListener("click", () => {
+        console.log(123)
+        let form = document.querySelector(".modal-content");
+        const arr = getStatus()
+        const formData = new FormData();
+        formData.append("nameCompany", $('.form-select option:selected').text());
+        formData.append("title", $("#tilte123").val());
+        formData.append("content", $("#content").val());
+        formData.append("yearofmanufacture", getYear() || new Date().getFullYear());
+        formData.append("made", arr[0]);
+        formData.append("gear", arr[1]);
+        formData.append("status", arr[3]);
+        formData.append("price", $("#Price").val());
+        formData.append("body", $("#body").val());
+        formData.append("quantity", $("#quantity").val());
+        formData.append("height", $("#height").val());
+        formData.append("length", $("#length").val());
+        formData.append("width", $("#width").val());
+        formData.append("weight", $("#weight").val());
+        formData.append("id", $(".btn-save").attr("id"));
+        formData.append("fuel", arr[2]);
+        if (
+            true
+        ) {
+            if ($("#tilte123").val() === "" || $("#content").val() === "" ||  $("#Price").val() === "" || $("#body").val() === "" || $("#quantity").val() === ""){
+                alert("Vui lòng điền đủ các trường!")
+            }else {
+                loading.style.display = "block";
+                console.log($("#quantity").val());
+                $.ajax({
+                    url: "/product",
+                    type: "Put",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (data) {
+                        swal({
+                            title: "Thành công",
+                            text: "Thay đổi thong tin sản phẩm thành công",
+                        }).then(() => {
+                            loading.style.display = "none";
+                            form.style.display = "none";
+                        });
+                    }
+                });
+            }
+        } else {
+            swal({
+                title: 'Lỗi ',
+                text: 'Thông tin không chính xác',
+                content: "form",
+                buttons: {
+                    cancel: "Cancel",
+                }
+            }).then((value) => {
+                loading.style.display = "none";
             });
-            swal("Đã sửa thành công.!", {});
         }
-        // });
+    })
+
+    function editRow(r, idPost) {
+        console.log(dataMain)
+        var i = r.parentNode.parentNode.rowIndex;
+        const product = dataMain.filter((item) => {
+            return item.id == idPost
+        })
+        fillInfoP(product)
+
+
     }
 
 
@@ -522,7 +610,7 @@ MODAL
                             'onclick="deleteRow(this, ' + row.id + ')" style="width: 32px; height: 30px">' +
                             '<i class="fas fa-trash-alt"></i>' +
                             '</button>' +
-                            '<button method="POST" type="button" class="btn btn-primary" ' +
+                            '<button onclick="editRow(this, ' + row.id + ')"  type="button" class="btn btn-primary" ' +
                             'data-toggle="modal" data-target="#exampleModalCenter" style="width: 32px; height: 30px">' +
                             '<i class="fas fa-edit" style="margin-left: -2.5px;"></i>' +
                             '</button>';
@@ -530,23 +618,18 @@ MODAL
                 }
             ],
         })
+
     }
 </script>
 
 <script>
-    document.querySelector(".btn-send").addEventListener("click", (e) => {
-        e.preventDefault();
-    })
     document.querySelector(".upload-item").addEventListener("click", (e) => {
         document.querySelector(".fileupload").click()
     })
 </script>
-<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
 
 <script>
-    document.querySelector(".btn-send").addEventListener("click", (e) => {
-        e.preventDefault();
-    })
     var handleItemImg = (e) => {
         var item = e.target.value;
         console.log(item)
@@ -574,20 +657,7 @@ MODAL
         }
         reader.readAsDataURL(file);
     })
-    const getYear = () => {
-        let year;
-        $(".list-year span").each(function () {
-            $(this).each(function (index) {
-                if ($(this)[0].querySelector("input").checked) {
-                    year = $(this)[0].querySelector("label").textContent
 
-                }
-            })
-
-        });
-        return year;
-
-    }
     const getStatus = () => {
         let arr = []
         $(".status-group li").each(function () {
@@ -601,79 +671,7 @@ MODAL
         return arr
     }
 
-    $("#btn-send").click(function (e) {
-        e.preventDefault()
-        const arr = getStatus()
-        const nameCompany = $('.form-select option:selected').text();
-        const title = encodeURI($("#tilte123").val())
-        const content = encodeURI($("#content").val())
-        const images = listImg
-        const xmas = new Date("December 25, 2000 23:15:00");
-        const year = xmas.getYear();
-        const yearofmanufacture = getYear() || year
-        const made = encodeURI(arr[0])
-        const gear = arr[1]
-        const fuel = encodeURI(arr[2])
-        const status = arr[3]
-        const price = $("#Price").val()
-        const body = $("#body").val()
-        const quantity = $("#quantity").val()
-        const height = $("input[name='height']").val()
-        const length = $("input[name='length']").val()
-        const width = $("input[name='width']").val()
-        const weight = $("input[name='weight']").val()
 
-
-        if (nameCompany && title && content && images && yearofmanufacture && made && gear && fuel && status && price && body && quantity, height, length, width, weight) {
-            // if(typeof price==="number"){
-            var dataBody = {
-                nameCompany,
-                images,
-                title,
-                content,
-                yearofmanufacture,
-                gear,
-                fuel,
-                price,
-                status,
-                body,
-                made,
-                quantity, height, length, width, weight
-            }
-            $.ajax({
-                url: "/postProduct",
-                type: "POST",
-                data: dataBody,
-                contentType: 'application/x-www-form-urlencoded',
-                success: function (data) {
-                    swal({
-                        title: 'Thành công',
-                        text: 'Thêm sản phẩm thành công',
-                        content: "form",
-                        buttons: {
-                            cancel: "Ok",
-                        }
-                    }).then((value) => {
-                        console.log(value);
-                    });
-                    window.location.href = window.location.href
-                }
-            });
-        } else {
-            swal({
-                title: 'Lỗi ',
-                text: 'Thông tin không chính xác',
-                content: "form",
-                buttons: {
-                    cancel: "Cancel", l
-                }
-            }).then((value) => {
-                console.log(value);
-            });
-        }
-
-
-    })
 
 
 </script>

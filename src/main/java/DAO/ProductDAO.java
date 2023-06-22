@@ -103,6 +103,7 @@ public class ProductDAO {
         }
         return products;
     }
+
     public static int countProduct() {
         String query = "SELECT COUNT(*) AS count FROM product";
         try {
@@ -110,14 +111,15 @@ public class ProductDAO {
             PreparedStatement preparedStatement = statement.getConnection().prepareStatement(query);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                return  resultSet.getInt("count");
+                return resultSet.getInt("count");
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         return 0;
     }
-    public static  ArrayList<Product> getProductsWithOffset(int offset, int RECORDS_PER_PAGE) {
+
+    public static ArrayList<Product> getProductsWithOffset(int offset, int RECORDS_PER_PAGE) {
         String query = "SELECT product.*, sum(quantity) as quantity, vendo.name as nameVendo, vendo.srcImg, GROUP_CONCAT(imgproduct.srcImg) as imgUrls\n" +
                 "FROM importproduct\n" +
                 "JOIN product ON importproduct.idProduct = product.id\n" +
@@ -161,7 +163,8 @@ public class ProductDAO {
         }
         return products;
     }
-    public static  ArrayList<Product> filterProduct(HttpServletRequest req) {
+
+    public static ArrayList<Product> filterProduct(HttpServletRequest req) {
         String name = req.getParameter("name");
         String year = req.getParameter("year");
         String company = req.getParameter("company");
@@ -176,19 +179,19 @@ public class ProductDAO {
                 "LEFT JOIN imgproduct ON product.id = imgproduct.idProduct\n" +
                 "GROUP BY product.id, vendo.name, vendo.srcImg\n" +
                 "HAVING quantity > 0 " +
-                "&& product.name like '%"+name.trim()+"%'" ;
-        if(!year.trim().equals("")){
+                "&& product.name like '%" + name.trim() + "%'";
+        if (!year.trim().equals("")) {
             query += "&& product.yearOfManuFacture = " + Integer.valueOf(year.trim());
         }
-        if(!company.trim().equals("")){
+        if (!company.trim().equals("")) {
             query += "&& product.idVendo = " + Integer.valueOf(company.trim());
         }
         query += "&& product.price <= " + Integer.valueOf(priceMax.trim());
         query += "&& product.price >= " + Integer.valueOf(priceMin.trim());
-        if(fuel.trim().equals("xang")){
+        if (fuel.trim().equals("xang")) {
             query += "&& product.fuel = " + 1;
         }
-        if(fuel.trim().equals("dien")){
+        if (fuel.trim().equals("dien")) {
             query += "&& product.fuel = " + 2;
         }
         ArrayList<Product> products = new ArrayList<Product>();
@@ -227,7 +230,7 @@ public class ProductDAO {
         return products;
     }
 
-    public static  ArrayList<Product> filterProductAndPage(int offset, int RECORDS_PER_PAGE, HttpServletRequest req) {
+    public static ArrayList<Product> filterProductAndPage(int offset, int RECORDS_PER_PAGE, HttpServletRequest req) {
         String name = req.getParameter("name");
         String year = req.getParameter("year");
         String company = req.getParameter("company");
@@ -241,19 +244,19 @@ public class ProductDAO {
                 "LEFT JOIN imgproduct ON product.id = imgproduct.idProduct\n" +
                 "GROUP BY product.id, vendo.name, vendo.srcImg\n" +
                 "HAVING quantity > 0 " +
-                "&& product.name like '%"+name.trim()+"%'" ;
-        if(!year.trim().equals("")){
+                "&& product.name like '%" + name.trim() + "%'";
+        if (!year.trim().equals("")) {
             query += "&& product.yearOfManuFacture = " + Integer.valueOf(year.trim());
         }
-        if(!company.trim().equals("")){
+        if (!company.trim().equals("")) {
             query += "&& product.idVendo = " + Integer.valueOf(company.trim());
         }
         query += "&& product.price <= " + Integer.valueOf(priceMax.trim());
         query += "&& product.price >= " + Integer.valueOf(priceMin.trim());
-        if(fuel.trim().equals("xang")){
+        if (fuel.trim().equals("xang")) {
             query += "&& product.fuel = " + 1;
         }
-        if(fuel.trim().equals("dien")){
+        if (fuel.trim().equals("dien")) {
             query += "&& product.fuel = " + 2;
         }
         query += " LIMIT ?, ?";
@@ -293,7 +296,8 @@ public class ProductDAO {
         }
         return products;
     }
-    public static  int countProductByFilter(HttpServletRequest req) {
+
+    public static int countProductByFilter(HttpServletRequest req) {
         String name = req.getParameter("name");
         String year = req.getParameter("year");
         String company = req.getParameter("company");
@@ -302,19 +306,19 @@ public class ProductDAO {
         String fuel = req.getParameter("fuel");
 
         String query = "SELECT COUNT(*) as count FROM  product where  " +
-                "product.name like '%"+name.trim()+"%' " ;
-        if(!year.trim().equals("")){
+                "product.name like '%" + name.trim() + "%' ";
+        if (!year.trim().equals("")) {
             query += "&& product.yearOfManuFacture = " + Integer.valueOf(year.trim());
         }
-        if(!company.trim().equals("")){
+        if (!company.trim().equals("")) {
             query += "&& product.idVendo = " + Integer.valueOf(company.trim());
         }
         query += "&& product.price <= " + Integer.valueOf(priceMax.trim());
         query += "&& product.price >= " + Integer.valueOf(priceMin.trim());
-        if(fuel.trim().equals("xang")){
+        if (fuel.trim().equals("xang")) {
             query += "&& product.fuel = " + 1;
         }
-        if(fuel.trim().equals("dien")){
+        if (fuel.trim().equals("dien")) {
             query += "&& product.fuel = " + 2;
         }
         System.out.println(query);
@@ -332,7 +336,6 @@ public class ProductDAO {
         }
         return 0;
     }
-
 
 
     public static ArrayList<Product> getProductAll() {
@@ -377,22 +380,24 @@ public class ProductDAO {
         }
         return products;
     }
+
     public static int getQuantityProductById(int id) {
         String query = "SELECT product.*, sum(quantity) as quantity FROM importproduct join product on importproduct.idProduct = product.id GROUP by product.id HAVING quantity > 0 AND id = ?";
         try {
             Statement statement = ConnectDB.getConnect().createStatement();
             PreparedStatement preparedStatement = statement.getConnection().prepareStatement(query);
-            preparedStatement.setInt(1,id);
+            preparedStatement.setInt(1, id);
 
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                return  resultSet.getInt("quantity");
+                return resultSet.getInt("quantity");
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return  -1;
+        return -1;
     }
+
     public static ArrayList<Product> getNewProducts() {
         ArrayList<Product> newProducts = new ArrayList<>();
         String query = "SELECT product.*, sum(quantity) as quantity, vendo.name as nameVendo, vendo.srcImg, GROUP_CONCAT(imgproduct.srcImg) as imgUrls\n" +
@@ -591,9 +596,10 @@ public class ProductDAO {
         return product;
     }
 
-    public void getProductByID(int id){
+    public void getProductByID(int id) {
 
     }
+
     public static int getQuantityProduct(int idProduct) throws SQLException {
         Connection c = ConnectDB.getConnect();
         PreparedStatement stmt = c.prepareStatement("SELECT (SELECT  SUM(orderdetail.quantity) FROM (`order` JOIN orderdetail on `order`.id = orderdetail.idOrder) WHERE orderdetail.idProduct = ? ) as SLB, (SELECT  SUM(importproduct.quantity) FROM importproduct WHERE importproduct.idProduct = ?) AS SLN");
@@ -613,7 +619,7 @@ public class ProductDAO {
         String q1 = "SET FOREIGN_KEY_CHECKS=0";
         PreparedStatement preparedStatement = statement.getConnection().prepareStatement(q1);
         preparedStatement.executeUpdate();
-        String query = "DELETE FROM `product` WHERE idPost=? ";
+        String query = "DELETE FROM `product` WHERE id=? ";
         preparedStatement = statement.getConnection().prepareStatement(query);
         preparedStatement.setInt(1, idPost);
         int resultSet = preparedStatement.executeUpdate();
@@ -733,6 +739,39 @@ public class ProductDAO {
             stmt.executeUpdate();
             return resultSet;
 
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public static int updateQuantity(int id, int quantity) throws SQLException {
+        String query = "UPDATE importproduct set quantity = ? where idProduct = ?  ";
+        PreparedStatement stmt = ConnectDB.getConnect().prepareStatement(query);
+        stmt.setInt(1,quantity);
+        stmt.setInt(2,id);
+       return  stmt.executeUpdate();
+
+    }
+    public static int updateProductAdmin(int idpost, String title, String content, String body, int idCompany, int year, String fuel, float price, int quantity,int height,int length,int width,int weight) throws SQLException {
+        String query = "UPDATE product set name =?,content=?,body=?,idVendo=?,yearofmanufacture=?,fuel=?,price=?,height=?,length=?,width=?,weight=? where id = ? ";
+        PreparedStatement stmt = ConnectDB.getConnect().prepareStatement(query);
+        try {
+            stmt.setString(1, title);
+            stmt.setString(2, content);
+            stmt.setString(3, body);
+            stmt.setInt(4, idCompany);
+            stmt.setInt(5, year);
+            stmt.setString(6, fuel);
+            stmt.setFloat(7, price);
+            stmt.setInt(8, height);
+            stmt.setInt(9, length);
+            stmt.setInt(10, width);
+            stmt.setInt(11, weight);
+            stmt.setInt(12, idpost);
+
+            int resultSet = stmt.executeUpdate();
+            ProductDAO.updateQuantity(idpost, quantity/4);
+
+            return resultSet;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
