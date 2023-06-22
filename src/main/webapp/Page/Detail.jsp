@@ -123,11 +123,12 @@
                     </li>
                     <%--                    <li><label class="label"><i class="fa-solid fa-flag-checkered"></i></i>Xuất xứ</label><%=product.getma()%>></li>--%>
                     <%--                    <li><label class="label"><i class="fa-solid fa-hashtag"></i>Hộp số</label> <%=(product.getGear() == 0) ? "Số tay": "Số tự dộng"%></li>--%>
-                    <%String fuel = product.getFuel();
+                    <%
+                        String fuel = product.getFuel();
                         String carFuel = null;
-                        if (fuel.equals("1")){
+                        if (fuel.equals("1")) {
                             carFuel = "Xăng";
-                        }else {
+                        } else {
                             carFuel = "Điện";
                         }
                     %>
@@ -227,7 +228,7 @@
                                         <img src="${item.avatar}" alt="src">
                                     </c:when>
                                     <c:otherwise>
-                                        <img src="https://scontent.fsgn2-6.fna.fbcdn.net/v/t1.30497-1/143086968_2856368904622192_1959732218791162458_n.png?stp=cp0_dst-png_p40x40&_nc_cat=1&ccb=1-7&_nc_sid=dbb9e7&_nc_ohc=4WG6vRsKhfwAX8Bce7J&_nc_ht=scontent.fsgn2-6.fna&oh=00_AfBRz5wLhcd8XP66sUoUweAK2PaU0ABxXKHrhZHXEuUqAg&oe=646409F8"
+                                        <img src="/Img/User/hideImage.png"
                                              alt="src">
                                     </c:otherwise>
                                 </c:choose>
@@ -254,6 +255,7 @@
                                 </div>
                             </c:if>
                         </div>
+
                     </c:forEach>
                 </div>
 
@@ -280,7 +282,7 @@
         const wrapperImg = e.target.parentNode;
         wrapperImg.remove();
     }
-    const createItemImg = (src,index) => {
+    const createItemImg = (src, index) => {
         const newDiv = document.createElement("div");
         newDiv.classList.add("wrapperImg");
         const deleteIcon = document.createElement("i");
@@ -290,7 +292,7 @@
         deleteIcon.classList.add("fa-trash");
         deleteIcon.addEventListener("click", (e) => {
             delImg(e);
-            arrFileImg[index].status=0
+            ImgObject.arrFileImg[index]=0;
         })
         newDiv.appendChild(deleteIcon);
         const newImg = document.createElement("img");
@@ -299,7 +301,7 @@
         newDiv.appendChild(newImg);
         return newDiv;
     }
-    const createItemVideo = (src,index) => {
+    const createItemVideo = (src, index) => {
         const newDiv = document.createElement("div");
         newDiv.classList.add("wrapperVideo");
         const deleteIcon = document.createElement("i");
@@ -308,7 +310,8 @@
         deleteIcon.classList.add("fa-trash");
         deleteIcon.addEventListener("click", (e) => {
             delImg(e)
-            arrFileVideo[index].status=0
+            VideoObject.arrFileVideo[index]=0;
+
         })
 
         newDiv.appendChild(deleteIcon);
@@ -321,13 +324,13 @@
         container.appendChild(newDiv);
         return newDiv;
     }
-    let ImgObject={
-        indexFileImg:0,
-        arrFileImg:[]
+    let ImgObject = {
+        indexFileImg: 0,
+        arrFileImg: []
     }
-    let VideoObject={
-        indexFileVideo:0,
-        arrFileVideo:[]
+    let VideoObject = {
+        indexFileVideo: 0,
+        arrFileVideo: []
     }
     var formData = new FormData();
     const fileInput = document.getElementById("myFileInput");
@@ -340,17 +343,17 @@
             reader.addEventListener("load", () => {
                 const base64String = reader.result;
                 if (file.type.includes("image")) {
-                    if (ImgObject.arrFileImg.length  + 1 > 5) {
+                    if (ImgObject.arrFileImg.length + 1 > 5) {
                         swal({
                             title: "Thất bại",
                             text: "Chỉ được chọn 5 image",
                         })
                     } else {
                         ImgObject.arrFileImg.push({
-                            data:file,
-                            status:1
+                            data: file,
+                            status: 1
                         })
-                        const div = createItemImg(base64String,ImgObject.indexFileImg)
+                        const div = createItemImg(base64String, ImgObject.indexFileImg)
                         containerImg.appendChild(div)
                         ImgObject.indexFileImg++;
                     }
@@ -362,10 +365,10 @@
                         })
                     } else {
                         VideoObject.arrFileVideo.push({
-                            data:file,
+                            data: file,
                             status: 1
                         })
-                        const div = createItemVideo(base64String,VideoObject.indexFileVideo)
+                        const div = createItemVideo(base64String, VideoObject.indexFileVideo)
                         containerVideo.appendChild(div)
                         VideoObject.indexFileVideo++;
                     }
@@ -373,7 +376,12 @@
             });
             await reader.readAsDataURL(file);
         }
-    });
+    });  var star = 0;
+    document.querySelectorAll(".stars input").forEach((item, index) => {
+        item.addEventListener("click", () => {
+            star = 5 - index;
+        })
+    })
     document.querySelector(".bt-comment").addEventListener("click", (e) => {
         e.preventDefault()
         let content = $("#w3review").val();
@@ -382,13 +390,13 @@
         formData.append("star", star)
         formData.append("idPost", idPost)
         for (const x of ImgObject.arrFileImg) {
-            if(x.status==1){
-                formData.append("fileImage",x.data)
+            if (x.status == 1) {
+                formData.append("fileImage", x.data)
             }
         }
         for (const x of VideoObject.arrFileVideo) {
-            if(x.status==1){
-                formData.append("fileVideo",x.data)
+            if (x.status == 1) {
+                formData.append("fileVideo", x.data)
             }
         }
         if (idPost && star && content) {
@@ -400,13 +408,13 @@
                 contentType: false,
                 processData: false,
                 success: function (data) {
-                    console.log(data)
                     if (data.message == "ok") {
                         swal({
                             title: "Thành công",
                             text: "Thêm comment thành công",
                         })
-                        window.location.href = window.location.href
+
+                        window.location.href=window.location.href
                     } else {
                         if (data.message == "no user") {
                             swal({
@@ -424,15 +432,90 @@
             })
         }
     })
-    const plusSlides=(n)=> {
+    const createCmt=(listImg, listVideo,star,createAtCmt,contentCmt)=>{
+        const listItem = document.createElement("div");
+        listItem.classList.add("cmt");
+
+        // Tạo phần tử div chứa avatar và rating
+        const cmtH = document.createElement("div");
+        cmtH.classList.add("cmt_h");
+
+        // Tạo phần tử img chứa avatar
+        const avatarImg = document.createElement("img");
+        avatarImg.src = item.avatar != null ? item.avatar : "/Img/User/hideImage.png";
+        avatarImg.alt = "src";
+        cmtH.appendChild(avatarImg);
+
+        // Tạo phần tử div chứa rating
+        const startCmt = document.createElement("div");
+        startCmt.classList.add("start-cmt");
+
+        // Tạo các phần tử i đại diện cho rating
+        for (let i = 0; i < star; i++) {
+            const starIcon = document.createElement("i");
+            starIcon.classList.add("fa-solid", "fa-star");
+            startCmt.appendChild(starIcon);
+        }
+
+        cmtH.appendChild(startCmt);
+        listItem.appendChild(cmtH);
+
+        // Tạo phần tử p chứa thông tin người dùng và thời gian tạo
+        const userInfo = document.createElement("p");
+        const userName = document.createElement("b");
+        userName.innerText = item.userName;
+        userInfo.appendChild(userName);
+        const createAt = document.createElement("span");
+        createAt.classList.add("cl-lg");
+        createAt.innerText = createAtCmt;
+        userInfo.appendChild(createAt);
+        listItem.appendChild(userInfo);
+
+        // Tạo phần tử p chứa nội dung comment
+        const content = document.createElement("p");
+        content.innerText = contentCmt;
+        listItem.appendChild(content);
+
+        // Kiểm tra và tạo phần tử div chứa hình ảnh
+        if (listImg.length >= 1) {
+            const renderListImg = document.createElement("div");
+            renderListImg.classList.add("renderListImg");
+
+            listImg.forEach(function(imgSrc) {
+                const img = document.createElement("img");
+                img.src = imgSrc;
+                renderListImg.appendChild(img);
+            });
+
+            listItem.appendChild(renderListImg);
+
+            $(".list-comment").appendChild(listItem);
+        }
+
+        // Kiểm tra và tạo phần tử div chứa video
+        if (listVideo.length >= 1) {
+            const renderListVideo = document.createElement("div");
+            renderListVideo.classList.add("renderListVideo");
+
+            listVideo.forEach(function(videoSrc) {
+                const video = document.createElement("video");
+                video.src = videoSrc;
+                video.controls = true;
+                renderListVideo.appendChild(video);
+            });
+            listItem.appendChild(renderListVideo);
+        }
+    }
+
+    const plusSlides = (n) => {
         showSlides(slideIndex += n);
     }
 
-    const currentSlide=(n)=>{
+    const currentSlide = (n) => {
         showSlides(slideIndex = n);
     }
 
-    const showSlides=(n)=> {
+    const showSlides = (n) => {
         // console.log('ểwrwerew')
         var i;
         var slides = document.getElementsByClassName("mySlides");
@@ -470,59 +553,5 @@
 
 
 </script>
-<script type="application/javascript">
-    var star = 0;
-    document.querySelectorAll(".stars input").forEach((item, index) => {
-        item.addEventListener("click", () => {
-            star = 5 - index;
-        })
-    })
-    document.querySelector(".bt-comment").addEventListener("click", (e) => {
-        e.preventDefault()
-        let content = $("#w3review").val();
-        let dateObj = new Date();
-        let month = dateObj.getUTCMonth() + 1; //months from 1-12
-        let day = dateObj.getUTCDate();
-        let year = dateObj.getUTCFullYear();
-        let newdate = year + "-" + month + "-" + day
-        let idPost = $(".bt-comment").attr('id')
-        if (idPost && star && content) {
-            const dataBody = {
-                content,
-                idPost,
-                star,
-            }
-            console.log(dataBody)
-            $.ajax({
-                url: "/postComment",
-                type: "POST",
-                data: dataBody,
-                contentType: 'application/x-www-form-urlencoded',
-                success: function (data) {
-                    console.log(data)
-                    if (data.message == "ok") {
-                        swal({
-                            title: "Thành công",
-                            text: "Thêm comment thành công",
-                        })
-                        window.location.href = window.location.href
-                    } else {
-                        if (data.message == "no user") {
-                            swal({
-                                title: "Thất bại",
-                                text: "Vui lòng đăng nhập",
-                            })
-                        }
-                    }
-                }
-            });
-        } else {
-            swal({
-                title: "Thất bại",
-                text: "Vui lòng nhập đầy đủ thông tin",
-            })
-        }
 
-    })
-</script>
 </html>

@@ -21,7 +21,6 @@ public class ReLoginFillter implements Filter {
         User user = (User) req.getSession().getAttribute("user");
         if(user != null){
             for (String tmp:ReLogin.arrReLogin) {
-                System.out.println(tmp);
                 if(tmp.equals(user.getUserName())){
                     ReLogin.arrReLogin.remove(tmp);
                     res.setStatus(401);

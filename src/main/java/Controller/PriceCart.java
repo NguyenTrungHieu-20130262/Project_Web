@@ -34,7 +34,6 @@ public class PriceCart extends HttpServlet {
 
         String gRecaptchaResponse = req
                 .getParameter("g-recaptcha-response");
-        System.out.println(gRecaptchaResponse);
         VerifyRecaptcha.verify(gRecaptchaResponse);
 
     }

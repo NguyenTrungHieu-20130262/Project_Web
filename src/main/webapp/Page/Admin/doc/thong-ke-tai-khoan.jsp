@@ -70,37 +70,11 @@
             </div>
         </div>
     </div>
-    <div style="display: flex;align-items: center;justify-content: space-around" class="row">
-        <div style="width: 30px" class="col-md-6 col-lg-3">
-            <div class="widget-small primary coloured-icon"><i class='icon bx bxs-user fa-3x'></i>
-                <div class="info">
-                    <h4>Tài khoản Admin</h4>
-                    <p><b>${map.get("adminAccount")!=null?map.get("adminAccount").size():0} tài khoản</b></p>
-                </div>
-            </div>
-        </div>
-        <div style="width: 30px" class="col-md-6 col-lg-3">
-            <div class="widget-small warning coloured-icon"><i class='icon  bx bxs-user fa-3x'></i>
-                <div class="info">
-                    <h4>Tài khoản nhân viên</h4>
-                    <p><b>${map.get("employeesAccount")!=null?map.get("employeesAccount").size():0} tài khoản</b></p>
-                </div>
-            </div>
-        </div>
-        <div style="width: 30px" class="col-md-6 col-lg-3">
-            <div class="widget-small danger coloured-icon"><i class='icon fa-3x bx bxs-user'></i>
-                <div class="info">
-                    <h4>Tài khoản quản lý</h4>
-                    <p><b>${map.get("managesAccount")!=null?map.get("managesAccount").size():0} tài khoản</b></p>
-                </div>
-            </div>
-        </div>
-    </div>
     <div class="row">
         <div class="col-md-12">
             <div class="tile">
                 <div>
-                    <h3 class="tile-title">Tài khoản quản lý</h3>
+                    <h3 class="tile-title">Tài khoản hoạt động</h3>
                 </div>
                 <div class="tile-body">
                     <table class="table table-hover table-bordered js-copytextarea" cellpadding="0" cellspacing="0"
@@ -121,7 +95,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <c:forEach items="${map.get('managesAccount')}" var="item" varStatus="loop">
+                        <c:forEach items="${map.get('activeAccount')}" var="item" varStatus="loop">
                             <tr data-id="${item.id}">
                                 <td>#${item.id}</td>
                                 <td id="userName">${item.fullName}</td>
@@ -150,7 +124,7 @@
         <div class="col-md-12">
             <div class="tile">
                 <div>
-                    <h3 class="tile-title">Tài khoản nhân viên</h3>
+                    <h3 class="tile-title">Tài khoản đã khóa</h3>
                 </div>
                 <div class="tile-body">
                     <table class="table table-hover table-bordered js-copytextarea" cellpadding="0" cellspacing="0"
@@ -170,7 +144,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <c:forEach items="${map.get('employeesAccount')}" var="item" varStatus="loop">
+                        <c:forEach items="${map.get('blockAccount')}" var="item" varStatus="loop">
                             <tr data-id="${item.id}">
                                 <td>#${item.id}</td>
                                 <td id="userName">${item.userName}</td>
@@ -199,7 +173,7 @@
         <div class="col-md-12">
             <div class="tile">
                 <div>
-                    <h3 class="tile-title">Tài khoản Admin</h3>
+                    <h3 class="tile-title">Tất cả tài khoản</h3>
                 </div>
                 <div class="tile-body">
                     <table class="table table-hover table-bordered js-copytextarea" cellpadding="0" cellspacing="0"
@@ -220,7 +194,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <c:forEach items="${map.get('adminsAccount')}" var="item" varStatus="loop">
+                        <c:forEach items="${map.get('sizeAllUser')}" var="item" varStatus="loop">
                             <tr data-id="${item.id}">
                                 <td>#${item.id}</td>
                                 <td id="userName">${item.userName}</td>
@@ -259,7 +233,46 @@
 <script type="text/javascript" src="jsadmin/plugins/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="jsadmin/plugins/dataTables.bootstrap.min.js"></script>
 <script type="text/javascript">
-    var tableCustomers = $('#tableCustomers').DataTable(
+    function time() {
+        var today = new Date();
+        var weekday = new Array(7);
+        weekday[0] = "Chủ Nhật";
+        weekday[1] = "Thứ Hai";
+        weekday[2] = "Thứ Ba";
+        weekday[3] = "Thứ Tư";
+        weekday[4] = "Thứ Năm";
+        weekday[5] = "Thứ Sáu";
+        weekday[6] = "Thứ Bảy";
+        var day = weekday[today.getDay()];
+        var dd = today.getDate();
+        var mm = today.getMonth() + 1;
+        var yyyy = today.getFullYear();
+        var h = today.getHours();
+        var m = today.getMinutes();
+        var s = today.getSeconds();
+        m = checkTime(m);
+        s = checkTime(s);
+        nowTime = h + " giờ " + m + " phút " + s + " giây";
+        if (dd < 10) {
+            dd = '0' + dd
+        }
+        if (mm < 10) {
+            mm = '0' + mm
+        }
+        today = day + ', ' + dd + '/' + mm + '/' + yyyy;
+        tmp = '<span class="date"> ' + today + ' - ' + nowTime +
+            '</span>';
+        document.getElementById("clock").innerHTML = tmp;
+        clocktime = setTimeout("time()", "1000", "Javascript");
+
+        function checkTime(i) {
+            if (i < 10) {
+                i = "0" + i;
+            }
+            return i;
+        }
+    }
+    var allAccount = $('#allAccount').DataTable(
     );
     var tableEmployees= $('#tableEmployees').DataTable()
 

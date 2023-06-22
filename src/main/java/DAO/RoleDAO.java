@@ -19,8 +19,22 @@ public class RoleDAO {
             RoleDTO role = getRoleDTO(rs.getInt(1));
             role.setName(rs.getString(2));
             list.add(role);
+            role.setType(rs.getInt(5));
         }
         return list;
+    }
+
+    public static RoleDTO getRoleById(int id) throws SQLException {
+        Connection c = ConnectDB.getConnect();
+        PreparedStatement stmt = c.prepareStatement("select * from role where id = ?");
+        stmt.setInt(1, id);
+        ResultSet rs = stmt.executeQuery();
+        while  (rs.next()) {
+            RoleDTO role = getRoleDTO(rs.getInt(1));
+            role.setName(rs.getString(2));
+            return role;
+        }
+        return null;
     }
     public static int insertRole(String name) throws SQLException {
         Connection c = ConnectDB.getConnect();
@@ -35,17 +49,61 @@ public class RoleDAO {
         }
         return -1;
     }
+    public static int deleteRole_Permission(int id) throws SQLException {
+        Connection c = ConnectDB.getConnect();
+        PreparedStatement stmt = c.prepareStatement("DELETE FROM role_permission WHERE role_id = ?");
+        stmt.setInt(1,id);
+
+        int rs = stmt.executeUpdate();
+
+        return rs;
+    }
+
+    public static int deleteRole(int id) throws SQLException {
+        int rs = RoleDAO.deleteRole_Permission(id);
+        if(rs != 0){
+            Connection c = ConnectDB.getConnect();
+            PreparedStatement stmt = c.prepareStatement("DELETE FROM role WHERE id = ?");
+            stmt.setInt(1,id);
+            return stmt.executeUpdate();
+        }else{
+            return -1;
+        }
+    }
+    public static int editNameRole(int id, String name) throws SQLException {
+            Connection c = ConnectDB.getConnect();
+            PreparedStatement stmt = c.prepareStatement("UPDATE role set name =? WHERE id = ?");
+            stmt.setString(1,name);
+            stmt.setInt(2,id);
+            return stmt.executeUpdate();
+
+    }
     public static Role getRole(int id) throws SQLException {
         Connection c = ConnectDB.getConnect();
         PreparedStatement stmt = c.prepareStatement("select * from role_permission where role_id = ?");
         stmt.setInt(1,id);
         ResultSet rs = stmt.executeQuery();
         Role role = new Role();
+        RoleDTO rol2 = RoleDAO.getRoleDTO(id);
+        role.setName(rol2.getName());
         while  (rs.next()) {
             role.setId(rs.getInt(1));
-
             role.addPermission(rs.getInt(2));
         }
+
+        return role;
+    }
+    public static Role getRoleInfo(int id) throws SQLException {
+        Connection c = ConnectDB.getConnect();
+        PreparedStatement stmt = c.prepareStatement("select * from role where id = ?");
+        stmt.setInt(1,id);
+        ResultSet rs = stmt.executeQuery();
+        Role role = new Role();
+        while  (rs.next()) {
+            role.setId(rs.getInt(1));
+            role.setName(rs.getString(2));
+        }
+
         return role;
     }
     public static RoleDTO getRoleDTO(int id) throws SQLException {
@@ -97,11 +155,8 @@ public class RoleDAO {
         return  stmt.executeUpdate();
     }
     public static void main(String[] args) throws SQLException {
-        int[] a = new int[3];
-        a[0] = 15;
-        a[1] = 17;
-        a[2] = 16;
-        System.out.println(RoleDAO.addRolePermission(a,7));
+       Role role = RoleDAO.getRole(21);
+       System.out.println(role);
     }
 
 

@@ -1,6 +1,7 @@
 package Controller;
 
 import Beans.JWT;
+import Connect.ConnectDB;
 import DAO.*;
 import Model.*;
 
@@ -22,7 +23,6 @@ import org.json.JSONObject;
 public class OrderControl extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-
         User user = (User) req.getSession().getAttribute("user");
         String domain = req.getRequestURL().toString();
 
@@ -49,7 +49,6 @@ public class OrderControl extends HttpServlet {
         }
         try {
             boolean checkSum= PaymentVNPay.checkSum(req);
-            System.out.println(checkSum);
             if(checkSum== true){
                 String idOrder = req.getParameter("vnp_OrderInfo");
                 idOrder = idOrder.replaceAll("IdOrder:","");
@@ -80,6 +79,10 @@ public class OrderControl extends HttpServlet {
                     payment.setType(1);
                     payment.setStatus(1);
                     int rsPayment = PaymentDAO.insertPayment(payment);
+                    if(rsPayment>0){
+                        Log log=new Log(Log.INFO, user.getId(),this.getClass().getName(),"Thanh toán qua VN_Pay(Payment)",1);
+                        log.insert(ConnectDB.getConnect());
+                    }
                     req.getSession().removeAttribute("token");
                     CartDAO.removeCartByUser(user.getId());
                     req.getSession().setAttribute("address", oder.getAddress());
@@ -173,6 +176,10 @@ public class OrderControl extends HttpServlet {
             order.setLeadTime(new java.sql.Date(date.getTime()));
             OderDAO.updateById(order);
             int rsPayment = PaymentDAO.insertPayment(payment);
+                if(rsPayment>0){
+                    Log log=new Log(Log.INFO, user.getId(),this.getClass().getName(),"Thanh toán trực tiếp(Payment)",1);
+                    log.insert(ConnectDB.getConnect());
+                }
             CartDAO.removeCartByUser(user.getId());
             String domain = req.getRequestURL().toString();
             long dateTime = new Date().getTime();
@@ -209,6 +216,8 @@ public class OrderControl extends HttpServlet {
                 oder.setNote(note);
                 oder.setStatus(0);
                 oder.setId(idOrder);
+                OderDAO.addOrder(oder);
+
             }
             int totalPrice = 0;
             int h = 0;
@@ -232,7 +241,7 @@ public class OrderControl extends HttpServlet {
             oder.setTotal_price(Double.valueOf(money + totalPrice));
             System.out.println(oder.getTotal_price() + "--------------------------" );
 
-            OderDAO.addOrder(oder);
+            OderDAO.updateById(oder);
             String[] resPayment = PaymentVNPay.createPayment(req,money + totalPrice,userNew.getEmail(),"IdOrder:" + idOrder, domain);
             String linkPayment = resPayment[0];
             res.sendRedirect( linkPayment);

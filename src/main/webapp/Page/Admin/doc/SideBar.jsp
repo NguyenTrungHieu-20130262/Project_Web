@@ -9,7 +9,7 @@
 <% User user = (User) request.getAttribute("userInfo") ;%>
 <% String url = (String)request.getAttribute("url");%>
 <aside class="app-sidebar">
-    <div class="app-sidebar__user"><img class="app-sidebar__user-avatar" src="<%=user.getAvatar()!=null?user.getAvatar():url+"/Img/User/hideImage.png"%>" width="50px"
+    <div class="app-sidebar__user"><img style="width: 100px; height: 100px" class="app-sidebar__user-avatar" src="<%=user.getAvatar()!=null?user.getAvatar():url+"/Img/User/hideImage.png"%>" width="50px"
                                         alt="User Image">
         <div>
             <p class="app-sidebar__user-name"><b><%=user.getFullName()%>
@@ -34,14 +34,14 @@
         <li><a class="app-menu__item" href="admin?page=productstaticstics"><i
                 class='app-menu__icon bx bx-purchase-tag-alt'></i><span class="app-menu__label">Thống kê sản phẩm</span></a>
         </li>
-        <li><a class="app-menu__item" href="admin?page=oderManagement"><i class='app-menu__icon bx bx-task'></i><span
+        <li><a class="app-menu__item" href="admin?page=oderManagement"><i class='app-menu__icon bx bx-package'></i><span
                 class="app-menu__label">Quản lý đơn hàng</span></a></li>
-        <li><a class="app-menu__item" href="admin?page=logmanagement"><i class='app-menu__icon bx bx-task'></i><span
-                class="app-menu__label">Thống kê Log</span></a></li>
-        <li><a class="app-menu__item" href="admin?page=orderStatistics"><i class='app-menu__icon bx bx-task'></i><span
+        <li><a class="app-menu__item" href="admin?page=orderStatistics"><i class='app-menu__icon bx bx-stats'></i><span
                 class="app-menu__label">Thống kê đơn hàng</span></a></li>
-        <li><a class="app-menu__item" href="admin?page=role"><i class='app-menu__icon bx bx-task'></i><span
+        <li><a class="app-menu__item" href="admin?page=role"><i class='app-menu__icon bx bxs-user-check'></i><span
                 class="app-menu__label">Phân quyền</span></a></li>
+        <li><a class="app-menu__item" href="admin?page=logstatistic"><i class='app-menu__icon bx bxs-bug'></i><span
+                class="app-menu__label">Thống kê Log</span></a></li>
     </ul>
 </aside>
 </body>

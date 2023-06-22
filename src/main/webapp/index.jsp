@@ -208,7 +208,6 @@
     #content .product-item .product-choose .detail i {
         margin: 0 5px;
     }
-
     /*Product Content End*/
     /*Content Main Page End*/
 </style>
@@ -268,10 +267,6 @@
                     </div>
                 </div>
                 <%}%>
-
-
-
-
         </div>
         <div class="products-trend">
             <div class="product-title d-flex justify-content-between">

@@ -1,5 +1,6 @@
 package Controller;
 
+import Connect.ConnectDB;
 import DAO.*;
 import DTO.RoleDTO;
 import Model.Product;
@@ -29,7 +30,6 @@ public class Admin extends HttpServlet {
         int countOrder = OderDAO.getCountOrder();
         int countOrderOut = OderDAO.getCountOrderOut();
         float getPriceRevenue = ProductDAO.getPriceRevenue();
-
         req.setAttribute("countUser", countUser);
         req.setAttribute("countProduct", countProduct);
         req.setAttribute("countPOut", countPOut);
@@ -88,11 +88,9 @@ public class Admin extends HttpServlet {
     protected void logPage(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, SQLException {
         List<Log> list = LogDAO.getAllLog();
         Map<String, List<Log>> map = new HashMap<>();
-
         map.put("logs", list);
         for (Log tmp : list) {
             addLogIntoMap(map, tmp);
-
         }
         req.setAttribute("map", map);
         req.getRequestDispatcher("/Page/Admin/doc/thong-ke-log.jsp").forward(req, resp);
@@ -157,12 +155,15 @@ public class Admin extends HttpServlet {
         }
 
     }
+
     protected void oderStatis(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-            req.getRequestDispatcher("/Page/Admin/doc/order_statistics.jsp").forward(req, res);
+        req.getRequestDispatcher("/Page/Admin/doc/order_statistics.jsp").forward(req, res);
     }
+
     protected void rolePage(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
         req.getRequestDispatcher("/Page/Admin/doc/role.jsp").forward(req, res);
     }
+
     protected void setShowProfile(HttpServletRequest req) {
         String username = "";
         String img = "";
@@ -214,7 +215,6 @@ public class Admin extends HttpServlet {
         String hostname = req.getServerName();
         int port = req.getServerPort();
         String url = "http://" + hostname + ":" + port;
-        System.out.println(url);
         req.setAttribute("url", url);
         String page = req.getParameter("page");
         try {
@@ -225,47 +225,51 @@ public class Admin extends HttpServlet {
                     postPage(req, res);
                     break;
                 case "usermanagement":
-                    if(Authorizeds.authorizeds(req, Authorizeds.USER_VIEW))
+                    if (Authorizeds.authorizeds(req, Authorizeds.USER_VIEW)) {
                         userPage(req, res);
-                    else res.setStatus(401);
-
+                    } else res.setStatus(401);
                     break;
                 case "userstatistic":
-                    if(Authorizeds.authorizeds(req, Authorizeds.USER_VIEW))
-                        getAllUser(req, res);
-                    else res.setStatus(401);
-
+                    getAllUser(req, res);
                     break;
                 case "role":
-                    if(Authorizeds.authorizeds(req, Authorizeds.ROLE_VIEW))
+                    if (Authorizeds.authorizeds(req, Authorizeds.ROLE_VIEW))
                         rolePage(req, res);
                     else res.setStatus(401);
 
                     break;
                 case "productmanagement":
-                    if(Authorizeds.authorizeds(req, Authorizeds.PRODUCT_VIEW))
+                    if (Authorizeds.authorizeds(req, Authorizeds.PRODUCT_VIEW)) {
                         productPage(req, res);
-                    else res.setStatus(401);
+                    } else {
+                        res.setStatus(401);
+                    }
                     break;
                 case "productstaticstics":
                     productStatics(req, res);
                     break;
                 case "odermanagement":
-                    if(Authorizeds.authorizeds(req, Authorizeds.ORDER_VIEW))
-                    oderPage(req, res);
-                    else res.setStatus(401);
+                    if (Authorizeds.authorizeds(req, Authorizeds.ORDER_VIEW)) {
+                        oderPage(req, res);
+                    } else res.setStatus(401);
 
                     break;
                 case "orderstatistics":
-                    if(Authorizeds.authorizeds(req, Authorizeds.ORDER_VIEW))
+                    if (Authorizeds.authorizeds(req, Authorizeds.ORDER_VIEW)){
                         oderStatis(req, res);
+                    }
                     else res.setStatus(401);
-
                     break;
-                case "logmanagement":
+
+                case "logstatistic":
                     logPage(req, res);
                     break;
+                case "logmanagement":
+                    if(Authorizeds.authorizeds(req, Authorizeds.LOG_VIEW))
+                        logPage(req, res);
 
+                    else res.setStatus(401);
+                    break;
 
                 default:
                     indexPage(req, res);

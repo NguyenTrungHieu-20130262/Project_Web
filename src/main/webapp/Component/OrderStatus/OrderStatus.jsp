@@ -9,9 +9,6 @@
     <!-- Fontawesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" rel="stylesheet">
     <style>
-
-
-
         .success-message {
             color: #4CAF50;
             font-size: 24px;
@@ -52,7 +49,6 @@
     <p class="address-details"><i class="fas fa-clock"></i> Thời gian dự kiến: <%= request.getSession().getAttribute("leadTime") %></p>
     <p class="address-details tracking-details"><i class="fa-solid fa-barcode"></i> Mã vận đơn:<span class="tracking-number">#<%= request.getSession().getAttribute("code") %></span></p>
     <p class="address-details price-details"><i class="fa-solid fa-money-bill"></i> Tổng tiền:<span class="total-number">$<%= request.getSession().getAttribute("total") %></span></p>
-
 </div>
 <br>
 <br>

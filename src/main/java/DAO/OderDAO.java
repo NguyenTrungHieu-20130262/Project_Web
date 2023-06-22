@@ -50,7 +50,25 @@ public class OderDAO {
     public static ArrayList getOrderDTO() throws SQLException {
         ArrayList<Oder> oders = new ArrayList<>();
         Connection c= ConnectDB.getConnect();
-        PreparedStatement stmt = c.prepareStatement("select * from `order`");
+        PreparedStatement stmt = c.prepareStatement("select * from `order` ");
+        ResultSet rs= stmt.executeQuery();
+        while (rs.next()){
+            Orders oder = new Orders(rs.getLong(1),rs.getInt(2),rs.getString(3),rs.getString(4),  rs.getDate(5), rs.getString(6),rs.getInt(7),rs.getDouble(8), rs.getDate(9));
+            User user = UserDAO.getUserById(rs.getInt(2));
+            oder.setUser(user);
+            oder.setOrderDetail(getAllOrderDetails(rs.getLong(1)));
+            Payment payment =  PaymentDAO.getPaymentByIdOrder(rs.getLong(1));
+            oder.setPayment(payment);
+            oders.add(oder);
+        }
+
+        return oders;
+    }
+    public static ArrayList getOrderDTO(int userId) throws SQLException {
+        ArrayList<Oder> oders = new ArrayList<>();
+        Connection c= ConnectDB.getConnect();
+        PreparedStatement stmt = c.prepareStatement("select * from `order` where idUser = ? and idTransport IS NOT NULL");
+        stmt.setInt(1,userId);
         ResultSet rs= stmt.executeQuery();
         while (rs.next()){
             Orders oder = new Orders(rs.getLong(1),rs.getInt(2),rs.getString(3),rs.getString(4),  rs.getDate(5), rs.getString(6),rs.getInt(7),rs.getDouble(8), rs.getDate(9));
@@ -178,15 +196,15 @@ public class OderDAO {
         System.out.println(countRow);
         return countRow;
     }
-    public static ArrayList<Oder> getOrderByUser(int user) throws SQLException {
-        ArrayList<Oder> oders = new ArrayList<>();
+    public static ArrayList<Orders> getOrderByUser(int user) throws SQLException {
+        ArrayList<Orders> oders = new ArrayList<>();
         Connection c= ConnectDB.getConnect();
-        PreparedStatement stmt = c.prepareStatement("select * from `order` where userId=?");
+        PreparedStatement stmt = c.prepareStatement("select * from `order` where idUser=?");
         stmt.setInt(1,user);
         ResultSet rs= stmt.executeQuery();
 
         while (rs.next()){
-            oders.add(new Oder(rs.getInt(1),rs.getInt(2),rs.getString(3),rs.getString(4),  rs.getDate(5), rs.getString(6),rs.getInt(7),rs.getDouble(8), rs.getDate(9)));
+            oders.add(new Orders(rs.getLong(1),rs.getInt(2),rs.getString(3),rs.getString(4),  rs.getDate(5), rs.getString(6),rs.getInt(7),rs.getDouble(8), rs.getDate(9)));
         }
 
         return oders;

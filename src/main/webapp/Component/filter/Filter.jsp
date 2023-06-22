@@ -112,6 +112,15 @@
             </div>
           </div>
         </article>
+
+        <button onclick="filterHandle()" style="    padding: 5px;
+    background: #135eac;
+    border: 1px solid;
+    margin-bottom: 8px;
+    color: white;
+cursor: pointer">
+          Lọc sản phẩm
+        </button>
       </div>
 
     </div>

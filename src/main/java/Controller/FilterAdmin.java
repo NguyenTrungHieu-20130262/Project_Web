@@ -1,4 +1,6 @@
 package Controller;
+import Connect.ConnectDB;
+import Model.Log;
 import Model.User;
 import Security.Authorizeds;
 
@@ -6,6 +8,7 @@ import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.sql.SQLException;
 
 @WebFilter("/admin")
 public class FilterAdmin implements Filter {
@@ -17,7 +20,6 @@ public class FilterAdmin implements Filter {
         HttpServletRequest req = (HttpServletRequest) request;
         User user = (User) req.getSession().getAttribute("user");
         if (user != null) {
-
             if (Authorizeds.authorizeds(req, Authorizeds.ADMIN_PAGE)) {
                 chain.doFilter(request, response);
             } else {

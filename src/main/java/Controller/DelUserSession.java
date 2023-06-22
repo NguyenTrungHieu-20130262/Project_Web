@@ -1,6 +1,8 @@
 package Controller;
 
 
+import Connect.ConnectDB;
+import Model.Log;
 import Model.User;
 import org.json.JSONException;
 import org.json.JSONObject;

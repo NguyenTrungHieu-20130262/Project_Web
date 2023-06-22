@@ -36,6 +36,9 @@
             border-radius: 4px;
             display:inline-block;
         }
+        a{
+            text-decoration: none;
+        }
         .multiselect-dropdown span.optext{
             background-color:lightgray;
             padding:1px 0.75em;
@@ -108,7 +111,7 @@
 </header>
 <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
 <jsp:include page="SideBar.jsp">
-    <jsp:param name="page" value="8"/>
+    <jsp:param name="page" value="9"/>
 </jsp:include>
 <main class="app-content">
     <div class="app-title">
@@ -154,8 +157,128 @@
             </form>
         </div>
     </div>
+    <div>
+        <table class="table table-hover table-bordered" id="tableUser">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Username</th>
+                <th>Họ và tên</th>
+                <th>Ảnh thẻ</th>
+                <th>Email</th>
+                <th>Vai trò</th>
+                <th>Thao tác</th>
+            </tr>
+            </thead>
+            <tbody id="body_table_users">
+            </tbody>
+            </tbody>
+        </table>
+    </div>
 </main>
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" style="width: 500px" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" style="color: black" id="exampleModalLongTitle">Chi tiết</h5>
+                <button type="button" style="color: black" class="closeModal" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"  style="color: black">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="">
+                            <div class="form-group">
+                                <label for="role-id">ID:</label>
+                                <input type="text" class="form-control" id="role-id" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="role-name">Tên vai trò:</label>
+                                <input type="text" class="form-control" id="role-name" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="role-name">Các quyền:</label>
+                                <ul id="permissions" style="height: 200px; overflow: auto">
+                                </ul>
 
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary closeModal"  data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="exampleModalCenter2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle2" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" style="width: 500px" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" style="color: black" id="exampleModalLongTitle2">Chi tiết</h5>
+                <button type="button" style="color: black" class="closeModal" data-dismiss="modal" onclick="closeModalEdit()"  aria-label="Close">
+                    <span aria-hidden="true"  style="color: black">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="overflow: auto; height: 570px">
+                <input hidden id="index_role_eidt"/>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="">
+                            <div class="form-group">
+                                <label for="role-id">ID:</label>
+                                <input type="text" class="form-control" id="role-id-edit" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="role-name">Tên vai trò:</label>
+                                <input type="text" class="form-control" id="role-name-edit" >
+                            </div>
+                            <div class="form-group">
+                                <label for="role-name">Các quyền:</label>
+                                <ul id="permissions_edit" style="height: 200px; overflow: auto; list-style-type: none; padding: 0 10px; display: grid; grid-template-columns:auto auto auto; gap:10px">
+                                </ul>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary closeModalEdit" onclick="closeModalEdit()" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-success save_edit"  data-dismiss="modal">Save</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="exampleModalCenterAddRole" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitleAddRole" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" style="width: 460px" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" style="color: black" id="exampleModalLongTitleAddRole">Cấp quyền</h5>
+                <button type="button"  onclick="closeAddRoleUser()" class="close" style="color: black" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" style="color: black" >&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <input hidden id="index_user_eidt">
+                <label>Chọn vai trò</label>
+                <select style="width: 100%" class="addRole"></select>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" onclick="closeAddRoleUser()" data-dismiss="modal">Close</button>
+                <input hidden id="id_user">
+                <button type="button" class="btn btn-primary" onclick="saveRole()">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8" crossorigin="anonymous"></script>

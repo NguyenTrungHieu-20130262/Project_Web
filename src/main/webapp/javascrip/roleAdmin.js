@@ -1,4 +1,6 @@
 var dataMain = []
+var dataUser = []
+var permission = []
 const getData = ()=>{
     $.ajax({
         statusCode: {
@@ -10,14 +12,41 @@ const getData = ()=>{
         method: "GET",
         success: res =>{
             dataMain = JSON.parse(res)
-            initTable(dataMain)
-
+            let dataFilter = dataMain.filter(tmp=>tmp.type === 0)
+            initTable(dataFilter)
+            let modal = document.querySelector('.addRole')
+            let elm = ``
+            dataMain.forEach(tmp=>{
+                elm += `<option value='${tmp.id}' >${tmp.name}</option>`
+            })
+            modal.innerHTML = elm
         },
         error: err=>{
 
         }
     })
 }
+const getDataUser = ()=>{
+    $.ajax({
+        statusCode: {
+            401: function() {
+                swal("Bạn không có quyền thực hiện chức năng này.!", {});
+            }
+        },
+        url: "/api/role?action=get_account",
+        method: "POST",
+        success: res =>{
+            console.log(JSON.parse(res))
+            dataUser = JSON.parse(res)
+            console.log(dataUser)
+            initTableUser(dataUser)
+        },
+        error: err=>{
+
+        }
+    })
+}
+getDataUser()
 const getPermission = ()=>{
     $.ajax({
         statusCode: {
@@ -28,6 +57,7 @@ const getPermission = ()=>{
         url: "/api/permission",
         method: "GET",
         success: res =>{
+            permission = JSON.parse(res)
             let data = JSON.parse(res)
             let elm = ``
             data.map(tmp=>{
@@ -50,14 +80,13 @@ const initTable = (data)=>{
         columns: [
             { data: "id" },
             { data: "name" },
-
             {data:"","render": function (data, type, row, meta) {
 
                         return `
                                 <div style="text-align: center">
-                                <button class="btn btn-success" style="font-size: 10px">Chi tiết</button>
-                                <button class="btn btn-success" style="font-size: 10px">Cập nhập</button>
-                                <button class="btn btn-danger" style="font-size: 10px">Xóa</button>
+                                <button class="btn btn-success" style="font-size: 10px" onclick="details(${row.id})">Chi tiết</button>
+                                <button class="btn btn-success" style="font-size: 10px" onclick="edit(${row.id}, this)">Cập nhập</button>
+                                <button class="btn btn-danger delete_role" style="font-size: 10px" >Xóa</button>
 </div>`;
 
 
@@ -69,8 +98,298 @@ const initTable = (data)=>{
     });
 
 }
-getData()
+const editRole = (id,e)=>{
+    let table =  $('#tableUser').DataTable()
+    let rowIdx = table.row($(e).parents('tr')).index();
+    document.querySelector('#index_user_eidt').value = rowIdx
+    let modal = document.querySelector('#exampleModalCenterAddRole')
+    modal.style.display = 'flex'
+    modal.style.opacity = 1
+    modal.classList.remove('fade')
+    document.querySelector('#id_user').value = id
 
+}
+const saveRole = ()=>{
+    let idUser =  document.querySelector('#id_user').value
+
+    let modal = document.querySelector('#exampleModalCenterAddRole')
+    let idRole = modal.querySelector("select").value
+    $.ajax({
+        statusCode: {
+            401: function() {
+                swal("Bạn không có quyền thực hiện chức năng này.!", {});
+            }
+        },
+        data:{idUser, idRole},
+        url: "/api/role?action=set_role",
+        method: "POST",
+        success: res =>{
+            if(res == 1){
+                let role = dataMain.filter(tmp=>tmp.id == idRole)[0]
+                for (let i = 0; i < dataUser.length; i++) {
+                    if(dataUser[i].id == idUser){
+                        dataUser[i] = {...dataUser[i], role: role}
+                        let index = document.querySelector('#index_user_eidt').value
+                        let table =  $('#tableUser').DataTable()
+                        table.row(index).data(dataUser[i]).draw();
+                        swal("Cấp quyền thành công.!", {});
+                        break;
+                    }
+                }
+
+            }
+
+        },
+        error: err=>{
+
+        }
+    })
+    modal.style.display = 'none'
+    modal.style.opacity = 0
+    modal.classList.add('fade')
+
+}
+const closeAddRoleUser = ()=>{
+    let modal = document.querySelector('#exampleModalCenterAddRole')
+    modal.style.display = 'none'
+    modal.style.opacity = 0
+    modal.classList.add('fade')
+}
+const initTableUser = (data)=>{
+    $('#tableUser').DataTable({
+        data: data,
+        columns: [
+            { data: "id",  "defaultContent": "" },
+            { data: "userName" ,  "defaultContent": ""},
+            { data: "fullName" ,  "defaultContent": ""},
+            { data: "avatar",  "defaultContent": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/User_icon_2.svg/1200px-User_icon_2.svg.png" ,"render": function (data, type, row, meta) {
+                   if(data === undefined)
+
+                    return `<img width="70px" src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/User_icon_2.svg/1200px-User_icon_2.svg.png"/>`;
+                   else
+                       return `<img width="70px" src="${data}"/>`;
+
+                }},
+            { data: "email" ,  "defaultContent": ""},
+            { data: "role" ,"render": function (data, type, row, meta) {
+                    return data.name;
+                },  "defaultContent": ""},
+            {data:"","render": function (data, type, row, meta) {
+
+                    return `
+                                <div style="text-align: center">
+                                <button class="btn btn-success" onclick="editRole(${row.id}, this)" style="font-size: 10px" >Cấp quyền</button>
+</div>`;
+
+
+                }}
+        ],
+        buttons: [
+            'excel', 'pdf'
+        ]
+    });
+
+}
+const details = (id)=>{
+    let obj = dataMain.filter(tmp => tmp.id === id)[0]
+    console.log(obj)
+    document.querySelector('#role-id').value = obj.id
+    document.querySelector('#role-name').value = obj.name
+    let elm = ``
+    obj.arrPermission.map(tmp=>{
+        elm += `<li>${tmp.name}</li>`
+    })
+    document.querySelector('#permissions').innerHTML = elm
+
+    let modal =     document.querySelector('#exampleModalCenter')
+    modal.classList.remove('fade')
+    modal.style.display = 'flex'
+    modal.style.opacity = 1
+
+}
+const edit = (id ,e)=>{
+    let table =  $('#myTable').DataTable()
+    let rowIdx = table.row($(e).parents('tr')).index();
+    document.querySelector('#index_role_eidt').value = rowIdx
+    let obj = dataMain.filter(tmp => tmp.id === id)[0]
+    let newArr = [...permission]
+    newArr.forEach((tmp, index)=>{
+        let filter = obj.arrPermission.filter(tmp2=>tmp2.id === tmp.id)
+        if(filter.length >0){
+            newArr[index] = {...newArr[index], status: 1}
+        }else{
+            newArr[index] = {...newArr[index], status: 0}
+
+        }
+    })
+    console.log(newArr)
+    document.querySelector('#role-id-edit').value = obj.id
+    document.querySelector('#role-name-edit').value = obj.name
+    let elm = ``
+    newArr.map(tmp=>{
+        if(tmp.status === 1){
+            elm += `<li onclick="changeSelectPermission(this)"><button  class="btn btn-outline-primary" style="font-size: 12px; width: 100%;   text-align: center;
+    padding: 6px;
+    border-radius: 20px;"><input  value="${tmp.id}" hidden/>${tmp.name}</button> </li>`
+        }else{
+            elm += `<li onclick="changeSelectPermission(this)"><button class="btn btn-outline-secondary" style=" font-size: 12px; width: 100%;   text-align: center;
+    padding: 6px;
+    border-radius: 20px;"><input  value="${tmp.id}" hidden/>${tmp.name}</button> </li>`
+        }
+
+    })
+    document.querySelector('#permissions_edit').innerHTML = elm
+
+    let modal = document.querySelector('#exampleModalCenter2')
+    modal.classList.remove('fade')
+    modal.style.display = 'flex'
+    modal.style.opacity = 1
+
+}
+const closeModalEdit = ()=>{
+    let modal = document.querySelector('#exampleModalCenter2')
+    modal.classList.add('fade')
+    modal.style.display = 'none'
+    modal.style.opacity = 0
+}
+document.querySelector('.save_edit').addEventListener('click',(e)=>{
+    let idPermissions = []
+    let name = document.querySelector('#role-name-edit').value
+    let id = document.querySelector('#role-id-edit').value
+
+
+    let permissions = document.querySelectorAll('#permissions_edit button.btn-outline-primary')
+    console.log(permissions)
+    permissions.forEach(tmp=>{
+        let input = tmp.querySelector('input')
+        idPermissions.push(Number(input.value))
+    })
+    console.log(idPermissions, name, id)
+    idPermissions = JSON.stringify(idPermissions)
+
+    $.ajax({
+        statusCode: {
+            401: function() {
+                swal("Bạn không có quyền thực hiện chức năng này.!", {});
+
+            }
+        },
+        url: "/api/role?action=update",
+        method: "POST",
+        data:{
+            idPermissions, name, id
+        },
+        success: res =>{
+            let rs = JSON.parse(res)
+            for (let i = 0; i < dataMain.length; i++) {
+                if(dataMain[i].id === rs.id)
+                    dataMain[i] = rs
+            }
+            let index_edit = Number(document.querySelector('#index_role_eidt').value)
+            let table =  $('#myTable').DataTable()
+            table.row(index_edit).data(rs).draw();
+            closeModalEdit()
+        },
+        error: err=>{
+
+        }
+    })
+
+})
+const changeSelectPermission = (e)=>{
+    e = e.querySelector('button')
+    if(e.className.includes('btn-outline-primary')){
+        e.classList.remove('btn-outline-primary')
+        e.classList.add('btn-outline-secondary')
+    }else{
+        e.classList.add('btn-outline-primary')
+        e.classList.remove('btn-outline-secondary')
+    }
+}
+
+const delPermission = (id_role, id_permission, e)=>{
+    swal({
+        title: "Cảnh báo",
+        text: "Bạn có chắc chắn là muốn xóa quyền này?",
+        buttons: ["Hủy bỏ", "Đồng ý"],
+    }).then((willDelete) => {
+        if (willDelete) {
+            $.ajax({
+                statusCode: {
+                    401: function() {
+                        swal("Bạn không có quyền thực hiện chức năng này.!", {});
+
+                    }
+                },
+                url: "/api/role?action=delete_permission",
+                method: "POST",
+                data:{
+                    id_role, id_permission
+                },
+                success: res =>{
+                  e.parentNode.style.display = 'none'
+                },
+                error: err=>{
+
+                }
+            })
+
+
+        }
+    });
+}
+getData()
+$('#myTable tbody').on('click', '.delete_role', function(e) {
+    ///.parentNode.parentNode.parentNode.querySelector('.sorting_1')
+    let table =  $('#myTable').DataTable()
+    let rowIdx = table.row($(this).parents('tr')).index();
+    let id = e.target.parentNode.parentNode.parentNode.querySelector('.sorting_1').textContent
+    console.log(id, rowIdx)
+    deleteRole(id, rowIdx)
+
+});
+const deleteRole = (id,index)=>{
+    swal({
+        title: "Cảnh báo",
+        text: "Bạn có chắc chắn là muốn xóa quyền này?",
+        buttons: ["Hủy bỏ", "Đồng ý"],
+    }).then((willDelete) => {
+        if (willDelete) {
+            $.ajax({
+                statusCode: {
+                    401: function() {
+                        swal("Bạn không có quyền thực hiện chức năng này.!", {});
+
+                    }
+                },
+                url: "/api/role?action=delete_role",
+                method: "POST",
+                data:{
+                    id
+                },
+                success: res =>{
+                    let table =  $('#myTable').DataTable()
+                    let dataRow = table.row(index).data()
+                    table.row(index).remove().draw();
+                    swal("Xóa thành công", {});
+                    let table2 = document.querySelector("#body_table_users")
+                    for (var i = 0; i < table2.rows.length; i++) {
+                        if (table2.rows[i].cells[5].textContent === dataRow.name) {
+                            table2.rows[i].cells[5].textContent = "NORMAL";
+                        }
+                    }
+                    let selectRole = document.querySelector(".addRole option[value='"+dataRow.id+"'] ")
+                    selectRole.remove()
+                },
+                error: err=>{
+
+                }
+            })
+
+
+        }
+    });
+}
 
 var style = document.createElement('style');
 style.setAttribute("id","multiselect_dropdown_styles");
@@ -102,7 +421,17 @@ function MultiselectDropdown(options){
         return e;
     }
 
-
+const closeModalRole = ()=>{
+    let modal =     document.querySelector('#exampleModalCenter')
+    modal.classList.add('fade')
+    modal.style.display = 'none'
+    modal.style.opacity = 0
+}
+document.querySelectorAll('.closeModal').forEach(tmp=>{
+    tmp.addEventListener('click',()=>{
+        closeModalRole()
+    })
+})
     document.querySelectorAll("select[multiple]").forEach((el,k)=>{
 
         var div=newEl('div',{class:'multiselect-dropdown',style:{width:config.style?.width??el.clientWidth+'px',padding:config.style?.padding??''}});

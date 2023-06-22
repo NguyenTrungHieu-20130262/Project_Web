@@ -11,7 +11,6 @@
     <!-- Font-icon css-->
     <link rel="stylesheet" type="text/css"
           href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
     <link rel="stylesheet" href="https://oto.com.vn/member/Styles/web/postnew-quick.css?v=638035266443576953">
@@ -133,7 +132,12 @@
     </div>
 
 </main>
-<script src="jsadmin/jquery-3.2.1.min.js"></script>
+<%@include file="/Component/loading/Loading.jsp" %>
+
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 <!--===============================================================================================-->
 <script src="jsadmin/popper.min.js"></script>
 <script src="https://unpkg.com/boxicons@latest/dist/boxicons.js"></script>
@@ -145,6 +149,7 @@
 <script src="jsadmin/plugins/pace.min.js"></script>
 <!--===============================================================================================-->
 <script type="text/javascript" src="jsadmin/plugins/chart.js"></script>
+
 <!--===============================================================================================-->
 <script type="text/javascript">
     var data = {
@@ -214,7 +219,6 @@
         }
     }
 </script>
-</body>
 <%--uploadfile--%>
 <script>
     document.querySelector(".btn-send").addEventListener("click", (e) => {
@@ -223,8 +227,9 @@
     document.querySelector(".upload-item").addEventListener("click", (e) => {
         document.querySelector(".fileupload").click()
     })
+
 </script>
-<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 
 <script>
     document.querySelector(".btn-send").addEventListener("click", (e) => {
@@ -263,7 +268,6 @@
             $(this).each(function (index) {
                 if ($(this)[0].querySelector("input").checked) {
                     year = $(this)[0].querySelector("label").textContent
-
                 }
             })
 
@@ -271,6 +275,7 @@
         return year;
 
     }
+    const loading = document.getElementById("loading");
     const getStatus = () => {
         let arr = []
         $(".status-group li").each(function () {
@@ -283,63 +288,73 @@
         });
         return arr
     }
+    const delForm = () => {
+        $("#Price").val("")
+        $("#body").val("")
+        $("#quantity").val("")
+        $("input[name='height']").val("")
+        $("input[name='length']").val("")
+        $("input[name='width']").val("")
+        $("input[name='weight']").val("")
+        $("#tilte123").val("")
+        $("#content").val("")
+    }
 
-    $("#btn-send").click(function (e) {
-        e.preventDefault()
-        const arr = getStatus()
-        const nameCompany = $('.form-select option:selected').text();
-        const title = encodeURI($("#tilte123").val())
-        const content = encodeURI($("#content").val())
-        const images = listImg
-        const xmas = new Date("December 25, 2000 23:15:00");
-        const year = xmas.getYear();
-        const yearofmanufacture = getYear() || year
-        const made = encodeURI(arr[0])
-        const gear = arr[1]
-        const fuel = encodeURI(arr[2])
-        const status = arr[3]
-        const price = $("#Price").val()
-        const body = $("#body").val()
-        const quantity = $("#quantity").val()
-        const height = $("input[name='height']").val()
-        const length = $("input[name='length']").val()
-        const width = $("input[name='width']").val()
-        const weight = $("input[name='weight']").val()
+    $("#btn-send").click(function(e) {
+        e.preventDefault();
+        const arr=getStatus()
+        const formData = new FormData();
+        formData.append("nameCompany", $('.form-select option:selected').text());
+        formData.append("title", $("#tilte123").val());
+        formData.append("content", $("#content").val());
+        formData.append("images", listImg);
+        formData.append("yearofmanufacture", getYear() || new Date().getFullYear());
+        formData.append("made", arr[0]);
+        formData.append("gear", arr[1]);
+        formData.append("fuel", arr[2]);
+        formData.append("status", arr[3]);
+        formData.append("price", $("#Price").val());
+        formData.append("body", $("#body").val());
+        formData.append("quantity", $("#quantity").val());
+        formData.append("height", $("input[name='height']").val());
+        formData.append("length", $("input[name='length']").val());
+        formData.append("width", $("input[name='width']").val());
+        formData.append("weight", $("input[name='weight']").val());
 
+        if (
+            formData.get("nameCompany") &&
+            formData.get("title") &&
+            formData.get("content") &&
+            formData.get("images") &&
+            formData.get("yearofmanufacture") &&
+            formData.get("made") &&
+            formData.get("gear") &&
+            formData.get("fuel") &&
+            formData.get("status") &&
+            formData.get("price") &&
+            formData.get("body") &&
+            formData.get("quantity") &&
+            formData.get("height") &&
+            formData.get("length") &&
+            formData.get("width") &&
+            formData.get("weight")
+        ) {
+            loading.style.display = "block";
 
-        if (nameCompany && title && content && images && yearofmanufacture && made && gear && fuel && status && price && body && quantity,height, length, width, weight) {
-            // if(typeof price==="number"){
-            var dataBody = {
-                nameCompany,
-                images,
-                title,
-                content,
-                yearofmanufacture,
-                gear,
-                fuel,
-                price,
-                status,
-                body,
-                made,
-                quantity,height, length, width, weight
-            }
             $.ajax({
                 url: "/postProduct",
                 type: "POST",
-                data: dataBody,
-                contentType: 'application/x-www-form-urlencoded',
-                success: function (data) {
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(data) {
+                    delForm();
                     swal({
-                        title: 'Thành công',
-                        text: 'Thêm sản phẩm thành công',
-                        content: "form",
-                        buttons: {
-                            cancel: "Ok",
-                        }
-                    }).then((value) => {
-                        console.log(value);
+                        title: "Thành công",
+                        text: "Thêm sản phẩm thành công",
+                    }).then(() => {
+                        loading.style.display = "none";
                     });
-                    window.location.href = window.location.href
                 }
             });
         } else {
@@ -348,16 +363,83 @@
                 text: 'Thông tin không chính xác',
                 content: "form",
                 buttons: {
-                    cancel: "Cancel", l
+                    cancel: "Cancel",
                 }
             }).then((value) => {
-                console.log(value);
+                loading.style.display = "none";
             });
         }
-
-
-    })
-
+    });
+// $("#btn-send").click(function(e) {
+//     e.preventDefault();
+//     const arr=getStatus()
+//     const formData = new FormData();
+//     formData.append("nameCompany", $('.form-select option:selected').text());
+//     formData.append("title", $("#tilte123").val());
+//     formData.append("content", $("#content").val());
+//     formData.append("images", listImg);
+//     formData.append("yearofmanufacture", getYear() || new Date().getFullYear());
+//     formData.append("made", arr[0]);
+//     formData.append("gear", arr[1]);
+//     formData.append("fuel", arr[2]);
+//     formData.append("status", arr[3]);
+//     formData.append("price", $("#Price").val());
+//     formData.append("body", $("#body").val());
+//     formData.append("quantity", $("#quantity").val());
+//     formData.append("height", $("input[name='height']").val());
+//     formData.append("length", $("input[name='length']").val());
+//     formData.append("width", $("input[name='width']").val());
+//     formData.append("weight", $("input[name='weight']").val());
+//
+//     if (
+//         formData.get("nameCompany") &&
+//         formData.get("title") &&
+//         formData.get("content") &&
+//         formData.get("images") &&
+//         formData.get("yearofmanufacture") &&
+//         formData.get("made") &&
+//         formData.get("gear") &&
+//         formData.get("fuel") &&
+//         formData.get("status") &&
+//         formData.get("price") &&
+//         formData.get("body") &&
+//         formData.get("quantity") &&
+//         formData.get("height") &&
+//         formData.get("length") &&
+//         formData.get("width") &&
+//         formData.get("weight")
+//     ) {
+//         loading.style.display = "block";
+//
+//         $.ajax({
+//             url: "/postProduct",
+//             type: "POST",
+//             data: formData,
+//             processData: false,
+//             contentType: false,
+//             success: function(data) {
+//                 delForm();
+//                 swal({
+//                     title: "Thành công",
+//                     text: "Thêm sản phẩm thành công",
+//                 }).then(() => {
+//                     loading.style.display = "none";
+//                 });
+//             }
+//         });
+//     } else {
+//         swal({
+//             title: 'Lỗi ',
+//             text: 'Thông tin không chính xác',
+//             content: "form",
+//             buttons: {
+//                 cancel: "Cancel",
+//             }
+//         }).then((value) => {
+//             loading.style.display = "none";
+//         });
+//     }
+//     });
 
 </script>
 <%--post product--%>

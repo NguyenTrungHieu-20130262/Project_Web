@@ -2,8 +2,10 @@
 <html>
 <head>
     <link rel="stylesheet" href="../Style.css">
-    <link rel="stylesheet"
-          href="https://mdbcdn.b-cdn.net/wp-content/themes/mdbootstrap4/docs-app/css/dist/mdb5/standard/core.min.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
     <link rel="stylesheet" href="https://oto.com.vn/member/Styles/web/postnew-quick.css?v=638035266443576953">
     <link rel="stylesheet" href="https://oto.com.vn/Scripts/swiper-6.3.3/swiper-bundle.m
@@ -70,21 +72,23 @@
         <!-- Pills content -->
         <div class="tab-content" style="margin: auto;">
             <div class="tab-pane fade show active" id="pills-login" role="tabpanel" aria-labelledby="tab-login">
+                <hr/>
                 <form class="form-login">
                     <div class="text-center mb-3">
                         <p>Sign in with</p>
+
                     </div>
 
                     <!-- Email input -->
                     <div class="form-outline mb-4">
-                        <input type="text" id="loginName" class="form-control"/>
                         <label class="form-label" for="loginName">Email or username</label>
+                        <input type="text" id="loginName" class="form-control"/>
                     </div>
 
                     <!-- Password input -->
                     <div class="form-outline mb-4">
-                        <input type="password" id="loginPassword" class="form-control"/>
                         <label class="form-label" for="loginPassword">Password</label>
+                        <input type="password" id="loginPassword" class="form-control"/>
                     </div>
 
                     <!-- 2 column grid layout -->
@@ -134,8 +138,6 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-<script type="text/javascript"
-        src="https://mdbcdn.b-cdn.net/wp-content/themes/mdbootstrap4/docs-app/js/dist/mdb5/standard/core.min.js"></script>
 <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js"></script>
 <script>
     // document.querySelector(".upload-item").addEventListener("click", (e) => {
@@ -347,55 +349,62 @@
 </script>
 <%--Login with fb--%>
 <script>
-    function statusChangeCallback(response) {  // Called with the results from FB.getLoginStatus().
+    let isLoginInitiated = false; // Flag to track login initiation
+
+    function statusChangeCallback(response) {
         console.log('statusChangeCallback');
-        console.log(response);                   // The current login status of the person.
-        if (response.status === 'connected') {   // Logged into your webpage and Facebook.
+        console.log(response);
+        if (response.status === 'connected' && !isLoginInitiated) { // Check if login initiated flag is false
+            isLoginInitiated = true; // Set login initiated flag to true
             testAPI();
-        } else {                                 // Not logged into your webpage or we are unable to tell.
-            document.getElementById('status').innerHTML = 'Please log ' +
-                'into this webpage.';
+        } else {
+            document.getElementById('status').innerHTML = 'Please log into this webpage.';
         }
     }
 
-
-    function checkLoginState() {               // Called when a person is finished with the Login Button.
-        FB.getLoginStatus(function(response) {   // See the onlogin handler
+    function checkLoginState() {
+        FB.getLoginStatus(function(response) {
             statusChangeCallback(response);
         });
     }
 
-
     window.fbAsyncInit = function() {
         FB.init({
-            appId      : '2159772147554215',
-            cookie     : true,                     // Enable cookies to allow the server to access the session.
-            xfbml      : true,                     // Parse social plugins on this webpage.
-            version    : 'v16.0'           // Use this Graph API version for this call.
+            appId: '2159772147554215',
+            cookie: true,
+            xfbml: true,
+            version: 'v16.0'
         });
-
-
-        FB.getLoginStatus(function(response) {   // Called after the JS SDK has been initialized.
-            statusChangeCallback(response);        // Returns the login status.
+        document.getElementById('loginWithFb').addEventListener('click', function() {
+            checkLoginState();
+            this.disabled = true; // Disable the button after it is clicked
         });
     };
 
-    function testAPI() {                      // Testing Graph API after login.  See statusChangeCallback() for when this call is made.
-        console.log('Welcome!  Fetching your information.... ');
+    function testAPI() {
+        console.log('Welcome! Fetching your information....');
         FB.api('/me', function(response) {
-            console.log(response)
+            console.log(response);
             $.ajax({
                 url: "/login/LoginWithFb",
                 type: "POST",
                 data: {
-                userName:response.id
+                    userName: response.id
                 },
                 contentType: 'application/x-www-form-urlencoded',
-                success: function (data) {
-
+                success: function(data) {
+                    swal({
+                        title: "Thành công",
+                        text: "Đăng nhập thành công",
+                    }).then(() => {
+                        window.location.pathname = "/";
+                    });
+                },
+                complete: function() {
+                    document.getElementById('loginWithFb').disabled = false; // Enable the button after the request is complete
                 }
+            });
         });
-    })
     }
 </script>
 

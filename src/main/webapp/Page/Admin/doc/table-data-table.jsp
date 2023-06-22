@@ -46,11 +46,11 @@
             <div class="tile">
                 <div class="tile-body">
                     <div class="row element-button">
-                        <div class="col-sm-2">
+                        <div class="col-sm-2" onclick='htmlTableToExcel("account")'>
                             <a class="btn btn-excel btn-sm" href="" title="In"><i class="fas fa-file-excel"></i> Xuất
                                 Excel</a>
                         </div>
-                        <div class="col-sm-2">
+                        <div class="col-sm-2" onclick="exportTableToPDF('order')">
                             <a class="btn btn-delete btn-sm pdf-file" type="button" title="In"><i
                                     class="fas fa-file-pdf"></i> Xuất PDF</a>
                         </div>
@@ -82,7 +82,7 @@
                                 <td>#${item.id}</td>
                                 <td id="userName">${item.fullName}</td>
                                 <td><img class="img-card-person" src="${item.avatar}" alt=""></td>
-                                <td>${item.address}</td>
+                                <td id="address1">${item.address}</td>
                                 <td id="userPhone">${item.phone}</td>
                                 <c:choose>
                                     <c:when test="${item.status==1}">
@@ -95,13 +95,33 @@
                                 <td><span class="roleUser isAction" id="userRole">${item.getNameRole()}</span>
 
                                 </td>
+
                                 <td>
-                                    <button id="${item.id}" class="btn btn-primary btn-sm trash" type="button"
+                                    <c:choose>
+                                    <c:when test="${item.status==1}">
+                                    <button id="trash-${item.id}" class="btn btn-primary btn-sm trash" type="button"
                                             title="Xóa"><i class="fas fa-trash-alt"></i>
                                     </button>
-                                    <button class="btn btn-primary btn-sm edit show-emp" type="submit" title="Sửa"
-                                            id="show-emp||${item.id}" data-toggle="modal" data-target="#ModalUP"><i
-                                            class="fas fa-edit"></i></button>
+                                    <button style="margin-right: 3px; display: none" id="unlock-${item.id}"
+                                            class="btn btn-primary btn-sm unlock" type="button"
+                                            title="Xóa"><i class="fas fa-lock-open"></i>
+                                        </c:when>
+                                        <c:otherwise>
+                                        <button style="display: none" id="trash-${item.id}"
+                                                class="btn btn-primary btn-sm trash" type="button"
+                                                title="Xóa"><i class="fas fa-trash-alt"></i>
+                                        </button>
+                                        <button style="margin-right: 3px" id="unlock-${item.id}"
+                                                class="btn btn-primary btn-sm unlock" type="button"
+                                                title="Xóa"><i class="fas fa-lock-open"></i>
+                                            </c:otherwise>
+                                            </c:choose>
+
+                                            <button class="btn btn-primary btn-sm edit show-emp" type="submit"
+                                                    title="Sửa"
+                                                    id="show-emp||${item.id}" data-toggle="modal"
+                                                    data-target="#ModalUP"><i
+                                                    class="fas fa-edit"></i></button>
                                 </td>
                             </tr>
                         </c:forEach>
@@ -161,12 +181,12 @@ MODAL
                         <input class="form-control" id="statusAccount" type="text" required disabled>
                     </div>
                     <div class="form-group  col-md-6">
-                        <label for="exampleSelect1" class="control-label">Chức vụ</label>
-                        <select id="allRole" class="form-control" id="exampleSelect1">
-                            <c:forEach items="${listRole}" var="item" varStatus="loop">
-                                <option id="role||${item.id}">${item.name}</option>
-                            </c:forEach>
-                        </select>
+                        <label for="author" class="control-label">Chức vụ</label>
+                        <input class="form-control" id="author" type="text" required disabled>
+                    </div>
+                    <div class="form-group  col-md-6">
+                        <label for="author" class="control-label">Địa chỉ</label>
+                        <input class="form-control" id="address" type="text" required >
                     </div>
                 </div>
                 <BR>
@@ -245,23 +265,42 @@ MODAL
             win.print();
         }
     }
-    //     //Sao chép dữ liệu
-    //     var copyTextareaBtn = document.querySelector('.js-textareacopybtn');
 
-    // copyTextareaBtn.addEventListener('click', function(event) {
-    //   var copyTextarea = document.querySelector('.js-copytextarea');
-    //   copyTextarea.focus();
-    //   copyTextarea.select();
+    function htmlTableToExcel(name) {
+        console.log(123)
+        var data = document.getElementById('sampleTable');
+        console.log(data)
+        var excelFile = XLSX.utils.table_to_book(data, {sheet: "sheet1"});
+        XLSX.write(excelFile, {type: 'xlsx', bookSST: true, type: 'base64'});
+        XLSX.writeFile(excelFile, name + '.xlsx');
+    }
 
-    //   try {
-    //     var successful = document.execCommand('copy');
-    //     var msg = successful ? 'successful' : 'unsuccessful';
-    //     console.log('Copying text command was ' + msg);
-    //   } catch (err) {
-    //     console.log('Oops, unable to copy');
-    //   }
-    // });
-    //Modal
+    function exportTableToPDF(name) {
+        var pdf = new jsPDF('p', 'pt', 'letter');
+
+        source = $('#sampleTable');
+
+        margins = {
+            top: 80,
+            bottom: 60,
+            left: 40,
+            width: 522
+        };
+
+        pdf.fromHTML(
+            source,
+            margins.left,
+            margins.top, {
+                'width': margins.width,
+                'elementHandlers': source
+            },
+            function (dispose) {
+
+                pdf.save('Test.pdf');
+            }
+            , margins);
+
+    }
 
     var oTable = $('#sampleTable').DataTable();
     oTable.on('click', '.trash', function () {
@@ -272,9 +311,12 @@ MODAL
         })
             .then((willDelete) => {
                 if (willDelete) {
-                    let id = $(this).attr('id');
-                    fetch("/user?choose=delUser&id=" + id)
+                    let id = $(this).attr('id').split("-")[1];
+                    let status = 0;
+                    fetch("/user?choose=changeStatus&id=" + id + "&status=" + status)
                         .then((resp) => {
+                            $('.unlock#unlock-' + id).css("display", "inline");
+                            $('.trash#trash-' + id).css("display", "none");
                             $(this).closest('tr').find(".statusActivity").removeClass('isAction').addClass('isNotAction').text('Đã khóa');
                             swal("Đã xóa thành công.!", {});
                         })
@@ -284,6 +326,30 @@ MODAL
                 }
             })
     });
+    oTable.on('click', '.unlock', function () {
+        swal({
+            title: "Cảnh báo",
+            text: "Bạn muốn mở khóa lại tài khoản này",
+            buttons: ["hủy bỏ", "oke"],
+        })
+            .then((willDelete) => {
+                if (willDelete) {
+                    let id = $(this).attr('id').split("-")[1];
+                    let status = 1;
+                    fetch("/user?choose=changeStatus&id=" + id + "&status=" + status)
+                        .then((resp) => {
+                            $('.unlock#unlock-' + id).css("display", "none");
+                            $('.trash#trash-' + id).css("display", "inline");
+                            $(this).closest('tr').find(".statusActivity").removeClass('isNotAction').addClass('isAction').text('Hoạt động');
+                            swal("Đã mở khóa thành công tài khoản.!", {});
+                        })
+                        .catch(() => {
+                            swal("Mở khóa không thành công!", {});
+                        })
+                }
+            })
+    });
+
     oTable.on('click', '.show-emp', function () {
         var element = $(this).attr("id");
         var id = (element.split("||")[1])
@@ -297,40 +363,43 @@ MODAL
                 $("#fullName").val(data.fullName);
                 $("#phoneNumber").val(data.phone);
                 $("#emailUser").val(data.email);
-                $("#allRole").val(data.role);
+                $("#author").val(data.role);
                 $("#statusAccount").val(data.status);
+                $("#address").val(data.address);
             }
         })
         $("#ModalUP").modal({backdrop: false, keyboard: false})
     })
     $('.btn-save').on('click', function () {
+        console.log(1238)
         const id = $(this).attr("id").split("||")[1]
-        const button = $(this)
-        $(this).closest().find()
-        var name = $("#fullName").val()
-        var phone = $("#phoneNumber").val()
-        var role = $("#allRole option:selected").attr("id").split("||")[1]
+        var name = $("#fullName").val() ? $("#fullName").val() : ""
+        var phone = $("#fullName").val() ? $("#phoneNumber").val() : ""
+        var address = $("#address").val() ? $("#address").val() : ""
         var data = {
             name,
             phone,
-            role,
-            id
+            id,
+            address
         };
         $.ajax({
             url: "/user",
             type: "Post",
             data: data,
-            contentType: 'application/x-www-form-urlencoded',
+            contentType: 'application/x-www-form-urlencoded;charset=UTF-8',
             success: function (data) {
                 if (data.status == "ok") {
                     document.querySelector("tr[data-id=" + "'" + id + "'" + "] #userName").textContent = name
                     document.querySelector("tr[data-id=" + "'" + id + "'" + "] #userPhone").textContent = phone
-                    document.querySelector("tr[data-id=" + "'" + id + "'" + "] #userRole").textContent = $("#allRole option:selected").text()
+                    document.querySelector("tr[data-id=" + "'" + id + "'" + "] #address1").textContent = address
                     swal("Sửa thành công.!", {});
                 } else {
                     swal("Sửa không thành công.!", {});
                 }
 
+            },
+            error: function (xhr, status, error) {
+                swal("Số điện thoại khong hợp lệ!", {});
             }
         })
     });

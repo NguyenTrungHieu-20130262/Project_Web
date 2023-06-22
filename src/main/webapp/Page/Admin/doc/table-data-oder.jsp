@@ -70,7 +70,7 @@
 <!-- Sidebar menu-->
 <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
 <jsp:include page="SideBar.jsp">
-    <jsp:param name="page" value="6"/>
+    <jsp:param name="page" value="7"/>
 </jsp:include>
 <main class="app-content">
     <div class="app-title">
@@ -227,7 +227,7 @@
                         <p><strong>Địa chỉ: </strong><span class="show_detail_orders_address"></span></p>
                         <p><strong>Số điện thoại: </strong><span class="show_detail_orders_phone"></span></p>
                         <p><strong>Email: </strong><span class="show_detail_orders_email"></span></p>
-
+                        <p><strong>Mã vận chuyển: </strong><span class="show_detail_orders_idTransport"></span></p>
                         <p><strong>Tổng tiền: </strong><span class="show_detail_orders_total"></span></p>
                         <p><strong>Trạng thái: </strong><span class="show_detail_orders_status"></span></p>
 
