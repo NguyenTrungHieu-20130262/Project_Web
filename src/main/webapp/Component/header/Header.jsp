@@ -51,7 +51,7 @@
                     <li><a style="cursor: pointer" onclick="home()" data-key="/"><h2>Trang chủ</h2></a>
 
                     <li><a href="product" data-key="/mua-ban-xe"><h2>Sản phẩm</h2></a>
-                    <li><a href="pricecar" data-key="/bang-gia-xe-o-to"><h2>Giá xe ô tô</h2></a>
+                    <li><a href="contact" data-key="/bang-gia-xe-o-to"><h2>Liên hệ</h2></a>
 
                     </li>
 
