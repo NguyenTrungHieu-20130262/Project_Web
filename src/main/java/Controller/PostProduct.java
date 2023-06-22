@@ -10,15 +10,15 @@ import Security.Authorizeds;
 import Upload.UploadImage;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.net.URLDecoder;
 import java.sql.SQLException;
 import java.util.ArrayList;
-
+@MultipartConfig
 @WebServlet("/postProduct")
 public class PostProduct extends HttpServlet {
     @Override
@@ -27,15 +27,16 @@ public class PostProduct extends HttpServlet {
         String pathRoot = (this.getServletContext().getRealPath("/"));
         resp.setContentType("application/json");
         try {
-            String title = URLDecoder.decode(req.getParameter("title"), "UTF-8");
-            String content = URLDecoder.decode(req.getParameter("content"), "UTF-8");
+            String title = req.getParameter("title");
+            String content = (req.getParameter("content"));
             String images = req.getParameter("images");
             Company idCompany = CompanyDAO.getIdByName(req.getParameter("nameCompany"));
             int year = Integer.parseInt(req.getParameter("yearofmanufacture"));
+            System.out.println(year);
             User user = (User) req.getSession().getAttribute("user");
             String token = JWT.createJWT(String.valueOf(user.getId()), 365);
             ArrayList<String> listimgs = UploadImage.uploadAllFile(images, pathRoot, "post" + token, "Product");
-            String fuel = URLDecoder.decode(req.getParameter("fuel"), "UTF-8");
+            String fuel = (req.getParameter("fuel"));
             Float price = Float.parseFloat(req.getParameter("price"));
             String body = req.getParameter("body");
             int quantity = Integer.valueOf(req.getParameter("quantity"));
