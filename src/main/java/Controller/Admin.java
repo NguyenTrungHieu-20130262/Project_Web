@@ -235,7 +235,9 @@ public class Admin extends HttpServlet {
             req.setAttribute("avatar", u.getAvatar());
             switch (page.toLowerCase().trim()) {
                 case "post":
-                    postPage(req, res);
+                    if (Authorizeds.authorizeds(req, Authorizeds.PRODUCT_INSERT)) {
+                        postPage(req, res);
+                    } else res.setStatus(401);
                     break;
                 case "usermanagement":
                     if (Authorizeds.authorizeds(req, Authorizeds.USER_VIEW)) {
@@ -243,13 +245,14 @@ public class Admin extends HttpServlet {
                     } else res.setStatus(401);
                     break;
                 case "userstatistic":
-                    getAllUser(req, res);
+                    if (Authorizeds.authorizeds(req, Authorizeds.USER_VIEW)) {
+                        getAllUser(req, res);
+                    } else res.setStatus(401);
                     break;
                 case "role":
-                    if (Authorizeds.authorizeds(req, Authorizeds.ROLE_VIEW))
+                    if (Authorizeds.authorizeds(req, Authorizeds.ROLE_VIEW)) {
                         rolePage(req, res);
-                    else res.setStatus(401);
-
+                    } else res.setStatus(401);
                     break;
                 case "productmanagement":
                     if (Authorizeds.authorizeds(req, Authorizeds.PRODUCT_VIEW)) {
@@ -259,7 +262,9 @@ public class Admin extends HttpServlet {
                     }
                     break;
                 case "productstaticstics":
-                    productStatics(req, res);
+                    if(Authorizeds.authorizeds(req,Authorizeds.PRODUCT_VIEW)){
+                        productStatics(req, res);
+                    } else res.setStatus(401);
                     break;
                 case "odermanagement":
                     if (Authorizeds.authorizeds(req, Authorizeds.ORDER_VIEW)) {
@@ -280,10 +285,8 @@ public class Admin extends HttpServlet {
                 case "logmanagement":
                     if(Authorizeds.authorizeds(req, Authorizeds.LOG_VIEW))
                         logPage(req, res);
-
                     else res.setStatus(401);
                     break;
-
                 default:
                     indexPage(req, res);
             }
