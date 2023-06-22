@@ -39,17 +39,9 @@ public class ConnectDB {
         return connection;
     }
     public static void main(String[] args) throws SQLException {
-        long timeStart = new Date().getTime();
-        System.out.println(ProductDAO.getProduct().size() + "size");
-        long timeEnd = new Date().getTime();
-        long seconds= (TimeUnit.MILLISECONDS.toSeconds(timeEnd - timeStart));
-        System.out.println(seconds);
-        long timeStart2 = new Date().getTime();
-        System.out.println(ProductDAO.getProduct().size() + "size");
-        long timeEnd2 = new Date().getTime();
-        seconds= (TimeUnit.MILLISECONDS.toSeconds(timeEnd2 - timeStart2 ));
-        System.out.println(seconds);
 
+
+        System.out.println(ProductDAO.getTrendProducts().size());
 
 
     }

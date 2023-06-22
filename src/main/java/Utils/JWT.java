@@ -1,18 +1,12 @@
-package Beans;
+package Utils;
 
 
-import Model.RespJsonServlet;
-import Model.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.Date;
-import java.util.StringTokenizer;
-import java.util.regex.Pattern;
 
 public class JWT {
     public static final  int TIMEOUT = 6;

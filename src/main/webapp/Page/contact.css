@@ -1,0 +1,106 @@
+/*Contact CSS*/
+/*Form Begin*/
+
+#content .contact_area .container .row {
+    margin-top: 50px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+#content .contact_area .container .row .col-lg-6 .contact_message{
+    height: 250px;
+}
+
+#content .contact_area .container .row .col-lg-6 .contact_message h3{
+    font-weight: 700;
+    font-size: 24px;
+    margin-bottom: 20px;
+    padding-left: 20px;
+}
+
+#content .contact_area .container .row .col-lg-6 .contact_message ul li{
+    border-top: 1px solid #cecece;
+    padding: 10px 10px;
+    font-size: 14px;
+    list-style: none;
+}
+
+#content .contact_area .container .row .col-lg-6 .contact_message ul li i{
+    padding-right: 10px;
+}
+
+#content .contact_area .container .row .contact_message #contact-form{
+    margin-bottom: 120px;
+}
+
+#content .contact_area .container .row .contact_message #contact-form p label,
+#content .contact_area .container .row .contact_message #contact-form .contact_textarea label{
+    font-weight: bold;
+    font-size: 16px;
+}
+#content .contact_area .container .row .contact_message #contact-form p,
+#content .contact_area .container .row .contact_message #contact-form .contact_textarea{
+    display: flex;
+    flex-direction: column;
+}
+
+#content .contact_area .container .row .contact_message #contact-form p input{
+    padding: 10px 20px;
+    border-radius: 6px;
+    outline: none;
+    border: 1px solid black;
+
+}
+#content .contact_area .container .row .contact_message #contact-form .contact_textarea textarea{
+    padding: 10px 20px;
+    border-radius: 6px;
+    border: 1px solid black;
+
+}
+#content .contact_area .container .row .contact_message #contact-form .button_holder{
+    justify-content: center;
+    text-align: center;
+}
+
+#content .contact_area .container .row .contact_message #contact-form .button_holder button{
+    margin-top: 30px;
+    padding: 6px 200px;
+    /*background: linear-gradient(to right, #00c10c 0%, #fff200 50%, #00c10c 100%);*/
+    background: linear-gradient(to right, #135EAC 0%, #82e1d3 50%, #135EAC 100%);
+    background-size: 300%, 1px;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    transition: all .3s linear;
+    cursor: pointer;
+}
+
+#content .contact_area .container .row .contact_message #contact-form .button_holder button:hover{
+    /*background: linear-gradient(to left, #00c10c 0%, #fff200 50%, #00c10c 100%) right;*/
+    background: linear-gradient(to left, #135EAC 0%, #82e1d3 50%, #135EAC 100%) right;
+    background-size: 300%, 1px;
+}
+
+/*Form End*/
+
+/*Map Location Begin*/
+
+#content .map .map_location{
+    text-align: center;
+    margin-top: 210px;
+    margin-bottom: 50px;
+}
+
+#content .map .map_location h3{
+    font-weight: bold;
+    font-size: 30px;
+    margin: 20px;
+}
+
+#content .map .map_location iframe{
+    border-radius: 10px;
+    height: 400px;
+    width: 1000px;
+}
+
+/*Map Location End*/

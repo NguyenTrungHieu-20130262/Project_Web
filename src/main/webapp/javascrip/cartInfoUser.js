@@ -72,7 +72,7 @@ saveAddress.addEventListener('click', (e)=>{
     let address =  $( ".ward option:selected" ).text() + " - " + $( ".district option:selected" ).text() + " - " + $( ".province option:selected" ).text();
 
     $.ajax({
-        url: "/profile?action=updateAddress",
+        url: "/profile?action=changeProfileCart",
         method: "POST",
         data: {address: address},
         success: res =>{
@@ -116,7 +116,7 @@ save_name.addEventListener('click', (e)=>{
     let nameNew = document.querySelector(".edit_name input").value
     if(nameNew){
         $.ajax({
-            url: "/profile?action=updateName",
+            url: "/profile?action=changeProfileCart",
             method: "POST",
             data: {name: nameNew},
             success: res =>{
@@ -172,7 +172,7 @@ savePhone.addEventListener('click', (e)=>{
     let phoneNew = document.querySelector(".edit_phone input").value
     if(phoneNew.length >=10){
         $.ajax({
-            url: "/profile?action=updatePhone",
+            url: "/profile?action=changeProfileCart",
             method: "POST",
             data: {phone: phoneNew},
             success: res =>{

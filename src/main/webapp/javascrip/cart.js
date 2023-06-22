@@ -154,7 +154,6 @@ const removeCart = (idCart)=>{
             if(JSON.parse(res) === 1){
                 for( var i = 0; i < arrCart.length; i++){
                     if (arrCart[i].id === idCart) {
-
                         arrCart.splice(i, 1);
                         break
                     }

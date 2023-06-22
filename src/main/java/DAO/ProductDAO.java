@@ -17,7 +17,49 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class ProductDAO {
-//    int quantity;
+    //    int quantity;
+    public static ArrayList<Product> getProducts() {
+        ArrayList<Product> products = new ArrayList<>();
+        String query = "SELECT product.*, sum(quantity) as quantity, vendo.name as nameVendo, vendo.srcImg, GROUP_CONCAT(imgproduct.srcImg) as imgUrls\n" +
+                "FROM importproduct\n" +
+                "JOIN product ON importproduct.idProduct = product.id\n" +
+                "JOIN vendo ON product.idVendo = vendo.id\n" +
+                "LEFT JOIN imgproduct ON product.id = imgproduct.idProduct\n" +
+                "GROUP BY product.id, vendo.name, vendo.srcImg\n" +
+                "\n";
+        try {
+            PreparedStatement preparedStatement = ConnectDB.getConnect().prepareStatement(query);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                Company vendo = new Company(resultSet.getInt(2), resultSet.getString("nameVendo"), resultSet.getString("srcImg"));
+                String[] imgUrls = resultSet.getString("imgUrls").split(",");
+                ArrayList<String> list = new ArrayList<String>();
+
+                for (String s : imgUrls) {
+                    list.add(s);
+                }
+
+                ProductDTO prod = new ProductDTO(resultSet.getInt(1),
+                        vendo,
+                        resultSet.getString(3),
+                        resultSet.getString(4),
+                        resultSet.getString(5),
+                        resultSet.getInt(6),
+                        resultSet.getString(7),
+                        resultSet.getDouble(8),
+                        resultSet.getDate(9),
+                        resultSet.getInt(14),
+                        list
+                );
+                prod.setQuantity(resultSet.getInt("quantity"));
+                products.add(prod);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return products;
+    }
+
     public static ArrayList<Product> getProduct() {
         ArrayList<Product> products = new ArrayList<>();
         String query = "SELECT product.*, sum(quantity) as quantity, vendo.name as nameVendo, vendo.srcImg, GROUP_CONCAT(imgproduct.srcImg) as imgUrls\n" +
@@ -393,13 +435,7 @@ public class ProductDAO {
 
     public static ArrayList<Product> getTrendProducts() {
         ArrayList<Product> trendProducts = new ArrayList<>();
-        String query = "SELECT product.*, sum(quantity) as quantity, vendo.name as nameVendo, vendo.srcImg, GROUP_CONCAT(imgproduct.srcImg) as imgUrls \n" +
-                "FROM importproduct\n" +
-                "JOIN product ON importproduct.idProduct = product.id\n" +
-                "JOIN vendo ON product.idVendo = vendo.id\n" +
-                "LEFT JOIN imgproduct ON product.id = imgproduct.idProduct\n" +
-                "GROUP BY product.id, vendo.name, vendo.srcImg\n" +
-                "ORDER BY createAt DESC LIMIT 12\n";
+        String query = "select  pp.id, pp.idVendo, pp.name, pp.content, pp.body, pp.yearOfManuFacture, pp.fuel, pp.price, pp.height, NOW() as createAt, pp.length, pp.width, pp.weight, pp.status, pp.quantity,  pp.srcImg, pp.imgUrls, nameVendo, COUNT(pp.id) as count from orderdetail join (SELECT product.*, sum(quantity) as quantity, vendo.name as nameVendo, vendo.srcImg, GROUP_CONCAT(imgproduct.srcImg) as imgUrls FROM importproduct JOIN product ON importproduct.idProduct = product.id JOIN vendo ON product.idVendo = vendo.id LEFT JOIN imgproduct ON product.id = imgproduct.idProduct  GROUP BY product.id, vendo.name, vendo.srcImg) as pp on pp.id = orderdetail.idProduct  GROUP BY pp.id, pp.idVendo, pp.name, pp.content, pp.body, pp.yearOfManuFacture, pp.fuel, pp.price, pp.height, pp.length, pp.width, pp.weight, pp.status, pp.quantity,  pp.srcImg, pp.imgUrls ORDER BY count DESC LIMIT 12;";
         try {
             Statement statement = ConnectDB.getConnect().createStatement();
             PreparedStatement preparedStatement = statement.getConnection().prepareStatement(query);
@@ -520,7 +556,7 @@ public class ProductDAO {
     public static Product getProductById(int id) {
         System.out.println("ID Post ================ " + id);
         Product product = null;
-            String query = "SELECT p.*, COALESCE(ip.quantity, 0) - COALESCE(od.quantity, 0) AS quantity_on_hand FROM product p LEFT JOIN orderdetail od ON p.id = od.idProduct LEFT JOIN importproduct ip ON p.id = ip.idProduct WHERE p.id=?";
+        String query = "SELECT p.*, COALESCE(ip.quantity, 0) - COALESCE(od.quantity, 0) AS quantity_on_hand FROM product p LEFT JOIN orderdetail od ON p.id = od.idProduct LEFT JOIN importproduct ip ON p.id = ip.idProduct WHERE p.id=?";
         try {
             Statement statement = ConnectDB.getConnect().createStatement();
             PreparedStatement preparedStatement = statement.getConnection().prepareStatement(query);

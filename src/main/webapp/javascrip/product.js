@@ -4,11 +4,11 @@ var indexNumber = 1;
 var quantityProductOnPage = 10
 var dataAll = []
 let filter
+const loading = document.getElementById("loading");
+
 const changeNumberPage = (n, e)=>{
     //indexNumber = n
-    $('html, body').animate({
-        scrollTop: 300
-    }, 800);
+
     document.querySelectorAll(".pagination a").forEach(tmp=>{
         tmp.classList.remove('active')
     })
@@ -223,15 +223,23 @@ const addToCart = (id)=>{
 }
 
 const getProdutWithPage = (page)=>{
+    loading.style.display = 'block'
     $.ajax({
         url: `/product?action=products&page=${page}`,
         type: 'get',
         success: function(res) {
             renderProduct(JSON.parse(res))
+            $('html, body').animate({
+                scrollTop: 300
+            }, 500);
+            loading.style.display = 'none'
+
         }
     });
 }
 const getProdutWithPageAndFilter = (page)=>{
+    loading.style.display = 'block'
+
     let urlReq = `/product?action=filter&page=${page}`
     for (const property in filter) {
         urlReq += `&${property}= ${filter[property]}`
@@ -243,11 +251,16 @@ const getProdutWithPageAndFilter = (page)=>{
         success: function(res) {
             let data = JSON.parse(res)
             renderProduct(data)
+            $('html, body').animate({
+                scrollTop: 300
+            }, 500);
+            loading.style.display = 'none'
 
         }
     });
 }
 const initYear = ()=>{
+
     let year = `<option value="">Tất cả</option>`
     for (let i = 1990; i < 2024; i++) {
         year += `<option value="${i}">${i}</option>`
@@ -259,7 +272,8 @@ const initYear = ()=>{
     })
 }
 const filterHandle = ()=>{
-    console.log("Click")
+    loading.style.display = 'block'
+
     let totalFilter = []
     let company =  document.querySelector("#company").value
     let year =  document.querySelector("#year").value
@@ -288,7 +302,7 @@ const filterHandle = ()=>{
     for (const property in filter) {
         urlReq += `&${property}= ${filter[property]}`
     }
-    console.log(filter)
+
     $.ajax({
         url: urlReq,
         type: 'get',
@@ -299,6 +313,8 @@ const filterHandle = ()=>{
             initPagination()
             let data = JSON.parse(res.data)
             renderProduct(data)
+            loading.style.display = 'none'
+
         }
     });
 }

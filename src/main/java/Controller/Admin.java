@@ -6,6 +6,7 @@ import DTO.RoleDTO;
 import Model.Product;
 import Model.*;
 import Security.Authorizeds;
+import com.google.gson.Gson;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,10 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @WebServlet("/admin")
 public class Admin extends HttpServlet {
@@ -36,9 +34,24 @@ public class Admin extends HttpServlet {
         req.setAttribute("countOrder", countOrder);
         req.setAttribute("countOrderOut", countOrderOut);
         req.setAttribute("getPriceRevenue", getPriceRevenue);
-        ArrayList<Product> products = ProductDAO.getProduct();
-        req.setAttribute("products", products);
+        ArrayList<Product> products = ProductDAO.getProducts();
+        req.setAttribute("products", new Gson().toJson(products));
         ArrayList<Oder> oders = OderDAO.getOrder();
+        int countCancel = 0;
+        int totalPrice = 0;
+        for (Oder tmp: oders) {
+            if(tmp.getStatus() == 0 ){
+                countCancel ++;
+            }else{
+                Date now = new Date();
+                if(tmp.getLeadTime().getTime() - now.getTime() > 0){
+                    totalPrice += (tmp.getTotal_price());
+                }
+            }
+        }
+        req.setAttribute("countCancel", countCancel);
+        req.setAttribute("totalPrice", totalPrice);
+
         req.setAttribute("oders", oders);
         req.getRequestDispatcher("/Page/Admin/doc/quan-ly-bao-cao.jsp").forward(req, res);
         res.setStatus(200);
@@ -78,6 +91,7 @@ public class Admin extends HttpServlet {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        System.out.println(list);
         req.getSession().setAttribute("listCompany", list);
         req.getRequestDispatcher("/Page/Admin/doc/table-data-product.jsp").forward(req, res);
     }

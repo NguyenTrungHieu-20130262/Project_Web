@@ -3,7 +3,7 @@
 
 <html>
 <head>
-    <title>Login/Register</title>
+    <title>Đăng kí</title>
     <link rel="stylesheet" href="../Style.css">
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
@@ -39,16 +39,17 @@
 
 <body style="position: relative">
 <%@include file="../Component/loading/Loading.jsp" %>
-
+<jsp:include page="../Component/header/Header.jsp" />
 
 <div class="container"  style="padding-top: 50px"; >
     <div class="wrapper">
+        <h2 class="title_head" style="text-align: center; font-size: 40px; font-weight: bold; text-transform: uppercase; margin-bottom: 30px;">Đăng kí</h2>
         <ul class="nav nav-pills nav-justified mb-3" id="ex1" role="tablist">
             <li class="nav-item" role="presentation">
-                <a class="nav-link " id="tab-login"  href="login" role="tab" >Login</a>
+                <a class="nav-link " id="tab-login"  href="login" role="tab" style="text-transform: uppercase">Đăng nhập</a>
             </li>
             <li class="nav-item" role="presentation">
-                <a class="nav-link active" id="tab-register"  href="register">Register</a>
+                <a class="nav-link active" id="tab-register"  href="register" style="text-transform: uppercase">Đăng kí</a>
             </li>
         </ul>
         <!-- Pills navs -->
@@ -57,17 +58,15 @@
         <div class="tab-content" style="margin: auto;;">
             <div class="tab-pane fade show active" id="pills-register" role="tabpanel" aria-labelledby="tab-register">
                 <hr/>
-
-                <form id="formRegister">
-                    <p class="text-center">Register</p>
+                <form id="formRegister" style="width: 100%; margin: 30px 0">
                     <!-- Name input -->
                     <div class="form-outline mb-4">
-                        <label class="form-label" for="username">Username</label>
+                        <label class="form-label" for="username">Tên đăng nhập</label>
                         <input type="text" id="username" class="form-control"/>
                     </div>
                     <!-- Full Name input -->
                     <div class="form-outline mb-4">
-                        <label class="form-label" for="fullname">Fullname</label>
+                        <label class="form-label" for="fullname">Họ và tên</label>
                         <input type="text" id="fullname" class="form-control"/>
                     </div>
                     <!-- Email input -->
@@ -77,11 +76,11 @@
                     </div>
                     <%--                 Phone Number --%>
                     <div class="form-outline mb-4">
-                        <label class="form-label" for="phone">Phone Number</label>
+                        <label class="form-label" for="phone">Số điện thoại</label>
                         <input type="number" id="phone" class="form-control"/>
                     </div>
                     <div class="form-outline mb-4">
-                        <label class="form-label" for="address">Address</label>
+                        <label class="form-label" for="address">Địa chỉ</label>
                         <div id="address" style="display: flex;    flex-direction: column;">
                             <select class="address province">
                                 <option value="0">Tỉnh</option>
@@ -98,14 +97,14 @@
 
                     <!-- Password input -->
                     <div class="form-outline mb-4">
-                        <label class="form-label" for="password">Password</label>
+                        <label class="form-label" for="password">Mật khẩu</label>
 
                         <input type="password" id="password" class="form-control" style="border: 1px solid #bdbdbd;"/>
                     </div>
 
                     <!-- Repeat Password input -->
                     <div class="form-outline mb-4">
-                        <label class="form-label" for="repeatPassword">Repeat password</label>
+                        <label class="form-label" for="repeatPassword">Xác nhận mật khẩu</label>
 
                         <input type="password" id="repeatPassword" class="form-control" style="border: 1px solid #bdbdbd;"/>
                     </div>
@@ -115,13 +114,34 @@
 
                     <!-- Submit button -->
                     <button type="button" id="bt-register"  class="btn btn-primary btn-block mb-3 btn-code">Đăng ký</button>
-                    <div style="text-align: center">
-                        <a class="back-home" href="/">
-                            <i class="fa-solid fa-backward"></i>
-                            Back To Home
-                        </a>
-                    </div>
+<%--                    <div style="text-align: center">--%>
+<%--                        <a class="back-home" href="/">--%>
+<%--                            <i class="fa-solid fa-backward"></i>--%>
+<%--                            Back To Home--%>
+<%--                        </a>--%>
+<%--                    </div>--%>
+                    <style>
 
+                        .btn-primary{
+                            width: 40%;
+                            margin-left: 50%;
+                            transform: translateX(-50%);
+                            padding: 5px;
+                            /*background: linear-gradient(to right, #00c10c 0%, #fff200 50%, #00c10c 100%);*/
+                            background: linear-gradient(to right, #007bff 0%, #9cf6e7 50%, #007bff 100%);
+                            background-size: 300%, 1px;
+                            border: none;
+                            border-radius: 5px;
+                            color: white;
+                            transition: all .3s linear;
+                        }
+
+                        .btn-primary:hover{
+                            /*background: linear-gradient(to left, #00c10c 0%, #fff200 50%, #00c10c 100%) right;*/
+                            background: linear-gradient(to left, #007bff 0%, #9cf6e7 50%, #007bff 100%) right;
+                            background-size: 300%, 1px;
+                        }
+                    </style>
                 </form>
 
 
@@ -134,7 +154,7 @@
     </div>
 
 </div>
-
+<jsp:include page="../Component/footer/footer.jsp" />
 </body>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>

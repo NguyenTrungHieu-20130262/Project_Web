@@ -75,7 +75,6 @@ public class CartControl extends HttpServlet {
     protected void setQuantity(HttpServletRequest request, HttpServletResponse response, String action) throws ServletException, IOException, SQLException {
         int idCart = Integer.valueOf(request.getParameter("idCart"));
         Cart cart = CartDAO.getCartById(idCart);
-        CartDAO.updateCartById(cart);
         try {
             if (action.equals("decrease")) {
                 cart.setQuantity(cart.getQuantity() - 1);
@@ -83,6 +82,7 @@ public class CartControl extends HttpServlet {
                 if (quantityProduct == 0) {
                     cart.setStatus(1);
                 } else {
+
                     if (cart.getQuantity() > quantityProduct) {
                         cart.setStatus(2);
                     } else if (cart.getQuantity() == quantityProduct) {
@@ -94,7 +94,6 @@ public class CartControl extends HttpServlet {
                         cart.setStatus(0);
 
                     }
-
 
                 }
 
@@ -121,13 +120,11 @@ public class CartControl extends HttpServlet {
 
                 }
 
-                CartDAO.updateCartById(cart);
             }
-
-            cart = CartDAO.updateQuantityCartById(cart.getId(), cart.getQuantity());
-
             Gson gson = new Gson();
             response.getWriter().write(gson.toJson(cart));
+            CartDAO.updateQuantityCartById(cart.getId(), cart.getQuantity());
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
