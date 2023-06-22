@@ -80,7 +80,7 @@
             <div class="widget-small primary coloured-icon"><i class='icon fa-3x bx bxs-chart'></i>
                 <div class="info">
                     <h4>Tổng thu nhập</h4>
-                    <p><b>${getPriceRevenue} đ</b></p>
+                    <p><b>$ ${totalPrice}</b></p>
                 </div>
             </div>
         </div>
@@ -96,7 +96,7 @@
             <div class="widget-small danger coloured-icon"><i class='icon fa-3x bx bxs-receipt'></i>
                 <div class="info">
                     <h4>Đơn hàng hủy</h4>
-                    <p><b>${countOrderOut} đơn hàng</b></p>
+                    <p><b>${countCancel} đơn hàng</b></p>
                 </div>
             </div>
         </div>
@@ -111,57 +111,21 @@
                     <table class="table table-hover table-bordered" id="myTable">
                         <thead>
                         <tr>
-                            <th width="10"><input type="checkbox" id="all2"></th>
-                            <th>Mã sản phẩm</th>
+                            <th>ID</th>
                             <th>Tên sản phẩm</th>
                             <th>Ảnh</th>
-                            <th>Số lượng</th>
-                            <th>Tình trạng</th>
                             <th>Giá tiền</th>
-                            <th>Chức năng</th>
+                            <th>Ngày nhập</th>
+
                         </tr>
                         </thead>
-                        <tbody>
-                        <%ArrayList<Product> products = (ArrayList<Product>) request.getAttribute("products"); %>
+                        <tbody id="body_table_orders">
 
-                        <%
-                            Locale localeUSD = new Locale("US", "US");
-                            NumberFormat usd = NumberFormat.getInstance(localeUSD);
-                            double doubleNumber1 = 10.17d;
-
-                            for (int i = 0; i < products.size(); i++) {
-                                Product tmp = products.get(i);
-                        %>
-                        <tr id="row<%=tmp.getId()%>">
-                            <td width="10"><input type="checkbox" name="check<%=i + 1%>" value="<%=i + 1%>"></td>
-                            <td><%=tmp.getId()%>
-                            </td>
-                            <td><%=tmp.getName()%>
-                            </td>
-<%--                            <td><img src="<%=tmp.arrayImg()[0]%>" alt="" width="100px;"></td>--%>
-                            <td><%=0%>
-                            </td>
-                            <td><span
-                                    class="badge bg-info">Hết hàng</span>
-                            </td>
-                            <td><%=usd.format(tmp.getPrice())%> đ</td>
-
-                            <td>
-                                <button class="btn btn-primary btn-sm trash" type="button" title="Xóa"
-                                        onclick="deleteRow(this, <%=tmp.getId()%>)"><i class="fas fa-trash-alt"></i>
-                                </button>
-                                <form action="admin?action=editproduct&id=<%=tmp.getId()%>" method="POST">
-                                    <input name="id" value="<%=tmp.getId()%>" hidden>
-                                    <button class="btn btn-primary btn-sm edit" type="submit" title="Sửa"
-                                            id="show-emp<%=tmp.getId()%>" data-toggle="modal"
-                                            data-target="#ModalUP2"><i class="fas fa-edit"></i></button>
-                                </form>
-
-
-                            </td>
-                        </tr>
-                        <%}%>
                         </tbody>
+
+
+                        </tbody>
+
 
                     </table>
                 </div>
@@ -181,23 +145,28 @@
                             <th width="10"><input type="checkbox" id="all1"></th>
                             <th>ID đơn hàng</th>
                             <th>Khách hàng</th>
+                            <th>Mã vận chuyển</th>
                             <th>Đơn hàng</th>
                             <th>Số lượng</th>
                             <th>Tổng tiền</th>
                             <th>Tình trạng</th>
-                            <th>Tính năng</th>
                         </tr>
                         </thead>
                         <%ArrayList<Oder> oders = (ArrayList<Oder>) request.getAttribute("oders");%>
                         <tbody>
                         <%
+                            Locale localeUSD = new Locale("US", "US");
                             NumberFormat vn1 = NumberFormat.getInstance(localeUSD);
                             for (int i = 0; i < oders.size(); i++) {
+
                                 Oder tmp = oders.get(i);
+                                if(tmp.getStatus() == 0 ){
                         %>
                         <tr>
                             <td width="10"><input type="checkbox" name="check<%=tmp.getId()%>" value="<%=i%>"></td>
                             <td><%=tmp.getId()%>
+                            </td>
+                            <td><%=tmp.getUser().getFullName()%>
                             </td>
                             <td><%=tmp.getIdTransport()%>
                             </td>
@@ -205,180 +174,17 @@
                             </td>
                             <td><%=tmp.getIdUser()%>
                             </td>
-                            <td><%=vn1.format(tmp.getTotal_price())%></td>
+                            <td>$ <%=vn1.format(tmp.getTotal_price())%></td>
                             <%
                                 String status = "Đã hủy";
                                 String badge = "badge badge-danger";
                             %>
                             <td><span class="<%=badge%>"><%=status%></span></td>
-                            <td>
-                                <button class="btn btn-primary btn-sm trash" type="button"
-                                        onclick="deleteRow(this, <%=tmp.getId()%>)" title="Xóa"><i
-                                        class="fas fa-trash-alt"><input hidden value="<%=tmp.getId()%>"/> </i></button>
-                                <button class="btn btn-primary btn-sm edit" type="button" data-toggle="modal"
-                                        data-target="#ModalUP<%=tmp.getId()%>" title="Sửa"><i class="fa fa-edit"></i>
-                                </button>
-                                <button class="btn btn-primary btn-sm edit"
-                                        style="background-color: #1e7e34; color:white;" type="button"
-                                        data-toggle="modal"
-                                        data-target="#ModalView<%=tmp.getId()%>" title="Sửa"><i class="fa fa-info"></i>
-                                </button>
-                            </td>
+
 
                         </tr>
-                        <div class="modal fade" id="ModalUP<%=tmp.getId()%>" tabindex="-1" role="dialog"
-                             aria-hidden="true"
-                        >
-                            <div class="modal-dialog modal-dialog-centered" role="document">
-                                <div class="modal-content">
 
-                                    <div class="modal-body">
-                                        <div class="row">
-                                            <div class="form-group  col-md-12">
-          <span class="thong-tin-thanh-toan">
-            <h5>Chỉnh sửa thông tin đơn hàng</h5>
-          </span>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="form-group col-md-6">
-                                                <label class="control-label" name="idpost">Mã đơn hàng </label>
-                                                <input class="form-control" disabled value="<%=tmp.getId()%>"
-                                                       type="number">
-                                            </div>
-                                            <div class="form-group col-md-6">
-                                                <label class="control-label">Tên khách hàng</label>
-                                                <input class="form-control" value="<%=tmp.getIdUser()%>"
-                                                       name="fullname" type="text"/>
-                                            </div>
-                                            <div class="form-group col-md-6">
-                                                <label class="control-label">Tên sản phẩm</label>
-                                                <input class="form-control" disabled value="<%=tmp.getIdTransport()%>"
-                                                       name="title" type="text"/>
-                                            </div>
-                                            <div class="form-group  col-md-6">
-                                                <label class="control-label">Số lượng</label>
-                                                <input class="form-control" name="quantity"
-                                                       value="<%=tmp.getTotal_price()%>" type="number" required>
-                                            </div>
-
-                                            <div class="form-group col-md-6">
-                                                <label class="control-label">Địa chỉ</label>
-                                                <input class="form-control" name="address" value="<%=tmp.getAddress()%>"
-                                                       type="text">
-                                            </div>
-                                            <div class="form-group col-md-6">
-                                                <label class="control-label">Phone</label>
-                                                <input class="form-control" name="phone" value="<%=tmp.getAddress()%>"
-                                                       type="text">
-                                            </div>
-                                            <div class="form-group col-md-12">
-                                                <label class="control-label">Trạng thái</label>
-                                                <select class="form-control" name="status">
-                                                    <option value="0" <%=tmp.getStatus() == 0 ? "selected" : ""%>>Đang
-                                                        xử lý
-                                                    </option>
-                                                    <option value="1" <%=tmp.getStatus() == 1 ? "selected" : ""%>>Đã
-                                                        hoàn thành
-                                                    </option>
-                                                    <option value="2" <%=tmp.getStatus() == 2 ? "selected" : ""%>>Đã
-                                                        hủy
-                                                    </option>
-
-                                                </select>
-                                            </div>
-
-
-                                        </div>
-                                        <br>
-                                        <br>
-                                        <button class="btn btn-save" type="button" onclick="updateOder(this)">Lưu lại
-                                        </button>
-                                        <a class="btn btn-cancel" data-dismiss="modal" href="#">Hủy bỏ</a>
-                                        <br>
-                                    </div>
-                                    <div class="modal-footer">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal fade" id="ModalView<%=tmp.getId()%>" tabindex="-1" role="dialog"
-                             aria-hidden="true"
-                        >
-                            <div class="modal-dialog modal-dialog-centered" role="document">
-                                <div class="modal-content">
-
-                                    <div class="modal-body">
-                                        <div class="row">
-                                            <div class="form-group  col-md-12">
-          <span class="thong-tin-thanh-toan">
-            <h5>Thông tin chi tiết đơn hàng</h5>
-          </span>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="form-group col-md-6">
-                                                <label class="control-label" name="idpost">Mã đơn hàng </label>
-                                                <input class="form-control" disabled value="<%=tmp.getId()%>"
-                                                       type="number">
-                                            </div>
-                                            <div class="form-group col-md-6">
-                                                <label class="control-label">Tên khách hàng</label>
-                                                <input class="form-control" value="<%=tmp.getTotal_price()%>" disabled
-                                                       name="fullname" type="text"/>
-                                            </div>
-                                            <div class="form-group col-md-6">
-                                                <label class="control-label">Địa chỉ</label>
-                                                <input class="form-control" name="address" disabled
-                                                       value="<%=tmp.getAddress()%>" type="text">
-                                            </div>
-                                            <div class="form-group col-md-6">
-                                                <label class="control-label">Phone</label>
-                                                <input class="form-control" name="phone" disabled
-                                                       value="<%=tmp.getAddress()%>" type="text">
-                                            </div>
-                                            <div class="form-group col-md-6">
-                                                <label class="control-label">Username</label>
-                                                <input class="form-control" name="Username" disabled
-                                                       value="<%=tmp.getNote()%>" type="text">
-                                            </div>
-                                            <div class="form-group col-md-6">
-                                                <label class="control-label">Tên sản phẩm</label>
-                                                <input class="form-control" disabled value="<%=tmp.getIdTransport()%>"
-                                                       name="title" type="text"/>
-                                            </div>
-
-                                            <div class="form-group  col-md-6">
-                                                <label class="control-label">Số lượng</label>
-                                                <input class="form-control" name="quantity" disabled
-                                                       value="<%=tmp.getStatus()%>" type="number" required>
-                                            </div>
-                                            <div class="form-group col-md-6">
-                                                <label class="control-label">Tổng tiền</label>
-                                                <input class="form-control" disabled value="<%=tmp.getIdTransport()%>"
-                                                       name="total" type="text"/>
-                                            </div>
-
-                                            <div class="form-group col-md-12">
-                                                <label class="control-label">Trạng thái</label>
-                                                <input class="form-control" name="status" disabled value="<%=status%>"
-                                                       type="text">
-
-                                            </div>
-
-
-                                        </div>
-                                        <BR>
-                                        <BR>
-                                        <a class="btn btn-cancel" data-dismiss="modal" href="#">Hủy bỏ</a>
-                                        <BR>
-                                    </div>
-                                    <div class="modal-footer">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <%}%>
+                        <%}}%>
 
                         </tbody>
 
@@ -418,29 +224,12 @@
                     <%--                    </div>--%>
                     <%--                </div>--%>
                     <%--            </div>--%>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="tile">
-                                <h3 class="tile-title">DỮ LIỆU HÀNG THÁNG</h3>
-                                <div class="embed-responsive embed-responsive-16by9">
-                                    <canvas class="embed-responsive-item" id="lineChartDemo"></canvas>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="tile">
-                                <h3 class="tile-title">THỐNG KÊ DOANH SỐ</h3>
-                                <div class="embed-responsive embed-responsive-16by9">
-                                    <canvas class="embed-responsive-item" id="barChartDemo"></canvas>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
 
-                    <div class="text-right" style="font-size: 12px">
-                        <p><b>Hệ thống quản lý V2.0 | Code by Trường</b></p>
-                    </div>
 </main>
+<script>
+    const dataProduct = ${products};
+
+</script>
 <!-- Essential javascripts for application to work-->
 <script src="js/jquery-3.2.1.min.js"></script>
 <script src="js/popper.min.js"></script>
@@ -450,7 +239,15 @@
 <script src="js/plugins/pace.min.js"></script>
 <!-- Page specific javascripts-->
 <script type="text/javascript" src="js/plugins/chart.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js" integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
+
+<script src="javascrip/mainStatis.js"></script>
 <script type="text/javascript">
+
+
+
+
     var data = {
         labels: ["Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6", "Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12"],
         datasets: [{

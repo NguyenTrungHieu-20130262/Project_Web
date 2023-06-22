@@ -4,9 +4,11 @@ import Connect.ConnectDB;
 import DAO.UserDAO;
 import Model.Log;
 import Model.User;
+import Security.Authorizeds;
 import com.google.gson.Gson;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.springframework.security.core.Authentication;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -41,7 +43,9 @@ public class UserControl extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         User user = (User) req.getSession().getAttribute("user");
-        updateUser(req, resp, user);
+        if(Authorizeds.authorizeds(req, Authorizeds.USER_UPDATE)){
+            updateUser(req, resp, user);
+        }
     }
 
     public void getInfoUser(HttpServletRequest req, HttpServletResponse resp) throws SQLException, JSONException, IOException {

@@ -84,14 +84,10 @@ public class RoleAPI extends HttpServlet {
                 }
                 break;
             case "get_account" :
-                if(Authorizeds.authorizeds(req, Authorizeds.USER_VIEW))
-                    try {
-                        getAccount(req,res);
-                    } catch (SQLException e) {
-                        throw new RuntimeException(e);
-                    }
-                else{
-                    res.setStatus(401);
+                try {
+                    getAccount(req,res);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
                 }
                 break;
             case "delete_role" :

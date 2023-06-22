@@ -7,7 +7,7 @@
 <html lang="en">
 
 <head>
-    <title>Danh sách đơn hàng | Quản trị Admin</title>
+    <title>Quản lý đơn hàng | Quản trị Admin</title>
     <!-- Main CSS-->
     <link rel="stylesheet" type="text/css" href="css/main.css">
     <style>

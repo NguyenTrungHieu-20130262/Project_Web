@@ -14,7 +14,7 @@ public class Product {
     private double price;
     private Date createAt;
     private int status;
-    private ArrayList<String> images ;
+    private ArrayList<String> images;
     private int height;
     private int length;
     private int width;

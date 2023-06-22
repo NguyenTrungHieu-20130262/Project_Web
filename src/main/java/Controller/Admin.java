@@ -6,6 +6,7 @@ import DTO.RoleDTO;
 import Model.Product;
 import Model.*;
 import Security.Authorizeds;
+import com.google.gson.Gson;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,10 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @WebServlet("/admin")
 public class Admin extends HttpServlet {
@@ -36,9 +34,24 @@ public class Admin extends HttpServlet {
         req.setAttribute("countOrder", countOrder);
         req.setAttribute("countOrderOut", countOrderOut);
         req.setAttribute("getPriceRevenue", getPriceRevenue);
-        ArrayList<Product> products = ProductDAO.getProduct();
-        req.setAttribute("products", products);
+        ArrayList<Product> products = ProductDAO.getProducts();
+        req.setAttribute("products", new Gson().toJson(products));
         ArrayList<Oder> oders = OderDAO.getOrder();
+        int countCancel = 0;
+        int totalPrice = 0;
+        for (Oder tmp: oders) {
+            if(tmp.getStatus() == 0 ){
+                countCancel ++;
+            }else{
+                Date now = new Date();
+                if(tmp.getLeadTime().getTime() - now.getTime() > 0){
+                    totalPrice += (tmp.getTotal_price());
+                }
+            }
+        }
+        req.setAttribute("countCancel", countCancel);
+        req.setAttribute("totalPrice", totalPrice);
+
         req.setAttribute("oders", oders);
         req.getRequestDispatcher("/Page/Admin/doc/quan-ly-bao-cao.jsp").forward(req, res);
         res.setStatus(200);
@@ -222,7 +235,9 @@ public class Admin extends HttpServlet {
             req.setAttribute("avatar", u.getAvatar());
             switch (page.toLowerCase().trim()) {
                 case "post":
-                    postPage(req, res);
+                    if (Authorizeds.authorizeds(req, Authorizeds.PRODUCT_INSERT)) {
+                        postPage(req, res);
+                    } else res.setStatus(401);
                     break;
                 case "usermanagement":
                     if (Authorizeds.authorizeds(req, Authorizeds.USER_VIEW)) {
@@ -230,13 +245,14 @@ public class Admin extends HttpServlet {
                     } else res.setStatus(401);
                     break;
                 case "userstatistic":
-                    getAllUser(req, res);
+                    if (Authorizeds.authorizeds(req, Authorizeds.USER_VIEW)) {
+                        getAllUser(req, res);
+                    } else res.setStatus(401);
                     break;
                 case "role":
-                    if (Authorizeds.authorizeds(req, Authorizeds.ROLE_VIEW))
+                    if (Authorizeds.authorizeds(req, Authorizeds.ROLE_VIEW)) {
                         rolePage(req, res);
-                    else res.setStatus(401);
-
+                    } else res.setStatus(401);
                     break;
                 case "productmanagement":
                     if (Authorizeds.authorizeds(req, Authorizeds.PRODUCT_VIEW)) {
@@ -246,7 +262,9 @@ public class Admin extends HttpServlet {
                     }
                     break;
                 case "productstaticstics":
-                    productStatics(req, res);
+                    if(Authorizeds.authorizeds(req,Authorizeds.PRODUCT_VIEW)){
+                        productStatics(req, res);
+                    } else res.setStatus(401);
                     break;
                 case "odermanagement":
                     if (Authorizeds.authorizeds(req, Authorizeds.ORDER_VIEW)) {
@@ -267,10 +285,8 @@ public class Admin extends HttpServlet {
                 case "logmanagement":
                     if(Authorizeds.authorizeds(req, Authorizeds.LOG_VIEW))
                         logPage(req, res);
-
                     else res.setStatus(401);
                     break;
-
                 default:
                     indexPage(req, res);
             }
