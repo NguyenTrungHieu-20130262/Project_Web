@@ -76,47 +76,6 @@
                             <th>Chức năng</th>
                         </tr>
                         </thead>
-                        <%--                            <tbody>--%>
-
-                        <%--                            <%--%>
-                        <%--                                ProductDAO productDAO = new ProductDAO();--%>
-
-                        <%--                                Locale localeVN = new Locale("vi", "VN");--%>
-                        <%--                                NumberFormat vn = NumberFormat.getInstance(localeVN);--%>
-                        <%--                                double doubleNumber1 = 10.17d;--%>
-
-                        <%--                                for(int i = 0; i < products.size();i++){--%>
-                        <%--                                Product tmp = products.get(i);--%>
-                        <%--                                int quantityProduct = productDAO.getQuantityProduct(tmp.getId());--%>
-                        <%--                                String status;--%>
-                        <%--                                if (quantityProduct > 0){--%>
-                        <%--                                    status = "Còn hàng";--%>
-                        <%--                                }else {--%>
-                        <%--                                    status = "Hêt hàng";--%>
-                        <%--                                }--%>
-                        <%--                            %>--%>
-                        <%--                            <tr id="row<%=tmp.getId()%>">--%>
-                        <%--                                <td width="10"><input type="checkbox" name="check<%=i + 1%>" value="<%=i + 1%>"></td>--%>
-                        <%--                                <td><%=tmp.getId()%></td>--%>
-                        <%--                                <td><%=tmp.getName()%></td>--%>
-                        <%--                                <td><img src="<%=tmp.getImages().get(0)%>" alt="" width="100px;"></td>--%>
-                        <%--                                <td><%=quantityProduct%></td>--%>
-                        <%--                                <td><span class= " <%=(quantityProduct> 0) ? "badge bg-success": "badge bg-info"%>"><%=(quantityProduct> 0) ? "Còn hàng":"Hết hàng"%></span></td>--%>
-                        <%--                                <td><%=vn.format(tmp.getPrice())%> USD</td>--%>
-
-                        <%--                                <td><button class="btn btn-primary btn-sm trash" type="button" title="Xóa"--%>
-                        <%--                                            onclick="deleteRow(this, <%=tmp.getId()%>)"><i class="fas fa-trash-alt"></i>--%>
-                        <%--                                </button>--%>
-                        <%--                                <form action="admin?action=editproduct&id=<%=tmp.getId()%>" method="POST" >--%>
-                        <%--                                    <input name="id" value="<%=tmp.getId()%>" hidden>--%>
-                        <%--                                    <button class="btn btn-primary btn-sm edit"  type="submit" title="Sửa"   id="show-emp<%=tmp.getId()%>" data-toggle="modal"--%>
-                        <%--                                            data-target="#ModalUP2"><i class="fas fa-edit"></i></button>--%>
-                        <%--                                </form>--%>
-                        <%--                                </td>--%>
-                        <%--                            </tr>--%>
-                        <%--                            <%}%>--%>
-                        <%--                            </tbody>--%>
-
                     </table>
                 </div>
             </div>

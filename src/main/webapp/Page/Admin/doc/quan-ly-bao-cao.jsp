@@ -116,14 +116,11 @@
                             <th>Ảnh</th>
                             <th>Giá tiền</th>
                             <th>Ngày nhập</th>
-
                         </tr>
                         </thead>
                         <tbody id="body_table_orders">
 
                         </tbody>
-
-
                         </tbody>
 
 
