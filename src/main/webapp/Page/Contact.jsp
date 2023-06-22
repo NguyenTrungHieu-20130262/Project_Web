@@ -41,22 +41,22 @@
             <form id="contact-form" method="POST">
               <p>
                 <label> Họ và tên (bắt buộc)</label>
-                <input name="name" placeholder="Họ và tên*" type="text">
+                <input id="name_input" name="name" placeholder="Họ và tên*" type="text">
               </p>
               <p>
                 <label> Địa chỉ email (bắt buộc)</label>
-                <input name="email" placeholder="Địa chỉ email*" type="email">
+                <input id="email_input" name="email" placeholder="Địa chỉ email*" type="email">
               </p>
               <p>
                 <label> Số điện thoại</label>
-                <input name="subject" placeholder="Số điện thoại" type="text">
+                <input id="phone_input" name="subject" placeholder="Số điện thoại" type="text">
               </p>
               <div class="contact_textarea">
                 <label> Mô tả vấn đề (bắt buộc)</label>
-                <textarea placeholder="Mô tả*" name="message" class="form-control2"></textarea>
+                <textarea id="description_input" placeholder="Mô tả*" name="message" class="form-control2"></textarea>
               </div>
               <div class="button_holder">
-                <button type="submit"> Gửi</button>
+                <button type="submit" id="sendForm"> Gửi</button>
               </div>
               <p class="form-messege"></p>
             </form>
@@ -79,4 +79,36 @@
 </div>
 <jsp:include page="../Component/footer/footer.jsp" />
 </body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script>
+  document.querySelector("#sendForm").addEventListener("click",(e)=>{
+    handleSend(e)
+  })
+  const handleSend = (e) => {
+    e.preventDefault()
+    let name = document.querySelector("#name_input").value;
+    let email = document.querySelector("#email_input").value;
+    let phone = document.querySelector("#phone_input").value;
+    let description = document.querySelector("#description_input").value;
+
+    if (name === "" || email === "" || phone === "" || description === "" ){
+      swal("Vui lòng nhập đầy đủ các thông tin!", {});
+    }else{
+      $.ajax({
+        url: "/contact",
+        method: "POST",
+        data:{
+          name, email, phone, description
+        },
+        success: res => {
+          swal("Đã gửi mô tả vấn đề thành công!", {});
+
+        },
+        error: err => {
+        }
+      })
+    }
+  }
+</script>
 </html>
