@@ -83,21 +83,43 @@
         <div class="col-md-12">
             <div class="app-title">
                 <ul class="app-breadcrumb breadcrumb">
-                    <li class="breadcrumb-item"><a href="#"><b>Bảng điều khiển</b></a></li>
+                    <li class="breadcrumb-item"><a href="#"><b>Post Sản phẩm</b></a></li>
                 </ul>
                 <div id="clock"></div>
             </div>
         </div>
     </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="app-title">
+                <ul class="app-breadcrumb breadcrumb">
+                    <li class="breadcrumb-item"><a href="#"><b>Nhập sản phẩm file excel</b></a></li>
+
+                </ul>
+                <label style="padding: 10px;border-radius:10px;cursor: pointer;color: #008c04;
+    background: #a2ecb5 ;font-size: 20px;font-weight: bold;text-align: center" for="importFile">
+                    <span>Chọn file</span>
+                    <input style="display: none" type="file" id="importFile" accept=".xlsx, .xls">
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+
+        </div>
+    </div>
+
     <div class="container">
         <form class="editForm ng-valid ng-dirty ng-touched" novalidate="">
+
             <div class="new-form-post form-upload container postnews">
                 <div class="gr-heading-post"><h2 class="heading step1"> HÌNH ẢNH <span class="note-heading"><i
                         class="icon-dot"></i>0/25 - Bạn có thể đăng tối đa 25 ảnh</span></h2><span
                         class="status-per per1"></span></div>
                 <ul class="list-note">
                     <li><i class="icon-ok"></i><span>Đăng ít nhất 03 hình để tin rao hiệu quả hơn.</span></li>
-                    <li><i class="icon-ok"></i><span>Ảnh đầu tiên sẽ là ảnh đại diện cho tin của bạn, kéo thả để sắp xếp vị trí ảnh.</span>
+                    <li><i class="icon-ok"></i><span>Ảnh đầu tiên sẽ là ảnh đại diện cho tin của bạn.</span>
                     </li>
                 </ul>
 
@@ -149,6 +171,7 @@
 <script src="jsadmin/plugins/pace.min.js"></script>
 <!--===============================================================================================-->
 <script type="text/javascript" src="jsadmin/plugins/chart.js"></script>
+<script type="text/javascript" src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"></script>
 
 <!--===============================================================================================-->
 <script type="text/javascript">
@@ -300,9 +323,9 @@
         $("#content").val("")
     }
 
-    $("#btn-send").click(function(e) {
+    $("#btn-send").click(function (e) {
         e.preventDefault();
-        const arr=getStatus()
+        const arr = getStatus()
         const formData = new FormData();
         formData.append("nameCompany", $('.form-select option:selected').text());
         formData.append("title", $("#tilte123").val());
@@ -347,7 +370,7 @@
                 data: formData,
                 processData: false,
                 contentType: false,
-                success: function(data) {
+                success: function (data) {
                     delForm();
                     swal({
                         title: "Thành công",
@@ -370,76 +393,65 @@
             });
         }
     });
-// $("#btn-send").click(function(e) {
-//     e.preventDefault();
-//     const arr=getStatus()
-//     const formData = new FormData();
-//     formData.append("nameCompany", $('.form-select option:selected').text());
-//     formData.append("title", $("#tilte123").val());
-//     formData.append("content", $("#content").val());
-//     formData.append("images", listImg);
-//     formData.append("yearofmanufacture", getYear() || new Date().getFullYear());
-//     formData.append("made", arr[0]);
-//     formData.append("gear", arr[1]);
-//     formData.append("fuel", arr[2]);
-//     formData.append("status", arr[3]);
-//     formData.append("price", $("#Price").val());
-//     formData.append("body", $("#body").val());
-//     formData.append("quantity", $("#quantity").val());
-//     formData.append("height", $("input[name='height']").val());
-//     formData.append("length", $("input[name='length']").val());
-//     formData.append("width", $("input[name='width']").val());
-//     formData.append("weight", $("input[name='weight']").val());
-//
-//     if (
-//         formData.get("nameCompany") &&
-//         formData.get("title") &&
-//         formData.get("content") &&
-//         formData.get("images") &&
-//         formData.get("yearofmanufacture") &&
-//         formData.get("made") &&
-//         formData.get("gear") &&
-//         formData.get("fuel") &&
-//         formData.get("status") &&
-//         formData.get("price") &&
-//         formData.get("body") &&
-//         formData.get("quantity") &&
-//         formData.get("height") &&
-//         formData.get("length") &&
-//         formData.get("width") &&
-//         formData.get("weight")
-//     ) {
-//         loading.style.display = "block";
-//
-//         $.ajax({
-//             url: "/postProduct",
-//             type: "POST",
-//             data: formData,
-//             processData: false,
-//             contentType: false,
-//             success: function(data) {
-//                 delForm();
-//                 swal({
-//                     title: "Thành công",
-//                     text: "Thêm sản phẩm thành công",
-//                 }).then(() => {
-//                     loading.style.display = "none";
-//                 });
-//             }
-//         });
-//     } else {
-//         swal({
-//             title: 'Lỗi ',
-//             text: 'Thông tin không chính xác',
-//             content: "form",
-//             buttons: {
-//                 cancel: "Cancel",
-//             }
-//         }).then((value) => {
-//             loading.style.display = "none";
-//         });
-//     }
-//     });
+    // import File Exel
+    document.getElementById('importFile').addEventListener('change', handleImportFile);
+
+
+    function handleImportFile(event) {
+        const file = event.target.files[0];
+        const fileReader = new FileReader();
+        fileReader.onload = function (e) {
+            const data = new Uint8Array(e.target.result);
+            const workbook = XLSX.read(data, {type: 'array'});
+            const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+            const fields = [];
+            for (let i = 1; ; i++) {
+                const cellA = worksheet["A" + i];
+                if (!cellA || !cellA.v) {
+                    break;
+                }
+                const row = {};
+                for (let j = 0; j < 15; j++) {
+                    const columnName = String.fromCharCode(65 + j);
+                    const cell = worksheet[columnName + "" + i];
+                    const value = cell ? cell.v : '';
+                    if (columnName === "O") {
+                        const fileArray = value.split("||").map(tmp => tmp);
+                        row[columnName] = fileArray;
+                    } else {
+                        row[columnName] = value;
+                    }
+                }
+                fields.push(row);
+            }
+
+            const formDataExcel = new FormData();
+            formDataExcel.append('fields', JSON.stringify(fields));
+            importProduct(formDataExcel);
+        };
+
+        fileReader.readAsArrayBuffer(file);
+    }
+
+    const importProduct = (data) => {
+        loading.style.display = "block";
+        $.ajax({
+            url: "/postProductExcel",
+            type: "POST",
+            data: data,
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                swal({
+                    title: "Thành công",
+                    text: "Thêm sản phẩm thành công",
+                }).then(() => {
+                    loading.style.display = "none";
+                });
+            }
+        });
+    };
+
 
 </script>
 <%--post product--%>

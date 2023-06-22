@@ -62,7 +62,6 @@ public class Product extends HttpServlet {
     private  void getProducts(HttpServletRequest req, HttpServletResponse res) throws IOException {
         int currentPage = req.getParameter("page") != null ? Integer.valueOf(req.getParameter("page")) : 1;
         int offset = (currentPage - 1) * RECORDS_PER_PAGE;
-        System.out.println(currentPage + "huy" + offset);
         ArrayList<Model.Product> products = ProductDAO.getProductsWithOffset(offset, RECORDS_PER_PAGE);
         res.getWriter().write(new Gson().toJson(products));
 
@@ -173,4 +172,8 @@ public class Product extends HttpServlet {
 
     }
 
+    @Override
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        super.doPut(req, resp);
+    }
 }
