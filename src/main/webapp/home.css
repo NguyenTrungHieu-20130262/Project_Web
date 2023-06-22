@@ -48,7 +48,7 @@ ul{
 }
 
 .box-tab-home .menu-tab li a {
-    background: rgba(0, 0, 0, .5);
+    /*background: rgba(0, 0, 0, .5);*/
     border-radius: 4px 4px 0 0;
     height: 50px;
     text-align: center;
@@ -62,7 +62,28 @@ ul{
 
 .box-tab-home .menu-tab li a h2 {
     font-size: 20px;
-    line-height: 50px;
+    text-transform: uppercase;
+    line-height: 40px;
+}
+
+.menu-tab ul li a{
+    width: 100%;
+    margin-left: 50%;
+    transform: translateX(-50%);
+    padding: 5px;
+    /*background: linear-gradient(to right, #00c10c 0%, #fff200 50%, #00c10c 100%);*/
+    background: linear-gradient(to right, #135EAC 0%, #82e1d3 50%, #135EAC 100%);
+    background-size: 300%, 1px;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    transition: all .3s linear;
+}
+
+.menu-tab ul li a:hover {
+    /*background: linear-gradient(to left, #00c10c 0%, #fff200 50%, #00c10c 100%) right;*/
+    background: linear-gradient(to left, #135EAC 0%, #82e1d3 50%, #135EAC 100%) right;
+    background-size: 300%, 1px;
 }
 
 .slide-selling-brand {

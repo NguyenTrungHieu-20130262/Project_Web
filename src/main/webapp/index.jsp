@@ -32,7 +32,7 @@
     }
 
     #slideShow .mySlides {
-        margin: 0 auto;
+        margin: 0 12vw;
         width: 1400px;
         height: 600px;
     }
@@ -52,7 +52,7 @@
     #slideShow .dotList {
         position: absolute;
         bottom: 20px;
-        left: 45%;
+        left: 50%;
     }
 
     #slideShow .dotList .dot {
@@ -60,7 +60,7 @@
         padding: 0 5px;
         background-color: #b7abab;
         border-radius: 50px;
-        margin: 0 10px;
+        margin: 0 auto;
     }
 
     /*Slide Show End*/
@@ -233,7 +233,7 @@
         <div class="products-new">
             <div class="product-title">
                 <h3 class="section-title"><i class="fa-solid fa-bolt"></i>Sản Phẩm Mới</h3>
-<%--                <a class="more-product" href="">Xem thêm</a>--%>
+                <a class="more-product" href="/product">Xem thêm</a>
             </div>
             <span class="heading_divider"></span>
             <div class="products">
@@ -271,7 +271,7 @@
         <div class="products-trend">
             <div class="product-title d-flex justify-content-between">
                 <h3 class="section-title mb-0"><i class="fa-solid fa-arrow-trend-up"></i>Sản Phẩm Thịnh Hành</h3>
-<%--                <a class="more-product" href="">Xem thêm</a>--%>
+                <a class="more-product" href="/product">Xem thêm</a>
             </div>
             <div class="products">
                 <%
