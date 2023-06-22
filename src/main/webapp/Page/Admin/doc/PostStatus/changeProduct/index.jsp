@@ -32,8 +32,7 @@
 
             <mat-autocomplete class="mat-autocomplete"><!----></mat-autocomplete><!----><!----></div><!----><!---->
         <div class="control year"><label class="lbl-form">Năm sản xuất</label>
-            <input id="
-yearOfManufacture" class="input" value="" type="text">
+            <input id="yearOfManufacture" class="input" value="" type="text">
             <div class="clear">
                 Hiển thị thêm
             </div>
@@ -44,27 +43,27 @@ yearOfManufacture" class="input" value="" type="text">
                 <li>
                     <div class="main_kt">
                         <label>Height(cm)</label>
-                        <input class="select_kt" name="height"/>
+                        <input class="select_kt" id="height"/>
 
                     </div>
                 </li>
                 <li>
                     <div class="main_kt">
                         <label>Length(cm)</label>
-                        <input class="select_kt" name="length"/>
+                        <input class="select_kt" id="length"/>
                     </div>
                 </li>
                 <li>
                     <div class="main_kt">
                         <label>Width(cm)</label>
-                        <input class="select_kt" name="width"/>
+                        <input class="select_kt" id="width"/>
 
                     </div>
                 </li>
                 <li>
                     <div class="main_kt">
                         <label>Weight(gram)</label>
-                        <input class="select_kt" name="weight"/>
+                        <input class="select_kt" id="weight"/>
 
                     </div>
                 </li>
