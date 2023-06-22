@@ -7,7 +7,7 @@
 <html lang="en">
 
 <head>
-    <title>Danh sách đơn hàng | Quản trị Admin</title>
+    <title>Thống kê đơn hàng | Quản trị Admin</title>
     <!-- Main CSS-->
     <link rel="stylesheet" type="text/css" href="css/main.css">
     <link rel="stylesheet" href="https://unpkg.com/boxicons@latest/css/boxicons.min.css">

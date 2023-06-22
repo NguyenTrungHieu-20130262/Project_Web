@@ -59,6 +59,8 @@ public class ProductDAO {
         }
         return products;
     }
+//    int quantity;
+
 
     public static ArrayList<Product> getProduct() {
         ArrayList<Product> products = new ArrayList<>();
