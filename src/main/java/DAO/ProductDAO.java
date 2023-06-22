@@ -393,13 +393,7 @@ public class ProductDAO {
 
     public static ArrayList<Product> getTrendProducts() {
         ArrayList<Product> trendProducts = new ArrayList<>();
-        String query = "SELECT product.*, sum(quantity) as quantity, vendo.name as nameVendo, vendo.srcImg, GROUP_CONCAT(imgproduct.srcImg) as imgUrls \n" +
-                "FROM importproduct\n" +
-                "JOIN product ON importproduct.idProduct = product.id\n" +
-                "JOIN vendo ON product.idVendo = vendo.id\n" +
-                "LEFT JOIN imgproduct ON product.id = imgproduct.idProduct\n" +
-                "GROUP BY product.id, vendo.name, vendo.srcImg\n" +
-                "ORDER BY createAt DESC LIMIT 12\n";
+        String query = "select  pp.id, pp.idVendo, pp.name, pp.content, pp.body, pp.yearOfManuFacture, pp.fuel, pp.price, pp.height, NOW() as createAt, pp.length, pp.width, pp.weight, pp.status, pp.quantity,  pp.srcImg, pp.imgUrls, nameVendo, COUNT(pp.id) as count from orderdetail join (SELECT product.*, sum(quantity) as quantity, vendo.name as nameVendo, vendo.srcImg, GROUP_CONCAT(imgproduct.srcImg) as imgUrls FROM importproduct JOIN product ON importproduct.idProduct = product.id JOIN vendo ON product.idVendo = vendo.id LEFT JOIN imgproduct ON product.id = imgproduct.idProduct  GROUP BY product.id, vendo.name, vendo.srcImg) as pp on pp.id = orderdetail.idProduct  GROUP BY pp.id, pp.idVendo, pp.name, pp.content, pp.body, pp.yearOfManuFacture, pp.fuel, pp.price, pp.height, pp.length, pp.width, pp.weight, pp.status, pp.quantity,  pp.srcImg, pp.imgUrls ORDER BY count DESC LIMIT 12;";
         try {
             Statement statement = ConnectDB.getConnect().createStatement();
             PreparedStatement preparedStatement = statement.getConnection().prepareStatement(query);

@@ -25,91 +25,6 @@
 </head>
 <body>
 <jsp:include page="/Component/header/Header.jsp"/>
-<%--<style>--%>
-<%--    #carouselExampleSlidesOnly {--%>
-<%--        width: 100%;--%>
-<%--        height: 800px;--%>
-<%--    }--%>
-<%--    #carouselExampleSlidesOnly .carousel-inner{--%>
-<%--        width: 70%;--%>
-<%--        height: 100%;--%>
-<%--        /*display: flex;*/--%>
-<%--        /*flex-direction: row;*/--%>
-<%--        display: grid;--%>
-<%--        grid-column-start: 1;--%>
-<%--        grid-column-end: 4;--%>
-<%--        grid-row-start: 1;--%>
-<%--        grid-row-end: 2;--%>
-<%--        margin: 0 auto;--%>
-<%--    }--%>
-<%--    #carouselExampleSlidesOnly .carousel-inner .carousel-item{--%>
-<%--        margin: 10px;--%>
-<%--        width: 100px;--%>
-<%--        height: 150px;--%>
-<%--        padding: 5px;--%>
-<%--        border: 1px solid gray;--%>
-<%--    }--%>
-<%--    #carouselExampleSlidesOnly .carousel-inner .carousel-item img{--%>
-<%--        width: 60px;--%>
-<%--        height: 60px;--%>
-<%--    }--%>
-<%--</style>--%>
-<%--<div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">--%>
-<%--    <div class="carousel-inner">--%>
-<%--        &lt;%&ndash;        <div class="carousel-item active">&ndash;%&gt;--%>
-<%--        &lt;%&ndash;            <img src="Img/BMW X1.jpg"&ndash;%&gt;--%>
-<%--        &lt;%&ndash;                 class="d-block w-100" alt="">&ndash;%&gt;--%>
-<%--        &lt;%&ndash;        </div>&ndash;%&gt;--%>
-<%--        <div class="carousel-item active">--%>
-<%--            <a href="">--%>
-<%--                <img src="Img/BMW X1.jpg" alt="">--%>
-<%--                <p>BMW X1 2021</p>--%>
-<%--            </a>--%>
-<%--        </div>--%>
-<%--        <div class="carousel-item active">--%>
-<%--            <a href="">--%>
-<%--                <img src="Img/Mazda 3 2019.jpg" alt="">--%>
-<%--                <p>Mazda 3 2019</p>--%>
-<%--            </a>--%>
-<%--        </div>--%>
-<%--        <div class="carousel-item active">--%>
-<%--            <a href="">--%>
-<%--                <img src="Img/Ford Fiesta Trend.jpg" alt="">--%>
-<%--                <p>Ford Fiesta</p>--%>
-<%--            </a>--%>
-<%--        </div>--%>
-<%--        <div class="carousel-item active">--%>
-<%--            <a href="">--%>
-<%--                <img src="Img/vinfastLUX A2.0.jpeg" alt="">--%>
-<%--                <p>Vinfast LUX A 2.0</p>--%>
-<%--            </a>--%>
-<%--        </div>--%>
-<%--            <div class="carousel-item active">--%>
-<%--                <a href="">--%>
-<%--                    <img src="Img/BMW X1.jpg" alt="">--%>
-<%--                    <p>BMW X1 2021</p>--%>
-<%--                </a>--%>
-<%--            </div>--%>
-<%--            <div class="carousel-item active">--%>
-<%--                <a href="">--%>
-<%--                    <img src="Img/Mazda 3 2019.jpg" alt="">--%>
-<%--                    <p>Mazda 3 2019</p>--%>
-<%--                </a>--%>
-<%--            </div>--%>
-<%--            <div class="carousel-item active">--%>
-<%--                <a href="">--%>
-<%--                    <img src="Img/Ford Fiesta Trend.jpg" alt="">--%>
-<%--                    <p>Ford Fiesta</p>--%>
-<%--                </a>--%>
-<%--            </div>--%>
-<%--            <div class="carousel-item active">--%>
-<%--                <a href="">--%>
-<%--                    <img src="Img/vinfastLUX A2.0.jpeg" alt="">--%>
-<%--                    <p>Vinfast LUX A 2.0</p>--%>
-<%--                </a>--%>
-<%--            </div>--%>
-<%--    </div>--%>
-<%--</div>--%>
 <style>
     /*Slide Show Begin*/
     #slideShow {
@@ -127,14 +42,10 @@
         0% {
             opacity: 0;
             transform: scale(0.9);
-            /*transform: translateX(200px);*/
-            /*-webkit-transform: scale(0);*/
         }
         100% {
             opacity: 1;
             transform: scale(1);
-            /*transform: translateX(0);*/
-            /*-webkit-transform: scale(1);*/
         }
     }
 
@@ -297,7 +208,6 @@
     #content .product-item .product-choose .detail i {
         margin: 0 5px;
     }
-
     /*Product Content End*/
     /*Content Main Page End*/
 </style>
@@ -357,10 +267,6 @@
                     </div>
                 </div>
                 <%}%>
-
-
-
-
         </div>
         <div class="products-trend">
             <div class="product-title d-flex justify-content-between">
@@ -535,7 +441,6 @@
     let slideIndex = 1;
     showDivs(slideIndex);
     carousel();
-
 
     function currentDiv(n) {
         slideIndex = n;

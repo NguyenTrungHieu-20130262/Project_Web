@@ -4,6 +4,7 @@
 <%@ page import="java.util.Locale" %>
 <%@ page import="Model.Company" %>
 <%@ page import="DAO.ProductDAO" %>
+<%@ page import="com.google.gson.Gson" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -26,8 +27,6 @@
 </head>
 
 <body onload="time()" class="app sidebar-mini rtl">
-<%ArrayList<Product> products = (ArrayList<Product>) request.getAttribute("products"); %>
-<%ArrayList<Company> list = (ArrayList<Company>)request.getAttribute("list") ;%>
 <!-- Navbar-->
 <header class="app-header">
     <!-- Sidebar toggle button--><a class="app-sidebar__toggle" href="#" data-toggle="sidebar"
@@ -150,9 +149,6 @@
                         <div class="control mt-20" style="margin-top: 20px">
                             <label class="lbl-form">Hãng xe</label>
                             <select class="form-select" aria-label="Default select example">
-                                <c:forEach items="${listCompany}" var="item">
-                                    <option class="${item.id}">${item.name}</option>
-                                </c:forEach>
                             </select>
 
 
@@ -437,8 +433,14 @@ MODAL
 <script type="text/javascript" src="jsadmin/plugins/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="jsadmin/plugins/dataTables.bootstrap.min.js"></script>
 <script type="text/javascript">
+    var listCompany = JSON.parse('<%=new Gson().toJson(request.getAttribute("listCompany"))%>');
+    let html=""
+    for (let tmp of listCompany) {
+        console.log(tmp)
+        html+=`<option class="${tmp.id}">${tmp.name}</option>`
 
-
+    }
+    document.querySelector(".form-select").innerHTML=html
 
     $('#sampleTable').DataTable();
     //Thời Gian
