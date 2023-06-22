@@ -149,9 +149,6 @@ const handleFilter = ()=>{
 
     showData(dataFilter)
 }
-document.querySelector(".range-input").addEventListener("mouseup", function() {
-    handleFilter()
-});
 
 document.querySelector('#xang').addEventListener("input", ()=>{
     {document.querySelector('#xang').checked ? document.querySelector('#dau').checked = false : ""}

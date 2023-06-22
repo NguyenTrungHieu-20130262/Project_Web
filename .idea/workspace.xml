@@ -10,15 +10,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="36aa5a77-44ab-4a6a-bf7a-0232dfbcdd34" name="Changes" comment="update">
+      <change afterPath="$PROJECT_DIR$/src/main/java/Controller/PostProductExcel.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Model/PostProductExcel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Connect/ConnectDB.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Connect/ConnectDB.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Controller/Admin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Controller/Admin.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Controller/LoginWithFb.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Controller/LoginWithFb.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Controller/PostProduct.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Controller/PostProduct.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Controller/Profile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Controller/Profile.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Controller/UserControl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Controller/UserControl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Controller/Product.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Controller/Product.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/Model/Product.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Model/Product.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/webapp/Page/Admin/doc/index.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/Page/Admin/doc/index.jsp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/Page/Login.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/Page/Login.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/javascrip/product.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/javascrip/product.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,30 +52,31 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "C:/ProjectInteelij/TTLTW/Project_Web",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Problems",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "reference.settings.project.maven.repository.indices",
-    "spring.configuration.checksum": "9e727fdd3aec8274f46685441900280d",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/ProjectInteelij/TTLTW/Project_Web&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Problems&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settings.project.maven.repository.indices&quot;,
+    &quot;spring.configuration.checksum&quot;: &quot;9e727fdd3aec8274f46685441900280d&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\HOC\TTW\Project\src\main\webapp\Page" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="Controller" />
       <recent name="DAO" />
     </key>
   </component>
@@ -258,7 +258,11 @@
       <workItem from="1681461819911" duration="17651000" />
       <workItem from="1681538091266" duration="1640000" />
       <workItem from="1687352368622" duration="1876000" />
-      <workItem from="1687357386834" duration="8420000" />
+      <workItem from="1687357386834" duration="10016000" />
+      <workItem from="1687395219537" duration="2960000" />
+      <workItem from="1687399108559" duration="1590000" />
+      <workItem from="1687402008967" duration="9973000" />
+      <workItem from="1687420916449" duration="8440000" />
     </task>
     <servers />
   </component>
@@ -270,7 +274,19 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="Nguyen_Ha_Phuoc_Hau" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
           </value>
         </entry>
       </map>
