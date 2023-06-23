@@ -173,7 +173,7 @@ public class OrderControl extends HttpServlet {
                 payment.setPaymentDate(new java.sql.Date(new Date().getTime()));
                 payment.setType(0);
                 payment.setStatus(0);
-                Date date = new Date(new Date().getTime() + new Random().nextInt(300) * 2000);
+                Date date = new Date(new Date().getTime() + (new Random().nextInt(10) + 1) * 20000000);
                 order.setLeadTime(new java.sql.Date(date.getTime()));
                 OderDAO.updateById(order);
                 int rsPayment = PaymentDAO.insertPayment(payment);

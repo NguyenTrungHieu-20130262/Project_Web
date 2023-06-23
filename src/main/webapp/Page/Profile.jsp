@@ -267,6 +267,7 @@
           </p>
           <p><strong>Số điện thoại: </strong><span type="text" class="show_detail_orders_phone"></span></p>
           <p><strong>Email: </strong><span type="text" class="show_detail_orders_email"></span></p>
+          <p><strong>Thời gian dự kiến: </strong><span type="text" class="show_detail_orders_leadtime"></span></p>
 
 
         </div>
@@ -330,6 +331,7 @@
           <p><strong>Số điện thoại: </strong><span class="show_detail_orders_phone"></span></p>
           <p><strong>Email: </strong><span class="show_detail_orders_email"></span></p>
           <p><strong>Mã vận chuyển: </strong><span class="show_detail_orders_idTransport"></span></p>
+          <p><strong>Thời gian dự kiến: </strong><span type="text" class="show_detail_orders_leadtime"></span></p>
           <p><strong>Tổng tiền: </strong><span class="show_detail_orders_total"></span></p>
           <p><strong>Trạng thái: </strong><span class="show_detail_orders_status"></span></p>
 
