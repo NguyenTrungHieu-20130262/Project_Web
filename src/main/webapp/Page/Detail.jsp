@@ -139,9 +139,30 @@
             </div>
             <br>
             <div>
-                <button class="btn btn-primary" onclick="addToCart(<%=product.getId()%>)" type="button">Thêm giỏ hàng
+                <button class="btn btn-primary" onclick="addToCart(<%=product.getId()%>)" type="button">Thêm vào giỏ hàng
                 </button>
             </div>
+            <style>
+                .btn-primary{
+                    width: 30%;
+                    margin-left: 15%;
+                    transform: translateX(-50%);
+                    padding: 6px 20px;
+                    /*background: linear-gradient(to right, #00c10c 0%, #fff200 50%, #00c10c 100%);*/
+                    background: linear-gradient(to right, #007bff 0%, #9cf6e7 50%, #007bff 100%);
+                    background-size: 300%, 1px;
+                    border: none;
+                    border-radius: 5px;
+                    color: white;
+                    transition: all .3s linear;
+                }
+
+                .btn-primary:hover{
+                    /*background: linear-gradient(to left, #00c10c 0%, #fff200 50%, #00c10c 100%) right;*/
+                    background: linear-gradient(to left, #007bff 0%, #9cf6e7 50%, #007bff 100%) right;
+                    background-size: 300%, 1px;
+                }
+            </style>
             <div class="describe">
                 <br>
                 <h5>Mô tả</h5>
@@ -516,7 +537,6 @@
     }
 
     const showSlides = (n) => {
-        // console.log('ểwrwerew')
         var i;
         var slides = document.getElementsByClassName("mySlides");
         var dots = document.getElementsByClassName("dot");
@@ -535,13 +555,31 @@
         slides[slideIndex - 1].style.display = "block";
         dots[slideIndex - 1].className += " active";
     }
+    showSlides(slideIndex);
 
-    const addToCart = (id) => {
+    const addToCart = (id)=>{
         $.ajax({
-            url: "/cart?action=addtocart&idpost=" + id,
+            url: "/cart?action=addtocart&idpost="+id,
             type: 'POST',
-            success: function (res) {
-
+            success: function(res) {
+                console.log(res)
+                console.log(typeof  res)
+                if(res =='1' || res =='0'){
+                    if(res !='1'){
+                        swal("Sản phẩm đã hết", {
+                            buttons: false,
+                            timer: 500,
+                        });
+                    }else{
+                        console.log(res)
+                        swal("Đã thêm sản phẩm vào giỏ hàng", {
+                            buttons: false,
+                            timer: 500,
+                        });
+                    }
+                }else{
+                    window.location = '/login'
+                }
 
             }
         });
@@ -549,7 +587,7 @@
 
 
     }
-    showSlides(slideIndex);
+
 
 
 </script>
