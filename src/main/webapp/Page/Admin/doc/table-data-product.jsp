@@ -367,17 +367,25 @@ MODAL
             .then((willDelete) => {
                 if (willDelete) {
                     $.ajax({
+                        statusCode: {
+                            401: function() {
+                                swal("Bạn không có quyền thực hiện chức năng này.!", {});
+                                loading.style.display = 'none'
+                            }
+                        },
                         url: "/product?action=delete&&id=" + idPost,
                         type: "POST",
                         contentType: 'application/x-www-form-urlencoded',
                         success: function (data) {
                             console.log(data)
-                            if (JSON.parse(data) === 1)
+                            if (JSON.parse(data) == 1){
                                 document.getElementById("myTable").deleteRow(i);
+                                swal("Đã xóa thành công.!", {});
+                            }
+
 
                         }
                     });
-                    swal("Đã xóa thành công.!", {});
                 }
             });
     }
@@ -448,11 +456,22 @@ MODAL
             true
         ) {
             if ($("#tilte123").val() === "" || $("#content").val() === "" ||  $("#Price").val() === "" || $("#body").val() === "" || $("#quantity").val() === ""){
-                alert("Vui lòng điền đủ các trường!")
+
+                swal("Vui lòng điền đầy đủ thông tin.!", {});
+
             }else {
                 loading.style.display = "block";
                 console.log($("#quantity").val());
                 $.ajax({
+                    statusCode: {
+                        401: function() {
+                            swal("Bạn không có quyền thực hiện chức năng này.!", {});
+                            loading.style.display = 'none'
+                            form.style.display = "none";
+                            document.querySelector(".modal-backdrop").classList.remove("show")
+
+                        }
+                    },
                     url: "/product",
                     type: "Put",
                     data: formData,
@@ -465,6 +484,7 @@ MODAL
                         }).then(() => {
                             loading.style.display = "none";
                             form.style.display = "none";
+                            document.querySelector(".modal-backdrop").classList.remove("show")
                         });
                     }
                 });

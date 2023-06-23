@@ -25,7 +25,12 @@ public class UserControl extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         User user = (User) req.getSession().getAttribute("user");
         if (req.getParameter("choose").equals("changeStatus")) {
+            if(!Authorizeds.authorizeds(req, Authorizeds.USER_DEL)){
+                resp.setStatus(401);
+                return;
+            }
             changeStatus(req, resp, user);
+
         } else {
             if (req.getParameter("choose").equals("getInfoUser")) {
                 try {
@@ -45,6 +50,8 @@ public class UserControl extends HttpServlet {
         User user = (User) req.getSession().getAttribute("user");
         if(Authorizeds.authorizeds(req, Authorizeds.USER_UPDATE)){
             updateUser(req, resp, user);
+        }else{
+            resp.setStatus(401);
         }
     }
 
