@@ -51,6 +51,7 @@ public class CommentControl extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setCharacterEncoding("UTF-8");
         String content = URLDecoder.decode(req.getParameter("content"), "UTF-8");
         resp.setContentType("application/json");
         User user = (User) req.getSession().getAttribute("user");
@@ -64,7 +65,7 @@ public class CommentControl extends HttpServlet {
             try {
                 if ((CommentDAO.insertComment(comment, content, map.get("listImg"), map.get("listVideo")) != 0)) {
                     resp.getWriter().println(new RespJsonServlet("ok").json());
-                    Log log = new Log(Log.ALERT, user.getId(), this.getClass().getName(),"Thêm comment(Detail_Product)", 1);
+                    Log log = new Log(Log.INFO, user.getId(), this.getClass().getName(),"Thêm comment(Detail_Product)", 1);
                     log.insert(ConnectDB.getConnect());
                     resp.setStatus(200);
                 } else {

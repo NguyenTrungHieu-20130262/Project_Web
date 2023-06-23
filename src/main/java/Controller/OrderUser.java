@@ -1,11 +1,13 @@
 package Controller;
 
+import Connect.ConnectDB;
 import DAO.CompanyDAO;
 import DAO.OderDAO;
 import DAO.RoleDAO;
 import DTO.Orders;
 import DTO.Permission;
 import Model.Company;
+import Model.Log;
 import Model.Oder;
 import Model.User;
 import com.google.gson.Gson;
@@ -70,6 +72,8 @@ public class OrderUser extends HttpServlet {
                     tmp.setStatus(0);
                     int rs = OderDAO.updateById(tmp);
                     if(rs == 1){
+                        Log log = new Log(Log.WARNING, user.getId(), this.getClass().getName(), "Hủy đơn hàng:[idOrder="+idOder+"]", 1);
+                        log.insert(ConnectDB.getConnect());
                         res.getWriter().println(1);
                         return;
                     }

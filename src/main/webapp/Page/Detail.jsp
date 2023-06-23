@@ -424,7 +424,6 @@
             $.ajax({
                 url: "/postComment",
                 type: "POST",
-                contentType: 'application/x-www-form-urlencoded',
                 data: formData,
                 contentType: false,
                 processData: false,
