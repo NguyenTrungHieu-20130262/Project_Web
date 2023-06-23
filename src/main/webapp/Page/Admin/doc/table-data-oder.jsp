@@ -134,7 +134,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="orderDetailsModalLabel">Order Details</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button"  class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -254,7 +254,7 @@
                     </table>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" id="closeDetailModal" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
@@ -281,6 +281,10 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.min.js"></script>
 
 <script>
+    document.querySelector("#closeDetailModal").addEventListener('click',()=>{
+        document.querySelector("#orderDetailsModal").style.display = "none"
+
+    })
     const exportExel = (name) => {
         console.log(name)
         $("#myTable").table2excel({
@@ -324,6 +328,7 @@
             }
         });
     }
+
 
     oTable = $('#sampleTable').dataTable();
     $('#all').click(function (e) {

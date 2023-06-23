@@ -7,6 +7,7 @@ import Model.Company;
 import Model.Log;
 import Model.RespJsonServlet;
 import Model.User;
+import Security.Authorizeds;
 import Upload.UploadImage;
 import Utils.JWT;
 import com.google.gson.Gson;
@@ -115,7 +116,11 @@ public class Product extends HttpServlet {
         String action = req.getParameter("action");
         String pathRoot = (this.getServletContext().getRealPath("/"));
         User user = (User) req.getSession().getAttribute("user");
-        if (action != null && action.equals("delete")) {
+        if(!Authorizeds.authorizeds(req, Authorizeds.PRODUCT_DEL)){
+            res.setStatus(401);
+            return;
+        }
+        if (action != null && action.equals("delete") ) {
             try {
                 int rs = ProductDAO.deleteProduct(Integer.valueOf(req.getParameter("id")));
                 if (rs > 0) {
@@ -183,6 +188,10 @@ public class Product extends HttpServlet {
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        if(!Authorizeds.authorizeds(req, Authorizeds.PRODUCT_UPDATE)){
+            resp.setStatus(401);
+            return;
+        }
         try {
             int id = Integer.parseInt(req.getParameter("id"));
             String title = req.getParameter("title");

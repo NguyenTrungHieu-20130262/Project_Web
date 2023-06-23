@@ -315,6 +315,12 @@ MODAL
                     let status = 0;
                     fetch("/user?choose=changeStatus&id=" + id + "&status=" + status)
                         .then((resp) => {
+                            console.log(resp)
+                            if(resp.status === 401 ){
+                                swal("Bạn không có quyền thực hiện chức năng này.!", {});
+                                return
+                            }
+
                             $('.unlock#unlock-' + id).css("display", "inline");
                             $('.trash#trash-' + id).css("display", "none");
                             $(this).closest('tr').find(".statusActivity").removeClass('isAction').addClass('isNotAction').text('Đã khóa');
@@ -338,6 +344,10 @@ MODAL
                     let status = 1;
                     fetch("/user?choose=changeStatus&id=" + id + "&status=" + status)
                         .then((resp) => {
+                            if(resp.status === 401 ){
+                                swal("Bạn không có quyền thực hiện chức năng này.!", {});
+                                return
+                            }
                             $('.unlock#unlock-' + id).css("display", "none");
                             $('.trash#trash-' + id).css("display", "inline");
                             $(this).closest('tr').find(".statusActivity").removeClass('isNotAction').addClass('isAction').text('Hoạt động');
@@ -383,6 +393,11 @@ MODAL
             address
         };
         $.ajax({
+            statusCode: {
+                401: function() {
+                    swal("Bạn không có quyền thực hiện chức năng này.!", {});
+                }
+            },
             url: "/user",
             type: "Post",
             data: data,
