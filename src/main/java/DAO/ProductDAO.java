@@ -677,7 +677,6 @@ public class ProductDAO {
             stmt.setInt(9, pro.getLength());
             stmt.setInt(10, pro.getWidth());
             stmt.setInt(11, pro.getWeight());
-
             stmt.setInt(12, 1);
             int affectedRows = stmt.executeUpdate();
             if (affectedRows > 0) {

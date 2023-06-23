@@ -152,7 +152,6 @@ public class Product extends HttpServlet {
                 for (String tmp : listimgs) {
                     rsImg += tmp + "||";
                 }
-                System.out.println(rsImg);
             }
 
             int gear = Integer.valueOf(req.getParameter("gear"));

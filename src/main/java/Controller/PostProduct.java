@@ -8,7 +8,6 @@ import Model.*;
 import Model.Product;
 import Security.Authorizeds;
 import Upload.UploadImage;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -18,7 +17,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
-@MultipartConfig
+@MultipartConfig(fileSizeThreshold = 1024 * 1024 * 50, // 2MB
+        maxFileSize = 1024 * 1024 * 50,      // 50MB
+        maxRequestSize = 1024 * 1024 * 100)  // 100MB
 @WebServlet("/postProduct")
 public class PostProduct extends HttpServlet {
     @Override
@@ -31,8 +32,7 @@ public class PostProduct extends HttpServlet {
             String content = (req.getParameter("content"));
             String images = req.getParameter("images");
             Company idCompany = CompanyDAO.getIdByName(req.getParameter("nameCompany"));
-            int year = Integer.parseInt(req.getParameter("yearofmanufacture"));
-            System.out.println(year);
+            int year = Integer.valueOf((req.getParameter("yearofmanufacture")).trim());
             User user = (User) req.getSession().getAttribute("user");
             String token = JWT.createJWT(String.valueOf(user.getId()), 365);
             ArrayList<String> listimgs = UploadImage.uploadAllFile(images, pathRoot, "post" + token, "Product");
