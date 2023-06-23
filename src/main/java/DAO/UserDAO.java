@@ -18,7 +18,15 @@ public class UserDAO {
         stmt.setInt(3, 1);
         ResultSet rs = stmt.executeQuery();
         return rs.next();
+    }public static boolean checkName(String username) throws SQLException {
+        Connection c = ConnectDB.getConnect();
+        PreparedStatement stmt = c.prepareStatement("select * from user where username=? and status=? ");
+        stmt.setString(1, username);
+        stmt.setInt(2, 1);
+        ResultSet rs = stmt.executeQuery();
+        return rs.next();
     }
+
 
     public static boolean checkByEmail(String email) throws SQLException {
         Connection c = ConnectDB.getConnect();

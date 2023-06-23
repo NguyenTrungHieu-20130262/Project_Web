@@ -99,7 +99,7 @@ public class UserControl extends HttpServlet {
         try {
             JSONObject jsonObject = new JSONObject();
             if (UserDAO.updateUserAdmin(id, name, phone,address) > 0) {
-                Log log = new Log(Log.WARNING, user.getId(), this.getClass().getName(), "Chỉnh sửa user(Admin)", 1);
+                Log log = new Log(Log.WARNING, user.getId(), this.getClass().getName(), "Thay đổi thông tin user(Admin)", 1);
                 log.insert(ConnectDB.getConnect());
                 jsonObject.put("status", "ok");
                 resp.getWriter().println(jsonObject);

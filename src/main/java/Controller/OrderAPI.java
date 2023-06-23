@@ -1,10 +1,13 @@
 package Controller;
 
+import Connect.ConnectDB;
 import DAO.OderDAO;
 import DAO.ProductDAO;
 import DTO.Orders;
+import Model.Log;
 import Model.Oder;
 import Model.OrderDetail;
+import Model.User;
 import Security.Authorizeds;
 import com.google.gson.Gson;
 
@@ -37,6 +40,7 @@ public class OrderAPI extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
         res.setContentType("text/html;charset=UTF-8");
         req.setCharacterEncoding("utf-8");
+        User user=(User)req.getSession().getAttribute("user");
         String action = req.getParameter("action");
         if(action == null){
             res.setStatus(404);
@@ -46,7 +50,8 @@ public class OrderAPI extends HttpServlet {
             case "delete" :
                 if(Authorizeds.authorizeds(req, Authorizeds.ORDER_DEL))
                 try {
-                    deleteOrder(req,res);
+                    deleteOrder(req,res,user);
+
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }
@@ -56,7 +61,7 @@ public class OrderAPI extends HttpServlet {
                 break;
             case "update_address":
                 try {
-                    updateAddress(req,res);
+                    updateAddress(req,res,user);
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }
@@ -68,7 +73,7 @@ public class OrderAPI extends HttpServlet {
             case "update":
                 if(Authorizeds.authorizeds(req, Authorizeds.ORDER_UPDATE))
                     try {
-                    updateOrder(req,res);
+                    updateOrder(req,res,user);
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }
@@ -79,7 +84,7 @@ public class OrderAPI extends HttpServlet {
         }
     }
 
-    private void updateOrder(HttpServletRequest req, HttpServletResponse res) throws SQLException, IOException {
+    private void updateOrder(HttpServletRequest req, HttpServletResponse res,User user) throws SQLException, IOException {
         long idOrder = Long.valueOf(req.getParameter("idOrder"));
         String data = req.getParameter("data");
         String address = req.getParameter("address");
@@ -124,6 +129,8 @@ public class OrderAPI extends HttpServlet {
         Oder order = OderDAO.getOrderById(idOrder);
         order.setTotal_price(total);
         OderDAO.updateById(order);
+        Log log=new Log(Log.INFO, user.getId(),this.getClass().getName(),"Thay đổi thông tin đơn hàng: [id= "+idOrder+"]",1);
+        log.insert(ConnectDB.getConnect());
         res.getWriter().println(new Gson().toJson(OderDAO.getOrderById(idOrder)));
     }
 
@@ -133,20 +140,24 @@ public class OrderAPI extends HttpServlet {
 
     }
 
-    private void updateAddress(HttpServletRequest req, HttpServletResponse res) throws IOException, SQLException {
+    private void updateAddress(HttpServletRequest req, HttpServletResponse res,User user) throws IOException, SQLException {
         String id = req.getParameter("id");
         Oder order = OderDAO.getOrderById(Long.valueOf(id));
         order.setAddress(req.getParameter("address"));
+        Log log=new Log(Log.INFO, user.getId(),this.getClass().getName(),"Thay đổi địa chỉ đơn hàng: [id= "+id+"]",1);
+        log.insert(ConnectDB.getConnect());
         res.getWriter().println(OderDAO.updateById(order));
 
     }
 
-    private void deleteOrder(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException, SQLException {
+    private void deleteOrder(HttpServletRequest req, HttpServletResponse res,User user) throws ServletException, IOException, SQLException {
         String id = req.getParameter("id");
         if(id == null){
             res.setStatus(404);
             return;
         }
+        Log log=new Log(Log.WARNING, user.getId(),this.getClass().getName(),"Xóa đơn hàng: [id=  "+id+"]",1);
+        log.insert(ConnectDB.getConnect());
         res.getWriter().println(OderDAO.deleteOderById(Long.valueOf(id)));
     }
 }

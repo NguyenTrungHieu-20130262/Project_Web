@@ -1,5 +1,7 @@
 package Controller;
 
+import Connect.ConnectDB;
+import Model.Log;
 import Utils.HashSHA216;
 import Utils.JWT;
 import Utils.SendEmail;
@@ -82,6 +84,12 @@ public class Register extends HttpServlet {
         }
         String tokenUser = JWT.createJWT(user.getUserName(),6);
         SendEmail.getInstance().sendTokenVerify(user.getEmail(), "http://" + req.getHeader("host") + "/verifyAccount?token=" + tokenUser);
+        Log log = new Log(Log.ALERT, user.getId(), this.getClass().getName(), "Đăng kí tài khoản: [userName:"+data.get("username")+"]", 1);
+        try {
+            log.insert(ConnectDB.getConnect());
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
         req.getSession().setAttribute("verifyAccount_" + user.getUserName(), user);
         req.getSession().setMaxInactiveInterval(JWT.TIMEOUT * 60);
 
