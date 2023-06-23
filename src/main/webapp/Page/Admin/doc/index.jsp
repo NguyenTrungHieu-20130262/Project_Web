@@ -396,15 +396,16 @@
     // import File Exel
     document.getElementById('importFile').addEventListener('change', handleImportFile);
 
-
     function handleImportFile(event) {
         const file = event.target.files[0];
         const fileReader = new FileReader();
-        fileReader.onload = function (e) {
+        fileReader.onload = async function (e) {
             const data = new Uint8Array(e.target.result);
             const workbook = XLSX.read(data, {type: 'array'});
             const worksheet = workbook.Sheets[workbook.SheetNames[0]];
             const fields = [];
+            const fileInputs = [];
+
             for (let i = 1; ; i++) {
                 const cellA = worksheet["A" + i];
                 if (!cellA || !cellA.v) {
@@ -416,22 +417,36 @@
                     const cell = worksheet[columnName + "" + i];
                     const value = cell ? cell.v : '';
                     if (columnName === "O") {
-                        const fileArray = value.split("||").map(tmp => tmp);
-                        row[columnName] = fileArray;
+                        const filePaths = value.split("||");
+                        const arr=[]
+                        for (const tmp of filePaths) {
+                            arr.push(tmp)
+                        }
+                        row[columnName] = arr;
+                        console.log(arr)
                     } else {
                         row[columnName] = value;
                     }
                 }
                 fields.push(row);
             }
-
             const formDataExcel = new FormData();
             formDataExcel.append('fields', JSON.stringify(fields));
+
+            // Gửi fileInputs trong FormData chính
+            fileInputs.forEach((fileInput, index) => {
+                const files = fileInput.files;
+                for (let i = 0; i < files.length; i++) {
+                    formDataExcel.append("file_" + index + "_" + i, files[i]);
+                }
+            });
+
             importProduct(formDataExcel);
         };
 
         fileReader.readAsArrayBuffer(file);
     }
+
 
     const importProduct = (data) => {
         loading.style.display = "block";
